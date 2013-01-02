@@ -20,7 +20,7 @@ int main()
 
 	d_s = malloc( sizeof( char ) );
 
-	while( ( c = fgetc( stdin ) ) != '\n' )
+	while( ( c = fgetc( stdin ) ) != '\n' && c != EOF )
 	{
 		d_s = realloc( d_s, sizeof( char ) * ++sz );
 		*( d_s + ( sz - 1 ) ) = c;
