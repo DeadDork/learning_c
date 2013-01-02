@@ -1,3 +1,15 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Converts a string that's in the form of an integer (e.g. "1234") into an actual integer.
+
+// A return value of 1 means that one of the string values did not have an ascii value between '0' and '9'.
+
+// A return value of 2 means that the string value of the left most array element did not have an ascii value between '1' and '9'.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

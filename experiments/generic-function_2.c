@@ -1,9 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests generic functions more further.
+
 // Holy fucking shit. I now get it: you can't copy over one pointer with a second pointer. Use the friggin' heap instead of the stack.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
 #include <stdio.h>
 #include <stdlib.h>
 //#include <string.h>
 
+////////////////////////////////////////////////////////////////////////////////
+// Function prototypes
+
 void memcopy( void* a, void* b, int sz );
+
+void gswap( void* a, void* b, int sz );
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
 
 void memcopy( void* a, void* b, int sz )
 {
@@ -13,8 +30,6 @@ void memcopy( void* a, void* b, int sz )
 	while( sz-- != 0 )
 		*( dst++ ) = *( src++ );
 }
-
-void gswap( void* a, void* b, int sz );
 
 void gswap( void* a, void* b, int sz )
 {
@@ -27,6 +42,7 @@ void gswap( void* a, void* b, int sz )
 	free( buf );
 }
 
+////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[] )
 {
 	int i;

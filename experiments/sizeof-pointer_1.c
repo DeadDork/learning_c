@@ -1,10 +1,30 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// This demonstrates that sizeof is worthless for telling the size of an array anywhere but in the main function.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <math.h>
 
+////////////////////////////////////////////////////////////////////////////////
+// Macros & global definitions
+
 #define TYPE int
 
+/////////////////////////////////////////////////////////////////////////////////
+// Function prototypes
+
 TYPE lengthof( char* i );
+TYPE psize_of( char* s );
+TYPE asize_of( char s[] );
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
+
 TYPE lengthof( char* i )
 {
 	TYPE j;
@@ -15,7 +35,6 @@ TYPE lengthof( char* i )
 	return j;
 }
 
-TYPE psize_of( char* s );
 TYPE psize_of( char* s )
 {
 	int i;
@@ -31,7 +50,6 @@ TYPE psize_of( char* s )
 	return sizeof( s );
 }
 
-TYPE asize_of( char s[] );
 TYPE asize_of( char s[] )
 {
 	int i;
@@ -47,6 +65,7 @@ TYPE asize_of( char s[] )
 	return sizeof( s );
 }
 
+////////////////////////////////////////////////////////////////////////////////
 int main()
 {
 	char s[] = "hello, world";
