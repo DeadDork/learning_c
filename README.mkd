@@ -17,8 +17,9 @@ Includes
 
 There are a couple of directories:
 
-*1)	Experiments*
-	This directory holds a ton of little programs that explore some aspect or other of C. The program files are named descriptively, but aside from this there is no real organization. You have been warned!
+*	_Experiments_
 
-*2)	KnR*
+	This directory holds a ton of little programs that explore some aspect or other of C. The program files are named descriptively, but aside from this there is no real organization. You have been warned!
+*	_KnR_
+
 	This directory holds my solutions to exercises in Brian Kernighan & Dennis Richie's classic C book, _The C Programming Language_. They are broken into chapter sub-directories.
