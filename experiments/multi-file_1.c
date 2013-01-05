@@ -1,0 +1,24 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests how to include custom libraries.
+
+// Simply compile as follows:
+//	gcc main.c header_1.c header_1.h ... header_n.c header_n.h -o program
+
+//	E.G. gcc -g -Wall -Wextra multi-file_1.c header_1.c header_1.c -o multi-file_1
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include "header_1.h"
+
+////////////////////////////////////////////////////////////////////////////////
+int main()
+{
+	char s[] = "Just one small mint wafer...!";
+
+	printer( s );
+
+	return 0;
+}
