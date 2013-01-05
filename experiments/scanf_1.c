@@ -1,0 +1,25 @@
+////////////////////////////////////////////////////////////////////////////////
+// Commentary
+
+// Tests whether scanf dynamically allocates strings.
+
+// Results: Works well enough for the first 50 characters; doesn't work so well for longer strings.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+#include <stdlib.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main()
+{
+	char* s;
+
+	printf( "Enter an arbitrary string: " );
+	scanf( "%s", s );
+
+	printf( "String = [%s]\n", s );
+
+	return 0;
+}
