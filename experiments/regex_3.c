@@ -52,5 +52,9 @@ int main( void )
 	// Free compiled regular expression if you want to use the regex_t again.
 	regfree( &regex );
 
+	// Always free heap pointers!
+	free( re );
+	free( s );
+
 	return 0;
 }
