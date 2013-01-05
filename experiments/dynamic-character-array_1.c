@@ -3,7 +3,8 @@
 
 // This creates a character array of undefined length (within the limits of the hardware), and prints it.
 
-// Line 21 is necessary, presumably because otherwise there is pointer to the heap.
+// Line 21 is necessary, but I don't really understand why.
+// My best guess is that without it d_s does not point to the heap, so realloc can't work appropriately (my confusion comes from the fact that the realloc docs said that the first call to realloc works just like malloc).
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -19,7 +20,6 @@ int main()
 	int sz = 0; // Size
 
 	d_s = malloc( sizeof( char ) );
-
 	while( ( c = fgetc( stdin ) ) != '\n' && c != EOF )
 	{
 		d_s = realloc( d_s, sizeof( char ) * ++sz );
