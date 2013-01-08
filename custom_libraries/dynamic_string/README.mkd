@@ -16,3 +16,8 @@ Compiling
 Until I figure out how to do this a better way, you have to compile the library en toto. E.G.:
 
 	gcc -Wall -Wextra -g d_s.h d_s.c SOME-FILE-THAT-USES-D_S.c -o test
+
+Nota Bene
+---------
+
+This library has been deprecated. I ultimately realized that the functions in this library are better merged with the sstring library.

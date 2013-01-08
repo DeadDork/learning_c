@@ -1,6 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
+// DEPRECATED
+
+// This function has been merged with sstring.c. It's being kept to not break a couple of other programs.
+
 // This function lets the user enter a string of arbitrary length (given the limitations of the hardware, of course).
 
 // I might need to adjust the conditions that end the fgetc. For now, though, a newline or end-of-file seem good.
