@@ -3,6 +3,9 @@
 #ifndef SSTRING_H
 #define SSTRING_H
 
+#define TRUE 1
+#define FALSE 2
+
 ////////////////////////////////////////////////////////////////////////////////
 char* d_s( char* string );
 /* Creates a character string of arbitary length.
@@ -30,6 +33,15 @@ int slength( char* string );
    *string* = the source string to be measured.
 
    Returns the length of the string. */
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+float str2num( char* numstring );
+/* Converts a string that's a human-readable number into a computer readable number.
+ 
+   *numstring* = the source string that is to be converted into a real number.
+
+   Returns a float of the converted number. */
 ////////////////////////////////////////////////////////////////////////////////
 
 #endif /* SSTRING_H */

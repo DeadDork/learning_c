@@ -6,11 +6,16 @@
 // Be sure to free the memory for the dynamic character array!
 // Be sure to free the memory for substring!
 
+// There are serious rounding errors with str2num.
+
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <regex.h>
+#include "../rematch/rematch.h"
 #include "sstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,8 +23,8 @@
 
 char* d_s( char* s ) // Dynamic String; String
 {
-	int c; // Character
-	int sz = 0; // Size
+	int c;
+	int sz = 0;
 
 	/* Dynamically allocates memory for a string input. */
 	s = malloc( sizeof( char ) );
@@ -35,10 +40,9 @@ char* d_s( char* s ) // Dynamic String; String
 
 char* substring( char* source, int begin, int end )
 {
-	int st_ln; // String Length
-	char* t; // Target
+	int st_ln, e;
+	char* t;
 	char* tt;
-	int e; // Element
 
 	/* Sanity checks */
 	if( begin > end )
@@ -73,10 +77,48 @@ char* substring( char* source, int begin, int end )
 
 int slength( char* string )
 {
-	int e; // Element
+	int e;
 
 	for( e = 0; string[ e ]; ++e )
 		;
 
 	return e;
+}
+
+float str2num( char* numstring )
+{
+	char num_re[] = "^([1-9][0-9]*)\\.?([0-9]*)$";
+	size_t nmatch = 3;
+	regmatch_t pmatch[ nmatch ];
+	char* s;
+	float value = 0.0;
+	int e;
+	int s_l;
+
+	if( rematch( num_re, numstring, nmatch, pmatch ) )
+	{
+		/* Integer portion of the float */
+		s = substring( numstring, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 );
+		printf( "Integer substring = [%s]\n", s );
+		s_l = slength( s );
+		for( e = 0; s[ e ] != '\0'; ++e )
+			value = value + ( s[ e ] - '0' ) * pow( 10, s_l - ( e + 1 ) );
+
+		/* Decimal portion of the float */
+		if( ( pmatch[ 2 ].rm_eo - 1 ) - pmatch[ 2 ].rm_so > 0 )
+		{
+			s = substring( numstring, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
+			printf( "Decimal substring = [%s]\n", s );
+			s_l = slength( s );
+			for( e = 0; s[ e ] != '\0'; ++e )
+				value = value + ( s[ e ] - '0' ) * pow( 10, -( e + 1 ) );
+		}
+	}
+	else
+	{
+		fprintf( stderr, "Source string does not have a good number format: %s\n", numstring );
+		exit( 1 );
+	}
+
+	return value;
 }
