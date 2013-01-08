@@ -1,7 +1,16 @@
 #include <stddef.h>
 
-#ifndef CSTRING_H
-#define CSTRING_H
+#ifndef SSTRING_H
+#define SSTRING_H
+
+////////////////////////////////////////////////////////////////////////////////
+char* d_s( char* string );
+/* Creates a character string of arbitary length.
+
+   *string* = the arbitrary lengthed string.
+
+   Returns the pointer to the arbitrary lengthed string. */
+////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 char* substring( char* source, int begin, int end );
@@ -14,4 +23,13 @@ char* substring( char* source, int begin, int end );
    Returns the pointer to the target substring. */
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif /* CSTRING_H */
+////////////////////////////////////////////////////////////////////////////////
+int slength( char* string );
+/* Measures the length of a string, in array notation.
+ 
+   *string* = the source string to be measured.
+
+   Returns the length of the string. */
+////////////////////////////////////////////////////////////////////////////////
+
+#endif /* SSTRING_H */

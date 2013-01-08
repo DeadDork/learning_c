@@ -1,26 +1,44 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// These functions perform printing functions I find myself reusing on a regular basis.
+// These functions perform specialized string functions I find myself using on a regular basis.
 
-// Be sure to free the memory for substring.
+// Be sure to free the memory for the dynamic character array!
+// Be sure to free the memory for substring!
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "sstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
+char* d_s( char* s ) // Dynamic String; String
+{
+	int c; // Character
+	int sz = 0; // Size
+
+	/* Dynamically allocates memory for a string input. */
+	s = malloc( sizeof( char ) );
+	while( ( c = fgetc( stdin ) ) != '\n' && c != EOF )
+	{
+		s = realloc( s, sizeof( char ) * ++sz );
+		*( s + ( sz - 1 ) ) = c;
+	}
+	*( s + sz ) = '\0';
+
+	return s;
+}
+
 char* substring( char* source, int begin, int end )
 {
-	int cnt;
-	int st_ln;
-	char* s = source;
-	char* target;
-	char* t;
+	int st_ln; // String Length
+	char* t; // Target
+	char* tt;
+	int e; // Element
 
 	/* Sanity checks */
 	if( begin > end )
@@ -29,8 +47,7 @@ char* substring( char* source, int begin, int end )
 		exit( 1 );
 	}
 
-	for( st_ln = 0; source[ st_ln ] != '\0'; ++st_ln )
-		;
+	st_ln = slength( source );
 	if( begin > st_ln )
 	{
 		fprintf( stderr, "specprint:substring -- begin substring point is larger than the length of the string.\n" );
@@ -43,13 +60,23 @@ char* substring( char* source, int begin, int end )
 	}
 
 	/* Allocate enough memory for the substring */
-	target = malloc( sizeof( char ) * ( end - begin ) );
-	t = target;
+	t = malloc( sizeof( char ) * ( end - begin ) );
+	tt = t;
 
-	/* Copy over the substring */
-	for( cnt = begin; cnt <= end; ++cnt )
-		*t++ = s[ cnt ];
-	*t = '\0';
+	/* Copy the substring */
+	for( e = begin; e <= end; ++e )
+		*tt++ = source[ e ];
+	*tt = '\0';
 
-	return target;
+	return t;
+}
+
+int slength( char* string )
+{
+	int e; // Element
+
+	for( e = 0; string[ e ]; ++e )
+		;
+
+	return e;
 }
