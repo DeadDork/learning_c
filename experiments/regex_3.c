@@ -31,7 +31,7 @@ int main( void )
 	s = d_s( s );
 
 	// Compile regular expression. 
-	if( ( re_err = regcomp( &regex, re, 0 ) ) )
+	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
 	{
 		fprintf( stderr, "Could not compile regex\n" );
 		exit( 1 );
