@@ -36,5 +36,7 @@ int rematch( char* re, char* string, size_t nmatch, regmatch_t* pmatch )
 		exit( 1 ); 
 	}
 
+	regfree( &regex ); // I honestly don't know if this is necessary. I'll have to investigate the regex library to see if this goes into the heap, et al.
+
 	return value;
 }
