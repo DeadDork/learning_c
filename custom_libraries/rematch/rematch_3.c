@@ -3,6 +3,8 @@
 
 // Tests out the *rematch* library.
 
+// Specifically, retrieving substrings from pmatch.
+
 // Works!
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,20 +20,20 @@
 int main()
 {
 	size_t nm = 2;
-	regmatch_t pm[ 2 ];
+	regmatch_t pm[ nm - 1 ];
 
 	char* s;
 	printf( "Enter string: " );
 	s = d_s( s );
 
 	char* re;
-	printf( "Enter regex: " );
+	printf( "Enter regex with parenthesized subexpression: " );
 	re = d_s( re );
 
 	if( rematch( re, s, nm, pm ) )
-		puts( "Match!" );
+		printf( "Subexpression = [%s]\n", substring( s, pm[ 1 ].rm_so, pm[ 1 ].rm_eo - 1 ) );
 	else
-		puts( "No match..." );
+		printf( "Couldn't extract substring.\n" );
 
 	free( s );
 	free( re );
