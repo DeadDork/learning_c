@@ -11,20 +11,13 @@
 #include "rematch.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// Symbolic Constants
+// Function
 
-#define MATCH 1
-#define NOMATCH 0
-
-////////////////////////////////////////////////////////////////////////////////
-//int rematch( char* rex, char* string, int nmatch, void* pmatch )
-int rematch( char* re, char* string )
+int rematch( char* re, char* string, size_t nmatch, regmatch_t* pmatch )
 {
-	int value;
 	int re_err;
 	regex_t regex;
-	size_t nmatch = 2;
-	regmatch_t pmatch[ 2 ];
+	int value;
 
 	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
 	{
