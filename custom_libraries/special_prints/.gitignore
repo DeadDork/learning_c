@@ -1,9 +1,0 @@
-*\~
-*.swp
-*.swo
-*.dSYM
-*[0-9]
-d_s
-test
-rematch-test
-rematch-test_[0-9]
