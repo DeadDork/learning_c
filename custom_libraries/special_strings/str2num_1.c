@@ -16,14 +16,15 @@
 int main()
 {
 	char* s;
-	float x;
+	double x;
+	double y = 1234.5678;
 
 	printf( "Enter a string that's in the same format of a number (e.g. '1234.5678'): " );
 	s = d_s( s );
 
 	x = str2num( s );
 	//printf( "[%s] converts to [%f]\n", s, x );
-	printf( "152.5 - %s = [%f]\n", s, 152.5 - x );
+	printf( "1234.5678 - %s = [%lf]\n", s, y - x );
 
 	free( s );
 
