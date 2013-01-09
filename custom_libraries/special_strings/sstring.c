@@ -79,6 +79,7 @@ int slength( char* string )
 {
 	int e;
 
+	/* Get string length */
 	for( e = 0; string[ e ]; ++e )
 		;
 
@@ -95,6 +96,7 @@ double str2num( char* numstring )
 	int e;
 	int s_l;
 
+	/* Checks string. If it's in the form of a number, it is converted into a number. */
 	if( rematch( num_re, numstring, nmatch, pmatch ) )
 	{
 		/* Integer portion of the float */
