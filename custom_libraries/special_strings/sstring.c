@@ -85,13 +85,13 @@ int slength( char* string )
 	return e;
 }
 
-float str2num( char* numstring )
+double str2num( char* numstring )
 {
 	char num_re[] = "^([1-9][0-9]*)\\.?([0-9]*)$";
 	size_t nmatch = 3;
 	regmatch_t pmatch[ nmatch ];
 	char* s;
-	float value = 0.0;
+	double value = 0.0;
 	int e;
 	int s_l;
 
@@ -99,16 +99,14 @@ float str2num( char* numstring )
 	{
 		/* Integer portion of the float */
 		s = substring( numstring, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 );
-		printf( "Integer substring = [%s]\n", s );
 		s_l = slength( s );
 		for( e = 0; s[ e ] != '\0'; ++e )
 			value = value + ( s[ e ] - '0' ) * pow( 10, s_l - ( e + 1 ) );
 
 		/* Decimal portion of the float */
-		if( ( pmatch[ 2 ].rm_eo - 1 ) - pmatch[ 2 ].rm_so > 0 )
+		if( ( pmatch[ 2 ].rm_eo ) - pmatch[ 2 ].rm_so > 0 )
 		{
 			s = substring( numstring, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
-			printf( "Decimal substring = [%s]\n", s );
 			s_l = slength( s );
 			for( e = 0; s[ e ] != '\0'; ++e )
 				value = value + ( s[ e ] - '0' ) * pow( 10, -( e + 1 ) );

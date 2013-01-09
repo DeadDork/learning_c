@@ -36,7 +36,7 @@ int slength( char* string );
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-float str2num( char* numstring );
+double str2num( char* numstring );
 /* Converts a string that's a human-readable number into a computer readable number.
  
    *numstring* = the source string that is to be converted into a real number.
