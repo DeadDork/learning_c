@@ -42,7 +42,7 @@ float t_conv( float *temp, int temp_type );
 
 int t_extract( char *in, float *temp )
 {
-	char re[] = "^([0-9]+\\.?[0-9]*)([cCfF])$";
+	char re[] = "^([0-9]+\\.?[0-9]*) *([cCfF])$";
 	size_t nmatch = 3;
 	regmatch_t pmatch[ nmatch ];
 	char *temp_type;
