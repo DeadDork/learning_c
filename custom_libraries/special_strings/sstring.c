@@ -6,7 +6,7 @@
 // Be sure to free the memory for the dynamic character array!
 // Be sure to free the memory for substring!
 
-// There are serious rounding errors with str2num.
+// There are serious rounding errors with str2num. Using the DOUBLE type solves them to a large degree, but this should be noted.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -88,8 +88,8 @@ int slength( char* string )
 
 double str2num( char* numstring )
 {
-	char num_re[] = "^([1-9][0-9]*)\\.?([0-9]*)$";
-	size_t nmatch = 3;
+	char num_re[] = "^(-?)(0|[1-9][0-9]*)\\.?([0-9]*)$";
+	size_t nmatch = 4;
 	regmatch_t pmatch[ nmatch ];
 	char* s;
 	double value = 0.0;
@@ -100,18 +100,24 @@ double str2num( char* numstring )
 	if( rematch( num_re, numstring, nmatch, pmatch ) )
 	{
 		/* Integer portion of the float */
-		s = substring( numstring, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 );
+		s = substring( numstring, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
 		s_l = slength( s );
 		for( e = 0; s[ e ] != '\0'; ++e )
 			value = value + ( s[ e ] - '0' ) * pow( 10, s_l - ( e + 1 ) );
 
 		/* Decimal portion of the float */
-		if( ( pmatch[ 2 ].rm_eo ) - pmatch[ 2 ].rm_so > 0 )
+		if( ( pmatch[ 3 ].rm_eo ) - pmatch[ 3 ].rm_so > 0 )
 		{
-			s = substring( numstring, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
+			s = substring( numstring, pmatch[ 3 ].rm_so, pmatch[ 3 ].rm_eo - 1 );
 			s_l = slength( s );
 			for( e = 0; s[ e ] != '\0'; ++e )
 				value = value + ( s[ e ] - '0' ) * pow( 10, -( e + 1 ) );
+		}
+
+		/* Signage of the float */
+		if( pmatch[ 1 ].rm_eo > 0 )
+		{
+			value = value * -1;
 		}
 	}
 	else
