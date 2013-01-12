@@ -46,4 +46,9 @@ I designed *t_conv* such that input is highly flexible:
 		$ ./t_conv "98.6 F"
 		37
 
-Output is also designed for flexiblity: STDOUT outputs the converted unit value and STDERR outputs the unit type as an ASCII decimal (i.e. 'C' = 67 and 'F' = 70).
+Output is also designed for flexiblity: STDOUT outputs the converted unit value and STDERR outputs the unit type as an ASCII decimal (i.e. 'C' = 67 and 'F' = 70). E.G.:
+
+		$ ./t_conv "98.6 F"
+		37
+		$ awk 'BEGIN { printf "%c\n", '$?' }'
+		C
