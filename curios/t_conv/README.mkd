@@ -43,7 +43,7 @@ I designed *t_conv* such that input is highly flexible:
 
 *	It can be entered as an argument:
 
-		$ ./t_conv 98.6F
+		$ ./t_conv "98.6 F"
 		37
 
 Output is also designed for flexiblity: STDOUT outputs the converted unit value and STDERR outputs the unit type as an ASCII decimal (i.e. 'C' = 67 and 'F' = 70).
