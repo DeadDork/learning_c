@@ -23,3 +23,9 @@ There are a couple of directories:
 *	_KnR_
 
 	This directory holds my solutions to exercises in Brian Kernighan & Dennis Richie's classic C book, _The C Programming Language_. They are broken into chapter sub-directories.
+*	_Curios_
+
+	I use this directory to make slightly bigger programs, as inspiration strikes. It is broken up into subdirectories, one each per project.
+*	_Custom Libraries_
+
+	You know the saying: good programmers write good code, great programmers reuse. This directory houses libraries I wrote to make my life easier.
