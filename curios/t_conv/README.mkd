@@ -1,0 +1,47 @@
+Temperature Conversion
+======================
+
+Converts temperature unit from Fahrenheit to Celsius, and vice versa.
+
+To Make
+-------
+
+Simply run make, i.e.:
+
+		$ make
+
+To Use
+------
+
+Input has to be of the form:
+
+	[-] + NUMBER + [F or C]
+
+Some **good** examples:
+*	-40f
+*	98.6       C
+
+Some **bad** examples:
+*	-40
+*	.5 c
+*	10 Fahrenheit
+
+I designed *t_conv* such that input is highly flexible:
+
+*	It can be piped in:
+
+		$ echo "98.6F" | ./t_conv
+		37
+
+*	It can be entered via STDIN:
+
+		$ ./t_conv
+		98.6F
+		37
+
+*	It can be entered as an argument:
+
+		$ ./t_conv 98.6F
+		37
+
+Output is also designed for flexiblity: STDOUT outputs the converted unit value and STDERR outputs the unit type as an ASCII decimal (i.e. 'C' = 67 and 'F' = 70).
