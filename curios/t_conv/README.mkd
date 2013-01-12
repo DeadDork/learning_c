@@ -19,7 +19,9 @@ Input has to be of the form:
 
 Some **good** examples:
 *	-40f
-*	98.6       C
+*	98.6 C
+
+(Note the optional space between *NUMBER* and *[F or C]*.)
 
 Some **bad** examples:
 *	-40
