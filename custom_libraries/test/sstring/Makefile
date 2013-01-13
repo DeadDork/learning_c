@@ -27,6 +27,9 @@ OBJ_2 = $(BIN_2).o sstring.o rematch.o
 BIN_3 = str2num_1
 OBJ_3 = $(BIN_3).o sstring.o rematch.o
 
+BIN_4 = substring_1
+OBJ_4 = $(BIN_4).o sstring.o rematch.o
+
 # Targets & Recipes
 $(BIN_1) : $(OBJ_1)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
@@ -39,6 +42,10 @@ $(BIN_2).o : $(BIN_2).c sstring.h
 $(BIN_3) : $(OBJ_3)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 $(BIN_3).o : $(BIN_3).c sstring.h
+
+$(BIN_4) : $(OBJ_4)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+$(BIN_4).o : $(BIN_4).c sstring.h
 
 # Common dependencies
 sstring.o : sstring.c sstring.h rematch.h
