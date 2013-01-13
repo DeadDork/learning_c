@@ -45,6 +45,7 @@ sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
 
 # rm object files & executables
+# Will only rm the first 9 executables in a series; e.g. *str2num_9* will be rm-ed, but not *str2num_10*.
 .PHONY : clean
 clean :
-	rm *.o *_1
+	rm *.o *_[1-9]
