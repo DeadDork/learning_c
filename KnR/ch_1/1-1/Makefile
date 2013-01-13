@@ -2,13 +2,14 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 LDFLAGS =
 
-OBJ = 1-1.o
+BIN = 1-1
+OBJ = $(BIN).o
 
-1-1 : $(OBJ)
+$(BIN) : $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-1-1.o : 1-1.c
+$(BIN).o : $(BIN).c
 
 .PHONY : clean
 clean :
-	rm *.o 1-1
+	rm *.o $(BIN)
