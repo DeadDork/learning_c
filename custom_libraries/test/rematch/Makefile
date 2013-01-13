@@ -22,7 +22,7 @@ BIN_1 = rematch_1
 OBJ_1 = $(BIN_1).o sstring.o rematch.o
 
 BIN_2 = rematch_2
-OBJ_2 = $(BIN_2).o sstring.o rematch.o
+OBJ_2 = $(BIN_2).o sstring.o
 
 BIN_3 = rematch_3
 OBJ_3 = $(BIN_3).o sstring.o rematch.o
@@ -34,7 +34,7 @@ $(BIN_1).o : $(BIN_1).c sstring.h rematch.h
 
 $(BIN_2) : $(OBJ_2)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-$(BIN_2).o : $(BIN_2).c sstring.h rematch.h
+$(BIN_2).o : $(BIN_2).c sstring.h
 
 $(BIN_3) : $(OBJ_3)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
@@ -45,6 +45,7 @@ sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
 
 # rm object files & executables
+# N.B. This will only delete the first nine tests in a series, e.g. *sstring_9* will be removed, but not *sstring_10*.
 .PHONY : clean
 clean :
-	rm *.o *_1
+	rm *.o *_[1-9]
