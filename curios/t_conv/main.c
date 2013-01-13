@@ -33,5 +33,7 @@ int main( int argc, char *argv[] )
 
 	printf( "%.1f\n", t_conv( &temp, &temp_type ) );
 
+	free( temp_string );
+
 	return temp_type;
 }
