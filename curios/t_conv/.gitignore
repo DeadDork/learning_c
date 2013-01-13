@@ -2,3 +2,5 @@
 *.sw[op]
 t_conv
 *.o
+sstring.[hc]
+rematch.[hc]
