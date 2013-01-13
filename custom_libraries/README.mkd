@@ -1,0 +1,47 @@
+Custom C Libraries
+==================
+
+Custom libraries & tests of their validity.
+
+Directory Stucture
+------------------
+
+*	*lib* houses the header & function files of all the libraries.
+
+*	*test* houses the lib's eponymous test sub-directories which validate them. Do note that the *test* sub-directories have linked files to the original headers & function files (it makes it easier to run tests without having to resort to a Makefile).
+
+To Use
+------
+
+1.	Make a link to the desired header & function file/s; e.g.:
+
+		$ ln /PATH/TO/lib/sstring.[hc] /PATH/TO/sstring/
+
+2.	Include in the source file/s; e.g. in *test.c*:
+
+		.
+		.
+		.
+		#include <stdio.h>
+		#include "sstring.h"
+		#include "sstring.c"
+		.
+		.
+		.
+
+Testing
+-------
+
+1.	Go to the specific lib test directory you are interested in exploring (e.g. *sstring*).
+
+		$ cd /PATH/TO/sstring
+
+2.	Compile the test you are interested in.
+
+		$ make substring_1
+
+3.	To clear the test directory of binaries & object files, make clean:
+
+		$ make clean
+
+N.B. If you want to create a new test, be sure to amend the Makefile accordingly.
