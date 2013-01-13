@@ -69,7 +69,9 @@ char* substring( char* source, int begin, int end )
 
 	/* Copy the substring */
 	for( e = begin; e <= end; ++e )
+	{
 		*tt++ = source[ e ];
+	}
 	*tt = '\0';
 
 	return t;
@@ -80,8 +82,7 @@ int slength( char* string )
 	int e;
 
 	/* Get string length */
-	for( e = 0; string[ e ]; ++e )
-		;
+	for( e = 0; string[ e ]; ++e );
 
 	return e;
 }
@@ -103,7 +104,9 @@ double str2num( char* numstring )
 		s = substring( numstring, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
 		s_l = slength( s );
 		for( e = 0; s[ e ] != '\0'; ++e )
+		{
 			value = value + ( s[ e ] - '0' ) * pow( 10, s_l - ( e + 1 ) );
+		}
 
 		/* Decimal portion of the float */
 		if( ( pmatch[ 3 ].rm_eo ) - pmatch[ 3 ].rm_so > 0 )
@@ -111,7 +114,9 @@ double str2num( char* numstring )
 			s = substring( numstring, pmatch[ 3 ].rm_so, pmatch[ 3 ].rm_eo - 1 );
 			s_l = slength( s );
 			for( e = 0; s[ e ] != '\0'; ++e )
+			{
 				value = value + ( s[ e ] - '0' ) * pow( 10, -( e + 1 ) );
+			}
 		}
 
 		/* Signage of the float */

@@ -19,16 +19,22 @@ int rematch( char* re, char* string, size_t nmatch, regmatch_t* pmatch )
 	regex_t regex;
 	int value;
 
+	/* Tries to compile the regex */
 	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
 	{
 		fprintf( stderr, "Could not compile regex\n" );
 		exit( 1 );
 	}
 
+	/* Tries to match the regex */
 	if( !( re_err = regexec( &regex, string, nmatch, pmatch, 0 ) ) )
+	{
 		value = MATCH;
+	}
 	else if( re_err == REG_NOMATCH )
+	{
 		value = NOMATCH;
+	}
 	else
 	{
 		regerror( re_err, &regex, string, sizeof( string ) );

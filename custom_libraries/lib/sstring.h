@@ -10,7 +10,7 @@
 char* d_s( char* string );
 /* Creates a character string of arbitary length.
 
-   *string* = the arbitrary lengthed string.
+   *string* = the arbitrarily lengthed string.
 
    Returns the pointer to the arbitrary lengthed string. */
 ////////////////////////////////////////////////////////////////////////////////
