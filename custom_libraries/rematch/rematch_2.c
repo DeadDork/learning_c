@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <regex.h>
-#include "../dynamic_string/d_s.h"
+#include "sstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Symbolic Constants
