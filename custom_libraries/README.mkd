@@ -15,7 +15,7 @@ To Use
 
 1.	Make a link to the desired header & function file/s; e.g.:
 
-		$ ln /PATH/TO/lib/sstring.[hc] /PATH/TO/sstring/
+		$ ln /PATH/TO/lib/sstring.[hc] /PATH/TO/src/
 
 2.	Include in the source file/s; e.g. in *test.c*:
 
@@ -32,7 +32,7 @@ To Use
 Testing
 -------
 
-1.	Go to the specific lib test directory you are interested in exploring (e.g. *sstring*).
+1.	Go to the specific lib test sub-directory you are interested in exploring (e.g. *sstring*).
 
 		$ cd /PATH/TO/sstring
 
@@ -40,7 +40,7 @@ Testing
 
 		$ make substring_1
 
-3.	To clear the test directory of binaries & object files, make clean:
+3.	To clear the test sub-directory of binaries & object files, make clean:
 
 		$ make clean
 
