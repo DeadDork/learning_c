@@ -3,6 +3,8 @@
 
 // This library lets me use regex.h effectively and easily.
 
+// I honestly don't know regfree() is necessary at the end. I'll have to investigate further to see if regex is freed upon function end.
+
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 #include <stdio.h>
@@ -13,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Function
 
-int rematch( char* re, char* string, size_t nmatch, regmatch_t* pmatch )
+int rematch( char *re, char *string, size_t nmatch, regmatch_t *pmatch )
 {
 	int re_err;
 	regex_t regex;
@@ -42,7 +44,7 @@ int rematch( char* re, char* string, size_t nmatch, regmatch_t* pmatch )
 		exit( 1 ); 
 	}
 
-	regfree( &regex ); // I honestly don't know if this is necessary. I'll have to investigate the regex library to see if this goes into the heap, et al.
+	regfree( &regex );
 
 	return value;
 }

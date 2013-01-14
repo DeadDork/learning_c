@@ -21,7 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-char* d_s( char* s ) // Dynamic String; String
+char* d_s( char *s ) // Dynamic String; String
 {
 	int c;
 	int sz = 0;
@@ -41,8 +41,8 @@ char* d_s( char* s ) // Dynamic String; String
 char* substring( char* source, int begin, int end )
 {
 	int st_ln, e;
-	char* t;
-	char* tt;
+	char *t;
+	char *tt;
 
 	/* Sanity checks */
 	if( begin > end )
@@ -87,12 +87,12 @@ int slength( char* string )
 	return e;
 }
 
-double str2num( char* numstring )
+double str2num( char *numstring )
 {
 	char num_re[] = "^(-?)(0|[1-9][0-9]*)\\.?([0-9]*)$";
 	size_t nmatch = 4;
 	regmatch_t pmatch[ nmatch ];
-	char* s;
+	char *s;
 	double value = 0.0;
 	int e;
 	int s_l;
