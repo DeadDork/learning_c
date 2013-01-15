@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Function
 
-int rematch( char *re, char *string, size_t nmatch, regmatch_t *pmatch )
+int rematch( char *string, char *re, size_t nmatch, regmatch_t *pmatch )
 {
 	int re_err;
 	regex_t regex;
