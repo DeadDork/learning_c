@@ -20,7 +20,7 @@
 int main()
 {
 	size_t nm = 2;
-	regmatch_t pm[ nm - 1 ];
+	regmatch_t pm[ nm ];
 
 	char* s;
 	printf( "Enter string: " );
