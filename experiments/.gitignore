@@ -4,3 +4,6 @@
 *.dSYM
 *[0-9]
 string_parity
+sstring.[hc]
+rematch.[hc]
+*.o
