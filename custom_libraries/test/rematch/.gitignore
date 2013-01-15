@@ -5,3 +5,4 @@
 *[0-9]
 sstring.[hc]
 rematch.[hc]
+*.o
