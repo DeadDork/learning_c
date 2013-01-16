@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests a weird while loop I came across.
+
+// Aha! It works because the value of *argv[ 1 ] equals '\0' at the end of the string, which is equivalent to FALSE!
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main( int argc, char *argv[])
+{
+	if( argc > 1 )
+	{
+		while( *argv[ 1 ] )
+		{
+			printf( "[%c]", *argv[ 1 ]++ );
+		}
+		printf( "\n" );
+	}
+
+	return 0;
+}
