@@ -133,3 +133,42 @@ double str2num( char *numstring )
 
 	return value;
 }
+
+char *res( char *source, char *substitute, int start, int stop )
+{
+	char *begin, *end, *tmp, *ttmp, *trgt;
+
+	if( start > 0 )
+	{
+		begin = substring( source, 0, start - 1);
+	}
+
+	if( stop < slength( source ) )
+	{
+		end = substring( source, stop, slength( source ) );
+	}
+
+	trgt = realloc( source, sizeof( char ) * ( slength( begin ) + slength( substitute ) + slength( end ) ) );
+	ttmp = trgt;
+
+	tmp = begin;
+	while( *tmp != '\0' )
+	{
+		*ttmp++ = *tmp++;
+	}
+
+	tmp = substitute;
+	while( *tmp != '\0' )
+	{
+		*ttmp++ = *tmp++;
+	}
+
+	tmp = end;
+	while( *tmp != '\0' )
+	{
+		*ttmp++ = *tmp++;
+	}
+	*ttmp = '\0';
+
+	return trgt;
+}
