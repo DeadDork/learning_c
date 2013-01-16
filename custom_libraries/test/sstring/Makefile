@@ -30,6 +30,9 @@ OBJ_3 = $(BIN_3).o sstring.o rematch.o
 BIN_4 = substring_1
 OBJ_4 = $(BIN_4).o sstring.o rematch.o
 
+BIN_5 = res_1
+OBJ_5 = $(BIN_5).o sstring.o rematch.o
+
 # Targets & Recipes
 $(BIN_1) : $(OBJ_1)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
@@ -46,6 +49,10 @@ $(BIN_3).o : $(BIN_3).c sstring.h
 $(BIN_4) : $(OBJ_4)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 $(BIN_4).o : $(BIN_4).c sstring.h
+
+$(BIN_5) : $(OBJ_5)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+$(BIN_5).o : $(BIN_5).c rematch.h sstring.h
 
 # Common dependencies
 sstring.o : sstring.c sstring.h rematch.h
