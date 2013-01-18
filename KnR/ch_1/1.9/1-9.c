@@ -1,0 +1,37 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Solution to ex. 1-9.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main()
+{
+	int c; // Character
+	int n = 0; // count Number
+
+	while( ( c = getchar() ) != EOF )
+	{
+		/* Get space count */
+		if( c == ' ' )
+		{
+			++n;
+		}
+		else
+		{
+			n = 0;
+		}
+
+		/* Prints any character except a consecutive space */
+		if( n < 2 )
+		{
+			putchar( c );
+		}
+	}
+
+	return 0;
+}
