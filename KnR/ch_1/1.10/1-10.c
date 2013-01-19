@@ -15,7 +15,7 @@ int main()
 
 	while( ( c = getchar() ) != EOF )
 	{
-		/* Puts a '\' behind BACKSPACE, TAB, and \, but otherwise printfs C to STDIN */
+		/* Puts a '\' behind 'BACKSPACE', 'TAB', and '\', but otherwise printfs c to STDIN */
 		if( c == '\t' )
 		{
 			printf( "\\t" );
