@@ -1,0 +1,44 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Solution to ex. 1-11.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// Symbolic Constants
+
+#define IN 1 // Inside of a word
+#define OUT 0 // Outside of a word
+
+////////////////////////////////////////////////////////////////////////////////
+int main()
+{
+	int c, state;
+
+	state = OUT;
+	while( ( c = getchar() ) != EOF )
+	{
+		if( c == '\t' || c == ' ' || c == '\n' )
+		{
+			if( state == IN )
+			{
+				printf( "\n" );
+				state = OUT;
+			}
+		}
+		else
+		{
+			putchar( c );
+			if( state == OUT )
+			{
+				state = IN;
+			}
+		}
+	}
+
+	return 0;
+}
