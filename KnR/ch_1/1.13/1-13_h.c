@@ -9,47 +9,45 @@
 // Libraries
 
 #include <stdio.h>
-#include <math.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Symbolic Constants
 
-#define IN 1 // In a word
-#define OUT 0 // Out of a word
-#define MAX 21 // Max number of characters in a word
-#define WIDTH 60 // Max histogram size
+#define IN 1 // IN a word
+#define OUT 0 // OUT of a word
+#define MAXC 21 // Max number of Characters in a word
+#define MAXW 60 // Max histogram Width
 
 ////////////////////////////////////////////////////////////////////////////////
 int main()
 {
 	int c, e, ee, high, wc, state;
-	int length[ MAX ];
+	int length[ MAXC ];
 
 	/* Word count */
-	for( e = 0; e < MAX; ++e )
+	for( e = 0; e < MAXC; ++e )
 	{
 		length[ e ] = 0;
 	}
 	wc = high = 0;
 	state = OUT;
+
 	while( ( c = getchar() ) != EOF )
 	{
 		if( state == IN && ( c == '\t' || c == '\n' || c == ' ' ) )
 		{
-			if( wc < MAX - 1 )
+			if( wc < MAXC - 1 )
 			{
-				++length[ wc ];
-				if( length[ wc ] > high )
+				if( ++length[ wc ] > high )
 				{
 					high = length[ wc ];
 				}
 			}
 			else
 			{
-				++length[ MAX - 1 ];
-				if( length[ MAX - 1 ] > high )
+				if( ++length[ MAXC - 1 ] > high )
 				{
-					high = length[ MAX - 1 ];
+					high = length[ MAXC - 1 ];
 				}
 			}
 
@@ -67,9 +65,9 @@ int main()
 	}
 
 	/* Print histogram */
-	for( e = 1; e < MAX; ++e )
+	for( e = 1; e < MAXC; ++e )
 	{
-		if( e < MAX - 1 )
+		if( e < MAXC - 1 )
 		{
 			printf( "%4d  ", e );
 		}
@@ -77,8 +75,7 @@ int main()
 		{
 			printf( "  19+ " );
 		}
-		length[ e ] = ( int )( ( length[ e ] * ( WIDTH / ( float )high ) ) + 0.99 );
-		for( ee = 0; ee < length[ e ]; ++ee )
+		for( ee = 0; ee < ( int )( ( length[ e ] * ( MAXW / ( float )high ) ) + 0.99 ); ++ee )
 		{
 			putchar( '|' );
 		}
