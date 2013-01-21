@@ -178,7 +178,7 @@ int main()
 			printf( "[DEL] " );
 		}
 
-		for( ee = 0; ee < ( int )( ( length[ e ] * ( MAXW / ( double )high ) ) + 0.99 ); ++ee )
+		for( ee = MINA; ee < ( int )( ( length[ e ] * ( MAXW / ( double )high ) ) + 0.99 ); ++ee ) // Adjusts width to fit screen
 		{
 			putchar( '|' );
 		}
