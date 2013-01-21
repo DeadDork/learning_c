@@ -73,7 +73,7 @@ int main()
 		}
 		else
 		{
-			printf( "  19+ " );
+			printf( "  20+ " );
 		}
 		for( ee = 0; ee < ( int )( ( length[ e ] * ( MAXW / ( float )high ) ) + 0.99 ); ++ee )
 		{
