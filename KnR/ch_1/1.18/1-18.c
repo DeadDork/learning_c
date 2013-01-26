@@ -33,10 +33,13 @@ int main()
 		}
 		else
 		{
-			for( --n; buf[ n ] == '\t' || buf[ n ] == ' '; --n );
-			buf[ n + 1 ] = '\0';
-			printf( "[%s]\n", buf );
-			n = 0;
+			if( n > 0 )
+			{
+				for( --n; buf[ n ] == '\t' || buf[ n ] == ' '; --n );
+				buf[ n + 1 ] = '\0';
+				printf( "[%s]\n", buf );
+				n = 0;
+			}
 		}
 	}
 
