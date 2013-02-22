@@ -58,14 +58,27 @@ int main()
 		}
 		else
 		{
-			buf[ --n ] = '\0';
+			if( n < MAXLEN )
+			{
+				buf[ n ] = '\0';
+			}
+			else
+			{
+				buf[ --n ] = '\0';
+			}
 
+			// Prettified
+			/*
 			if( n > 0 )
 			{
 				printf( "Original: [%s]\n", buf );
 				reverse( buf );
 				printf( "Reverse:  [%s]\n", buf );
 			}
+			*/
+			// Unixfied
+			reverse( buf );
+			printf( "%s\n", buf );
 
 			n = 0;
 		}
