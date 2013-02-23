@@ -3,7 +3,7 @@
 
 // This library lets me use regex.h effectively and easily.
 
-// I honestly don't know regfree() is necessary at the end. I'll have to investigate further to see if regex is freed upon function end.
+// I researched regfree(). Indeed, ALWAYS free allocated memory.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -15,20 +15,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Function
 
-int rematch( char *string, char *re, size_t nmatch, regmatch_t *pmatch )
+int rematch( char * string, char * re, size_t nmatch, regmatch_t * pmatch )
 {
 	int re_err;
+	char err_msg[ MAXBUF ];
 	regex_t regex;
 	int value;
 
-	/* Tries to compile the regex */
+	/* Compiles the regex */
 	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
 	{
 		fprintf( stderr, "Could not compile regex\n" );
 		exit( 1 );
 	}
 
-	/* Tries to match the regex */
+	/* Matches the regex to string */
 	if( !( re_err = regexec( &regex, string, nmatch, pmatch, 0 ) ) )
 	{
 		value = MATCH;
@@ -39,8 +40,8 @@ int rematch( char *string, char *re, size_t nmatch, regmatch_t *pmatch )
 	}
 	else
 	{
-		regerror( re_err, &regex, string, sizeof( string ) );
-		fprintf( stderr, "Regex match failed: %s\n", string );
+		regerror( re_err, &regex, err_msg, sizeof( char ) * MAXBUF );
+		fprintf( stderr, "Regex match failed: %s\n", err_msg );
 		exit( 1 ); 
 	}
 

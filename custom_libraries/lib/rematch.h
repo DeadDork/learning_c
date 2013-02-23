@@ -6,6 +6,7 @@
 
 #define MATCH 1
 #define NOMATCH 0
+#define MAXBUF 1000
 
 int rematch( char* string, char* regex, size_t nmatch, regmatch_t* pmatch );
 /* Performs an extended regular expression match on a string.
