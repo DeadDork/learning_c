@@ -3,7 +3,7 @@
 
 // Converts a temperature value of one scale (e.g. 98.6 F) into the temperature value of another (e.g. 37 C).
 
-// Note that the STDOUT return value is the converted temperature value, and the STDERR is either 'C' (i.e. 67, which stands for 'Celsius') or 'F' (i.e. 70, which stands for 'Fahrenheit'). All other return values are errors.
+// Note that the STDOUT return value is the converted temperature value, and the STDERR is either 'C' (i.e. 67, which refers to 'Celsius') or 'F' (i.e. 70, which refers to 'Fahrenheit'). All other return values are errors.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -15,12 +15,13 @@
 #include "tempcon.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-int main( int argc, char *argv[] )
+int main( int argc, char * argv[] )
 {
-	char *temp_string;
+	char * temp_string;
 	int temp_type;
 	float temp;
 
+	/* Get input */
 	if( argc == 1 )
 	{
 		temp_string = d_s( temp_string );

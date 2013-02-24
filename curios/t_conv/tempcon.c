@@ -16,17 +16,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-int t_extract( char *in, float *temp )
+int t_extract( char * in, float * temp )
 {
 	char re[] = "^(-?[0-9]+\\.?[0-9]*) *([cCfF])$";
 	size_t nmatch = 3;
 	regmatch_t pmatch[ nmatch ];
-	char *temp_type;
+	char * temp_type, * temp_val;
 	int value;
 
 	if( rematch( in, re, nmatch, pmatch ) )
 	{
-		*temp = ( float )str2num( substring( in, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 ) );
+		temp_val = substring( in, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 ); // In order to free up at the end.
+		*temp = ( float )str2num( temp_val );
 
 		temp_type = substring( in, pmatch[ 2 ].rm_so, pmatch[ 2 ].rm_eo - 1 );
 		if( *temp_type == 'c' || *temp_type == 'C' )
@@ -40,10 +41,13 @@ int t_extract( char *in, float *temp )
 		exit( 1 );
 	}
 
+	free( temp_type );
+	free( temp_val );
+
 	return value;
 }
 
-float t_conv( float *temp, int *temp_type )
+float t_conv( float * temp, int * temp_type )
 {
 	float value;
 
