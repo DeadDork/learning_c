@@ -6,8 +6,8 @@
 #define TRUE 1
 #define FALSE 2
 
-#define BUFSZ 1000 // BUFfer SiZe
-#define MAXBUF 1000 // MAXimum BUFfer size
+#define BUFSZ 1000 // BUFfer SiZe (d_s)
+#define MAXBUF 1000 // MAXimum BUFfer size (substring)
 
 ////////////////////////////////////////////////////////////////////////////////
 char * d_s( char * string );
@@ -59,16 +59,15 @@ double str2num( char * numstring );
 char * sub( char * source, char * substitute, int start, int stop );
 /* Substitutes the substring from `start` to `stop` in string `source` with string `substitute`.
    
-   `source` = the source string that will have a substring substituted within.
-   `substitute` = the string that will substitute the substring within source.
-   `start` = the array element in `source` corresponding to the first character of the substring to be substituted, in array notation.
-   `stop` = the array element in `source` corresponding to the last character of the substring to be substituted, in array notation.
+   `source` = The source string that will have a substring substituted within it.
+   `substitute` = The string that will substitute the substring within the source string.
+   `start` = The array element position in `source` of the first character of the substring to be substituted, in array notation.
+   `stop` = The array element position in `source` of the last character of the substring to be substituted, in array notation.
 
    Returns the pointer of the new string.
 
-   N.B. `stop` is equal to the last element in the substring + 1.
+   N.B. DON'T FORGET TO FREE UP THE MEMORY!!! */
 
-   N.B. `res` comes from 'Regular Expression Substitution'. The idea is to use `rematch` to get `start` & `stop` on `source`. */
 ////////////////////////////////////////////////////////////////////////////////
 
 #endif /* SSTRING_H */
