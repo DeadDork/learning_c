@@ -8,26 +8,18 @@ Directory Stucture
 
 *	*lib* houses the header & function files of all the libraries.
 
-*	*test* houses the lib's eponymous test sub-directories which validate them. Do note that the *test* sub-directories have linked files to the original headers & function files (it makes it easier to run tests without having to resort to a Makefile).
+*	*test* houses the lib's eponymous test sub-directories which validate them. Do note that the *test* sub-directories have linked files to the originals, as it's easier to maintain.
 
 To Use
 ------
 
-1.	Make a link to the desired header & function file/s; e.g.:
+I include my own tests, which should work as soon as you link to the custom library, but you are more than welcome to make tests of your own (I use links because it's easier to maintain).
+
+How to link:
+
+*	Make a link to the desired header & function file/s; e.g.:
 
 		$ ln /PATH/TO/lib/sstring.[hc] /PATH/TO/src/
-
-2.	Include in the source file/s; e.g. in *test.c*:
-
-		.
-		.
-		.
-		#include <stdio.h>
-		#include "sstring.h"
-		#include "sstring.c"
-		.
-		.
-		.
 
 Testing
 -------
@@ -40,7 +32,7 @@ Testing
 
 		$ make substring_1
 
-3.	To clear the test sub-directory of binaries & object files, make clean:
+3.	To clear the test sub-directory of binaries & object files:
 
 		$ make clean
 
