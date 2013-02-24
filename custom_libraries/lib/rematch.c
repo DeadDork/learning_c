@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// This library lets me use regex.h effectively and easily.
+// This library simplifies the use of regex.h
 
 // I researched regfree(). Indeed, ALWAYS free allocated memory.
 
@@ -22,14 +22,14 @@ int rematch( char * string, char * re, size_t nmatch, regmatch_t * pmatch )
 	regex_t regex;
 	int value;
 
-	/* Compiles the regex */
+	/* Compile the regex */
 	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
 	{
 		fprintf( stderr, "Could not compile regex\n" );
 		exit( 1 );
 	}
 
-	/* Matches the regex to string */
+	/* Match the regex to string */
 	if( !( re_err = regexec( &regex, string, nmatch, pmatch, 0 ) ) )
 	{
 		value = MATCH;
