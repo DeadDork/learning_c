@@ -24,7 +24,7 @@ int main()
 
 	x = str2num( s );
 	//printf( "[%s] converts to [%f]\n", s, x );
-	printf( "%4.4lf - %s = [%1.4lf]\n", y,  s, y - x );
+	printf( "%.4lf - %s = [%.4lf]\n", y,  s, y - x );
 
 	free( s );
 

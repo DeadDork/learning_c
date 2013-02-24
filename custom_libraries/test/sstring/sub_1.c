@@ -28,7 +28,7 @@ int main()
 	printf( "Enter regex string: " );
 	re = d_s( re );
 
-	printf( "Enter regex sbststitution: " );
+	printf( "Enter regex subststitution: " );
 	sbst = d_s( sbst );
 
 	if( rematch( src, re, nmatch, pmatch ) )
