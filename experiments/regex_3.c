@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <stdio.h>
-#include "../custom_libraries/dynamic_string/d_s.h"
+#include "rematch.h"
+#include "sstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 int main( void )

@@ -12,7 +12,8 @@
 #include <stdlib.h>
 #include <regex.h>
 #include <stdio.h>
-#include "../custom_libraries/dynamic_string/d_s.h"
+#include "rematch.h"
+#include "sstring.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function prototypes
@@ -71,7 +72,7 @@ int main( void )
 	// Free compiled regular expression if you want to use the regex_t again.
 	regfree( &regex );
 
-	// Always free heap pointers!
+	// Always free memory.
 	free( re );
 	free( s );
 

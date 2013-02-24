@@ -45,6 +45,18 @@ $(BIN_7) : $(OBJ_7)
 	$(CC) $(CFLAGS) -o $@ $^ $($LDFLAGS)
 $(BIN_7).o : $(BIN_7).c
 
+BIN_8 = regex_3
+OBJ_8 = $(BIN_8).o sstring.o rematch.o
+$(BIN_8) : $(OBJ_8)
+	$(CC) $(CFLAGS) -o $@ $^ $($LDFLAGS)
+$(BIN_8).o : $(BIN_8).c
+
+BIN_9 = regex_4
+OBJ_9 = $(BIN_9).o sstring.o rematch.o
+$(BIN_9) : $(OBJ_9)
+	$(CC) $(CFLAGS) -o $@ $^ $($LDFLAGS)
+$(BIN_9).o : $(BIN_9).c
+
 sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
 
