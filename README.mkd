@@ -3,15 +3,6 @@ Learning C
 
 I learn by fiddling and experimenting. This repo houses my fiddles and experiments in C.
 
-The Big Idea
-------------
-
-I've thought long and hard on how I want to learn how to program.
-
-Simply put, I learn by doing.
-
-See, trying to learn by reading about something bores me to tears. However, fiddling and experimenting with programming is incredibly rewarding (like, oh-my-god-why-is-it-6-AM-again sort of fun). Accordingly, I finally relented, and rather than pursuing the manner of learning that I want to want to learn by, I now go with the manner that I want to learn by. (Note the distinction!)
-
 Includes
 --------
 
@@ -22,7 +13,7 @@ There are a couple of directories:
 	This directory holds a ton of little programs that explore some aspect or other of C. The program files are named descriptively, but aside from this there is no real organization. You have been warned!
 *	_KnR_
 
-	This directory holds my solutions to exercises in Brian Kernighan & Dennis Richie's classic C book, _The C Programming Language_. They are broken into chapter sub-directories.
+	This directory holds my solutions to exercises in Brian Kernighan & Dennis Richie's classic C book, _The C Programming Language_. They are broken into chapter sub-directories, each of which is broken up into problem sub-directories..
 *	_Curios_
 
 	I use this directory to make slightly bigger programs, as inspiration strikes. It is broken up into subdirectories, one each per project.
