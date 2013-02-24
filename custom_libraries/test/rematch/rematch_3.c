@@ -22,21 +22,20 @@ int main()
 	size_t nm = 2;
 	regmatch_t pm[ nm ];
 
-	char* s;
+	char * s;
 	printf( "Enter string: " );
 	s = d_s( s );
 
-	char* re;
+	char * re;
 	printf( "Enter regex with parenthesized subexpression: " );
 	re = d_s( re );
 
-	if( rematch( re, s, nm, pm ) )
+	if( rematch( s, re, nm, pm ) )
 		printf( "Subexpression = [%s]\n", substring( s, pm[ 1 ].rm_so, pm[ 1 ].rm_eo - 1 ) );
 	else
 		printf( "Couldn't extract substring.\n" );
 
 	free( s );
-	free( re );
 
 	return 0;
 }

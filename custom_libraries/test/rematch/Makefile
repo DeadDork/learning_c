@@ -17,7 +17,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra
 LDFLAGS =
 
-# Binaries
+# Object code
 BIN_1 = rematch_1
 OBJ_1 = $(BIN_1).o sstring.o rematch.o
 
