@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra #-g # For debugging
 LDFLAGS =
 
 OBJ = main.o tempcon.o sstring.o rematch.o
