@@ -24,7 +24,7 @@ int t_extract( char *in, float *temp )
 	char *temp_type;
 	int value;
 
-	if( rematch( re, in, nmatch, pmatch ) )
+	if( rematch( in, re, nmatch, pmatch ) )
 	{
 		*temp = ( float )str2num( substring( in, pmatch[ 1 ].rm_so, pmatch[ 1 ].rm_eo - 1 ) );
 
@@ -59,7 +59,4 @@ float t_conv( float *temp, int *temp_type )
 	}
 
 	return value;
-
-	// I was in an obfuscating mood, and came up with an annoying alternative return function:
-	// return ( temp_type == FAHR ? ( ( 9 / 5 ) * temp ) + 32 : ( temp_type == CELS ? ( 5 / 9 ) * ( temp - 32 ) ) );
 }
