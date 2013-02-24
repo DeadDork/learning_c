@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// Tests the string to number conversion function (e.g. "123" => 123).
+// Tests the str2num() conversion function (e.g. "123" => 123) from sstring.h.
 
 // Works!
 
@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	char* s;
+	char * s;
 	double x;
 	double y = 1234.5678;
 
@@ -24,7 +24,7 @@ int main()
 
 	x = str2num( s );
 	//printf( "[%s] converts to [%f]\n", s, x );
-	printf( "1234.5678 - %s = [%lf]\n", s, y - x );
+	printf( "%4.4lf - %s = [%1.4lf]\n", y,  s, y - x );
 
 	free( s );
 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// Tests the dynamic character array function from sstring.h
+// Tests the d_s() function from sstring.h
 
 // Works!
 
@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	char* s;
+	char * s;
 
 	printf( "String value before d_s() = [%s]\n", s );
 

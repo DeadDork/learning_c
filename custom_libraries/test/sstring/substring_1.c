@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// Tests the substring function.
+// Tests the substring() function from sstring.h.
 
 // Works!
 
@@ -15,18 +15,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	char* s; // Source string
-	char* t; // Target string
+	char * s; // Source string
+	char * t; // Target string
 	int b; // Begin
 	int e; // End
 
 	printf( "Enter full string: " );
 	s = d_s( s );
 
-	printf( "Enter the substring begin point: " );
+	printf( "Enter the substring begin point (a number, in array notation): " );
 	scanf( "%d", &b );
 
-	printf( "Enter the substring end point: " );
+	printf( "Enter the substring end point (a number, in array notation): " );
 	scanf( "%d", &e );
 
 	t = substring( s, b, e );

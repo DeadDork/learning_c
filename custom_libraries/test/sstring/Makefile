@@ -19,18 +19,18 @@ LDFLAGS =
 
 # Binaries
 BIN_1 = d_s_1
-OBJ_1 = $(BIN_1).o sstring.o rematch.o
+OBJ_1 = $(BIN_1).o sstring.o
 
 BIN_2 = slength_1
-OBJ_2 = $(BIN_2).o sstring.o rematch.o
+OBJ_2 = $(BIN_2).o sstring.o
 
 BIN_3 = str2num_1
-OBJ_3 = $(BIN_3).o sstring.o rematch.o
+OBJ_3 = $(BIN_3).o sstring.o
 
 BIN_4 = substring_1
-OBJ_4 = $(BIN_4).o sstring.o rematch.o
+OBJ_4 = $(BIN_4).o sstring.o
 
-BIN_5 = res_1
+BIN_5 = sub_1
 OBJ_5 = $(BIN_5).o sstring.o rematch.o
 
 # Targets & Recipes
@@ -52,10 +52,10 @@ $(BIN_4).o : $(BIN_4).c sstring.h
 
 $(BIN_5) : $(OBJ_5)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
-$(BIN_5).o : $(BIN_5).c rematch.h sstring.h
+$(BIN_5).o : $(BIN_5).c sstring.h rematch.h
 
 # Common dependencies
-sstring.o : sstring.c sstring.h rematch.h
+sstring.o : sstring.c sstring.h
 rematch.o : rematch.c rematch.h
 
 # rm object files & executables
