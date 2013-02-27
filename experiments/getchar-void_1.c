@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests putting `void` in getchar() function.
+
+// Since the default is STDIN, `void` might futz with this.
+// As expected, it did.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main( void )
+{
+	int c; // Character
+
+	//while( ( c = getchar( void ) ) != EOF ) // Fail
+	while( ( c = getchar() ) != EOF ) // Works
+	{
+		printf( "Character = [%c]\n", c );
+	}
+
+	return 0;
+}
