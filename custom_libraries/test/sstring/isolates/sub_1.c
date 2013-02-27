@@ -3,6 +3,8 @@
 
 // Tests out the sub() function in isolation.
 
+// Works!
+
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
@@ -47,7 +49,7 @@ char * sub( char * source, char * substitute, int start, int stop );
 
    Returns the pointer of the new string.
 
-   N.B. *stop* is equal to the last element in the substring + 1. */
+   N.B. DON'T FORGET TO FREE UP THE MEMORY!!! */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
@@ -164,7 +166,7 @@ int main()
 
 	/*
 	// XXX I don't understand why this doesn't work... XXX
-	// Read over K & R 5.3. It's because arrays are not variables, while pointers are.
+	// I read over K & R 5.3. It's because of the principle difference between arrays and pointers: arrays are not variables, while pointers are.
 
 	char s[] = "abbbc";
 
