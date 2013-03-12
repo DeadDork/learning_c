@@ -5,7 +5,7 @@
 
 // Works!
 
-// This version has robust folding features & I feel that the design is finally hafl-way decent.
+// This version has robust folding features & I feel that the design is finally half-way decent.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -22,7 +22,7 @@
 // External Variables
 
 int maxstr; // MAXimum STRing length
-int endarr; // END of ARRay (makes code more readable)
+int endarr; // END of ARRay, i.e. position of last character in string (makes code more readable)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
@@ -38,7 +38,7 @@ void overflow( char str[], char tmpstr[] );
 /* Intelligently handles line overflow.
  
    `str` = The main input string.
-   `tmpstr` = The temporary string that carries any overflow from `str`. */
+   `tmpstr` = The temporary string that carries over any overflow from `str`. */
 
 void despace( char str[] );
 /* Removes trailing whitespace from a string.
@@ -51,7 +51,7 @@ int println( char str[], char c );
    `str` = The input string to be formatted, and then printed.
    `c` = The latest input character.
 
-   Returns the position to assign the next input character to the `str` array (in case of overflow, this will be >0). */
+   Returns the position to assign the next input character to the `str` array (in case of overflow, this value will be > 0). */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
