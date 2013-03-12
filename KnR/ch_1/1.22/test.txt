@@ -8,6 +8,7 @@
 79c                                                                           .
 80c                                                                            .
 81c                                                                             .
+82c                                                                              .
 
 78 blanks (next line)
                                                                               .
@@ -15,6 +16,8 @@
                                                                                .
 80 blanks (next line)
                                                                                 .
+100 blanks (next line)
+                                                                                                    .
 
 79 chars (next line)
 123456789012345678901234567890123456789012345678901234567890123456789012345678.
@@ -26,5 +29,11 @@
 800 chars (next line)
 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789.
 
+10 spaces + 90 chars (next line)
+          123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890.
+
+20 chars + 20 spaces (next line)
+12345678901234567890                    
+
 547 chars (next line)
-I thought I was smart, I thought I was right, I thought it better not to fight, I thought it virtue in always being cool. So it came time to fight, I thougth I'll just step aside, and that the time would prove you wrong and that you would be the fool. I don't know where the sunbeams end and the starlight begins it's all a mystery. Oh to fight is to defend. If it's not now then tell me when would be the time to stand up and be a man, for to lose I could accept but to surrender I just wept and regretted this moment oh that I... I was the fool.
+I thought I was smart, I thought I was right, I thought it better not to fight, I thought it was a virtue in always being cool. So it came time to fight, I thought I'll just step aside, and that the time would prove you wrong and that you would be the fool. I don't know where the sunbeams end and the starlight begins it's all a mystery. Oh to fight is to defend. If it's not now then tell me when would be the time to stand up and be a man, for to lose I could accept but to surrender I just wept and regretted this moment oh that I... I was the fool.

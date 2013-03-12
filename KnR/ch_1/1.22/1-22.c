@@ -5,6 +5,8 @@
 
 // Works!
 
+// ...But folding is too basic, and I don't like the design.
+
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
@@ -14,31 +16,34 @@
 int main( void )
 {
 	int maxlen = 80; // MAXimum LENgth of a string per line (i.e. the width of the screen)
-	--maxlen; // -1 in order to have a space for a mid-word hyphen for over-long lines
+	--maxlen; // -1 in order to have a space for a mid-word hyphen for over-long lines (optional)
 	char s[ maxlen ]; // String for line
 	int c, e; // Character, Element
 	int chanum = 0; // CHAracter NUMber
-	int lastch = 0; // position in string array of LAST CHaracter (N.B. lastch is always 1 greater than the actual last array position of a non-whitespace char)
+	int termch = 0; // TERMinating non-whitespace CHaracter
 
 	while( ( c = getchar() ) != EOF )
 	{
 		if( c == '\n' || chanum == maxlen )
 		{
-			for( e = 0; e < lastch; ++e )
+			for( e = 0; e < termch; ++e )
 			{
-				putchar( s[ e ]);
+				putchar( s[ e ] );
 			}
-			if( lastch == maxlen && c != '\t' && c != ' ' && c != '\n' )
+			/* Optional */
+			if( termch == maxlen && c != '\t' && c != ' ' && c != '\n' )
 			{
 				putchar( '-' );
 			}
 			putchar( '\n' );
-			lastch = 0;
+
 			chanum = 0;
-			if( c != '\t' && c != ' ' && c != '\n' )
+			termch = 0;
+
+			if( c != '\n' )
 			{
 				s[ chanum++ ] = c;
-				lastch = chanum;
+				termch = chanum;
 			}
 		}
 		else
@@ -46,7 +51,7 @@ int main( void )
 			s[ chanum++ ] = c;
 			if( c != '\t' && c != ' ' )
 			{
-				lastch = chanum;
+				termch = chanum;
 			}
 		}
 	}
