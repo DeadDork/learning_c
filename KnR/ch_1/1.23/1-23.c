@@ -3,10 +3,10 @@
 
 // Solution to ex. 1-23.
 
-// N.B. The output has too many spaces. However, I felt that rather than address
-// this by adding spacing features to this program, it was better left to a
-// second program. Otherwise, this program loses generality (god knows that
-// there are a multitude of comment styles).
+// N.B. The output has unattractive spacing. However, rather than addressing
+// this issue in this program, I thought it better to modularize the code
+// as much as possible, such that this program handles comment removal,
+// and a second program handles spacing.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -28,18 +28,21 @@ int blockcomm; // BLOCK COMMent
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
 
-int incomment( char ctriple[] );
+int incomment( int ctriple[] );
 /* Determines if there is a comment.
  
    `ctriple[]` = Three character long string array used to check if there is a comment.
 
    Returns TRUE if the current character from STDIN is inside either a block or line
-   comment; otherwise returns FALSE. */
+   comment; otherwise returns FALSE.
+   
+   N.B. Because incomment() assigns to ctriple[ 2 ] the return value from getchar(),
+   ctriple[] has to be an int in case of EOF. */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-int incomment( char ctriple[] )
+int incomment( int ctriple[] )
 {
 	extern int linecomm;
 	extern int blockcomm;
@@ -94,15 +97,15 @@ int main( void )
 	blockcomm = FALSE;
 
 	int c; // Character
-	char ctriple[ 3 ]; // Character TRIPLE
+	int ctriple[ 3 ]; // Character TRIPLE
 
-	/* Usually the last element in a string array is assigned a NULL.
-	   N.B. ctripple[ 1 ] is assigned ctripple[ 2 ] in main(),
-	   and ctripple[ 0 ] is assigned ctripple[ 1 ] and ctripple[ 1 ]
-	   is assigned ctripple[ 2 ] in incomment(). */
+	/* ctripple[ 1 ] is assigned ctripple[ 2 ] in main(),
+	   and in incomment() ctripple[ 0 ] is assigned ctripple[ 1 ]
+	   and ctripple[ 1 ] is assigned ctripple[ 2 ]. By assigning
+	   ctriple[ 2 ] a NULL, ctriple[] won't have any funky memory artifacts. */
 	ctriple[ 2 ] = '\0';
 
-	while( ( c = getchar() ) != EOF )
+	while( ctriple[ 2 ] != EOF && ( c = getchar() ) != EOF )
 	{
 		ctriple[ 0 ] = ctriple[ 1 ];
 		ctriple[ 1 ] = ctriple[ 2 ];
