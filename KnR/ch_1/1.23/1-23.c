@@ -96,6 +96,12 @@ int main( void )
 	int c; // Character
 	char ctriple[ 3 ]; // Character TRIPLE
 
+	/* Usually the last element in a string array is assigned a NULL.
+	   N.B. ctripple[ 1 ] is assigned ctripple[ 2 ] in main(),
+	   and ctripple[ 0 ] is assigned ctripple[ 1 ] and ctripple[ 1 ]
+	   is assigned ctripple[ 2 ] in incomment(). */
+	ctriple[ 2 ] = '\0';
+
 	while( ( c = getchar() ) != EOF )
 	{
 		ctriple[ 0 ] = ctriple[ 1 ];
