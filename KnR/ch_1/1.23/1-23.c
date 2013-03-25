@@ -19,19 +19,19 @@
 #define FALSE 0
 #define TRUE 1
 
-////////////////////////////////////////////////////////////////////////////////
-// External Variables
-
-int linecomm; // LINE COMMent
-int blockcomm; // BLOCK COMMent
+#define LINE 0 // LINE comment
+#define BLOCK 1 // BLOCK comment
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
 
-int incomment( int ctriple[] );
+int incomment( int ctriple[], int cmnt[] );
 /* Determines if there is a comment.
  
    `ctriple[]` = Three character long string array used to check if there is a comment.
+
+   `cmnt[]` = A safe way to pass whether in a line or block comment (relative to 
+   external variables).
 
    Returns TRUE if the current character from STDIN is inside either a block or line
    comment; otherwise returns FALSE.
@@ -42,11 +42,8 @@ int incomment( int ctriple[] );
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-int incomment( int ctriple[] )
+int incomment( int ctriple[], int cmnt[] )
 {
-	extern int linecomm;
-	extern int blockcomm;
-
 	int value; // return VALUE
 
 	/* "Look ahead" in case the latest character is a possible comment character */
@@ -58,26 +55,26 @@ int incomment( int ctriple[] )
 	}
 
 	/* Determine if in a comment */
-	if( linecomm == FALSE && blockcomm == FALSE && ctriple[ 1 ] == '/' && ctriple[ 2 ] == '/' )
+	if( cmnt[ LINE ] == FALSE && cmnt[ BLOCK ] == FALSE && ctriple[ 1 ] == '/' && ctriple[ 2 ] == '/' )
 	{
-		linecomm = TRUE;
+		cmnt[ LINE ] = TRUE;
 	}
-	if( linecomm == FALSE && blockcomm == FALSE && ctriple[ 1 ] == '/' && ctriple[ 2 ] == '*' )
+	if( cmnt[ LINE ] == FALSE && cmnt[ BLOCK ] == FALSE && ctriple[ 1 ] == '/' && ctriple[ 2 ] == '*' )
 	{
-		blockcomm = TRUE;
+		cmnt[ BLOCK ] = TRUE;
 	}
 
 	/* Determine if NOT in a comment */
-	if( linecomm == TRUE && ctriple[ 2 ] == '\n' )
+	if( cmnt[ LINE ] == TRUE && ctriple[ 2 ] == '\n' )
 	{
-		linecomm = FALSE;
+		cmnt[ LINE ] = FALSE;
 	}
-	if( blockcomm == TRUE && ctriple[ 0 ] == '*' && ctriple[ 1 ] == '/' )
+	if( cmnt[ BLOCK ] == TRUE && ctriple[ 0 ] == '*' && ctriple[ 1 ] == '/' )
 	{
-		blockcomm = FALSE;
+		cmnt[ BLOCK ] = FALSE;
 	}
 
-	if( linecomm == TRUE || blockcomm == TRUE )
+	if( cmnt[ LINE ] == TRUE || cmnt[ BLOCK ] == TRUE )
 	{
 		value = TRUE;
 	}
@@ -91,13 +88,12 @@ int incomment( int ctriple[] )
 ////////////////////////////////////////////////////////////////////////////////
 int main( void )
 {
-	extern int linecomm;
-	extern int blockcomm;
-	linecomm = FALSE;
-	blockcomm = FALSE;
-
 	int c; // Character
 	int ctriple[ 3 ]; // Character TRIPLE
+	int cmnt[ 2 ]; // CoMmeNT
+
+	cmnt[ LINE ] = FALSE;
+	cmnt[ BLOCK ] = FALSE;
 
 	/* ctripple[ 1 ] is assigned ctripple[ 2 ] in main(),
 	   and in incomment() ctripple[ 0 ] is assigned ctripple[ 1 ]
@@ -110,7 +106,7 @@ int main( void )
 		ctriple[ 0 ] = ctriple[ 1 ];
 		ctriple[ 1 ] = ctriple[ 2 ];
 		ctriple[ 2 ] = c;
-		if( !( incomment( ctriple ) ) )
+		if( !( incomment( ctriple, cmnt ) ) )
 		{
 			putchar( ctriple[ 2 ] );
 		}
