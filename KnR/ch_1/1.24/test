@@ -1,0 +1,123 @@
+'' '\'' '\n' '\0' '1' // No error
+
+'' '\'' '\n' '\0' '1' 'two' // Error
+
+'' '\'' '\n' '\0' '1' ''' // Error
+
+"" "\"" "hello" // No error
+
+"" "\"" "hello" """ // Error
+
+( ) // No error
+
+( ( ) // Error
+
+) // Error
+
+")" // No error
+
+')' // No error
+
+hello(goodbye)farewell // No error
+
+[ ] // No error
+
+[ [ ] // Error
+
+] // Error
+
+"]" // No error
+
+']' // No error
+
+hello[goodbye]farewell // No error
+
+{ } // No error
+
+{ { }
+}
+{ // Error
+
+"}" // No error
+
+'}' // No error
+
+hello{goodbye}farewell // No error
+
+( ( [ [ { { \
+) ) ] ] } } // No error
+
+( ( "[ [ { { \
+) ) ] ] } }" \
+) ) // No error
+
+// // No error
+
+/* asdfasdf
+asdfasd
+/* asdfasdf */ // No error
+
+// ( ( [ [ { { ' " // No error
+
+/*
+( ( [ [ { { ' "
+*/ // No error
+
+/*
+'' '\'' '\n' '\0' '1' // No error
+
+'' '\'' '\n' '\0' '1' 'two' // Error
+
+'' '\'' '\n' '\0' '1' ''' // Error
+
+"" "\"" "hello" // No error
+
+"" "\"" "hello" """ // Error
+
+( ) // No error
+
+( ( ) // Error
+
+) // Error
+
+")" // No error
+
+')' // No error
+
+hello(goodbye)farewell // No error
+
+[ ] // No error
+
+[ [ ] // Error
+
+] // Error
+
+"]" // No error
+
+']' // No error
+
+hello[goodbye]farewell // No error
+
+{ } // No error
+
+{ { }
+}
+{ // Error
+
+"}" // No error
+
+'}' // No error
+
+hello{goodbye}farewell // No error
+
+( ( [ [ { { \
+) ) [ [ } } // No error
+
+( ( "[ [ { { \
+) ) [ [ } }" \
+) ) // No error
+
+// // No error
+*/ // No error
+
+/* // Error
