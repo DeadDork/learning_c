@@ -1,0 +1,33 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests truth value of numbers
+
+// N.B. This program has an infinite loop!!!
+
+// Only 0 is false; all other numbers (even negative numbers) are true.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main( void )
+{
+	signed char i; // Integer
+
+	for( i = 0; i < 128; ++i )
+	{
+		if( i )
+		{
+			printf( "TRUE %d\n", i );
+		}
+		else
+		{
+			printf( "FALSE %d\n", i );
+		}
+	}
+
+	return 0;
+}
