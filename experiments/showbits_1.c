@@ -45,26 +45,12 @@ void showbits( unsigned x );
 
 int is_ws( char c )
 {
-	if( c == ' ' || c == '\t' || c == '\n' )
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+	return ( c == ' ' || c == '\t' || c == '\n' ) ? TRUE : FALSE;
 }
 
 int is_num( char c )
 {
-	if( c >= '0' && c <= '9' )
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+	return ( c >= '0' && c <= '9' ) ? TRUE : FALSE;
 }
 
 void showbits( unsigned x )
