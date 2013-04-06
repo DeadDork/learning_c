@@ -45,14 +45,7 @@ void showbits( unsigned x );
 
 int is_num( char c )
 {
-	if( c >= '0' && c <= '9' )
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+	return ( c >= '0' && c <= '9' ) ? TRUE : FALSE;
 }
 
 unsigned getbits( unsigned x, int p, int n )
