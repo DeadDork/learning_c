@@ -111,7 +111,7 @@ unsigned setbits( unsigned src_bf, unsigned src_pos, unsigned sub_len, unsigned 
 	   is replaced with 1's */
 	mask_1 = src_bf | ( ( ( 1 << sub_len ) - 1 ) << ( ( src_pos + 1 ) - sub_len ) );
 
-	/* Creates a mask of 1's excpect at the substitution area, which instead has the
+	/* Creates a mask of 1's except at the substitution area, which instead has the
 	   desired substitution bit field segment */
 	mask_2 = ( ( ( ~0 << sub_len ) | sub_bf ) << ( ( src_pos + 1 ) - sub_len ) ) | ~( ~0 << ( ( src_pos + 1 ) - sub_len ) );
 
