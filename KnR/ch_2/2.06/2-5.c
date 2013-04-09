@@ -48,7 +48,7 @@ void showbits( unsigned x );
 
 unsigned setbits( unsigned src_bf, unsigned src_pos, unsigned sub_len, unsigned sub_bf );
 /* Substitutes the bit field in src_bf starting at src_rp and of length sub_len with
-   the bit field of length sub_len at the right end of sub_bf.
+   the bit field of length sub_len from the right end of sub_bf.
 
    `src_bf` = SouRCe Bit Field.
 
