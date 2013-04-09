@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra #-g
 LDFLAGS =
 
-BIN = 2-5
+BIN = 2-6
 OBJ = $(BIN).o
 $(BIN) : $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
