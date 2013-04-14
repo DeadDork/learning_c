@@ -217,6 +217,6 @@ int main( void )
 		runtime += timeB - timeA;
 		timeA = clock();
 	}
-	printf( "Average run time for binsearch_nimi = [%f]\n", runtime / maxlp );
+	printf( "Average run time for binsearch_AT = [%f]\n", runtime / maxlp );
 	return 0;
 }
