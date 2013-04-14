@@ -218,5 +218,6 @@ int main( void )
 		timeA = clock();
 	}
 	printf( "Average run time for binsearch_AT = [%f]\n", runtime / maxlp );
+
 	return 0;
 }
