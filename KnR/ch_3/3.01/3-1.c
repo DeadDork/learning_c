@@ -8,7 +8,7 @@
 // 1) It performs two different kinds of binary search, the first with two tests
 // and the second with only one.
 
-// 2) It measures and prints the run-time of both binary searches.
+// 2) It measures and prints the run time of both binary searches.
 
 // Conclusion: K & R's < Nimi's, and Nimi's < AT's in terms of run time, but the
 // difference is 100 nanoseconds between each on my implementation. Trying to
@@ -19,7 +19,7 @@
 
 // N.B. In order to measure the run time, I used <time.h>, which I'm not
 // supposed to "know" about yet. However, as it doesn't matter how I measure
-// run-time, so long as I do, I used it regardless.
+// run time, so long as I do, I used it regardless.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
