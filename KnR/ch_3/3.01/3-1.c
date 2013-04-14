@@ -169,7 +169,7 @@ int main( void )
 	int e, ee, maxe = 10, maxlp = 100000; // Element, Element copy 1, MAXimum number of Elements, MAXimum number LooPs
 	int v[ maxe ]; // ordered number Vector
 	clock_t timeA, timeB;
-	double runtime = 0;
+	long double runtime = 0;
 
 	/* Populates vector */
 	for( e = 0; e < maxe; ++e )
@@ -178,46 +178,43 @@ int main( void )
 	}
 
 	/* Gets average run time of KNR's binary search */
-	timeA = clock();
 	for( e = 0; e < maxlp; ++e )
 	{
+		timeA = clock();
 		for( ee = 10; ee < maxe; ++ee )
 		{
 			binsearch_knr( ee, v, maxe );
 		}
 		timeB = clock();
 		runtime += timeB - timeA;
-		timeA = clock();
 	}
-	printf( "Average run time for binsearch_knr = [%f]\n", runtime / maxlp );
+	printf( "Average run time for binsearch_knr = [%Lf]\n", runtime / maxlp );
 
 	/* Gets average run time of my binary search */
-	timeA = clock();
 	for( e = 0; e < maxlp; ++e )
 	{
+		timeA = clock();
 		for( ee = 10; ee < maxe; ++ee )
 		{
 			binsearch_nimi( ee, v, maxe );
 		}
 		timeB = clock();
 		runtime += timeB - timeA;
-		timeA = clock();
 	}
-	printf( "Average run time for binsearch_nimi = [%f]\n", runtime / maxlp );
+	printf( "Average run time for binsearch_nimi = [%Lf]\n", runtime / maxlp );
 
 	/* Gets average run time of Andrew Tesker's binary search */
-	timeA = clock();
 	for( e = 0; e < maxlp; ++e )
 	{
+		timeA = clock();
 		for( ee = 10; ee < maxe; ++ee )
 		{
 			binsearch_AT( ee, v, maxe );
 		}
 		timeB = clock();
 		runtime += timeB - timeA;
-		timeA = clock();
 	}
-	printf( "Average run time for binsearch_AT = [%f]\n", runtime / maxlp );
+	printf( "Average run time for binsearch_AT = [%Lf]\n", runtime / maxlp );
 
 	return 0;
 }
