@@ -10,9 +10,12 @@
 
 // 2) It measures and prints the run-time of both binary searches.
 
-// Conclusion: The differences in run-time between the three versions is very,
-// very small. That said, it stacks accordingly:
-// K & R <= Nimi <= AT, +/-10 or 20 nanoseconds.
+// Conclusion: K & R's < Nimi's, and Nimi's < AT's in terms of run time, but the
+// difference is 100 nanoseconds between each on my implementation. Trying to
+// optimize such a small difference is pointless in my opinion. Instead, the
+// question should be which is easier to reason through, debug, and maintain. Of
+// the three, I think K & R's version does this best--it also has the best run
+// times!
 
 // N.B. In order to measure the run time, I used <time.h>, which I'm not
 // supposed to "know" about yet. However, as it doesn't matter how I measure
@@ -28,12 +31,11 @@
 // Function Prototypes
 
 int binsearch_knr( int x, int v[], int n );
-/* Searches for the position in an ordered number set for the first instance of
-   a number.
+/* Retrieves from an ordered number set the position of the first match.
+ 
+   `x` = The number being matched against in the ordered set.
 
-   `x` = The number being search for in the ordered set.
-
-   `v[]` = The ordered number vector.
+   `v[]` = The ordered number set (a vector).
 
    `n` = The number of elements in the number set.
 
@@ -43,12 +45,11 @@ int binsearch_knr( int x, int v[], int n );
    N.B. This version uses three tests total in the loop, and two in the if-then. */
 
 int binsearch_nimi( int x, int v[], int n );
-/* Searches for the position in an ordered number set for the first instance of
-   a number.
+/* Retrieves from an ordered number set the position of the first match.
+ 
+   `x` = The number being matched against in the ordered set.
 
-   `x` = The number being search for in the ordered set.
-
-   `v[]` = The ordered number set.
+   `v[]` = The ordered number set (a vector).
 
    `n` = The number of elements in the number set.
 
@@ -58,13 +59,12 @@ int binsearch_nimi( int x, int v[], int n );
    N.B. This version uses three tests total in the loop, but only one in the
    if-then. */
 
-int binsearch_AT( int x, int v[], int n );
-/* Searches for the position in an ordered number set for the first instance of
-   a number.
+int binsearch_at( int x, int v[], int n );
+/* Retrieves from an ordered number set the position of the first match.
+ 
+   `x` = The number being matched against in the ordered set.
 
-   `x` = The number being search for in the ordered set.
-
-   `v[]` = The ordered number set.
+   `v[]` = The ordered number set (a vector).
 
    `n` = The number of elements in the number set.
 
@@ -76,9 +76,9 @@ int binsearch_AT( int x, int v[], int n );
 
    N.B. This version is not mine, but was created by Andrew Tesker 
    <http://users.powernet.co.uk/eton/kandr2/krx301.html>. I wish I
-   were this clever, as it's the only solution to this exercise I could find
-   (let alone discover on my own) that uses--between the while loop & the
-   if-then--just two logic tests. Every other one performs at least three tests. */
+   were as clever, because this is the only solution to this exercise I could
+   find--let alone come up with on my own--that uses a total of just two tests.
+   All other solutions perform at least three tests. */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
@@ -134,7 +134,7 @@ int binsearch_nimi( int x, int v[], int n )
 	return ( x == v[ mid ] ) ? mid : -1;
 }
 
-int binsearch_AT( int x, int v[], int n )
+int binsearch_at( int x, int v[], int n )
 {
 	int low, mid, high;
 
@@ -160,58 +160,50 @@ int binsearch_AT( int x, int v[], int n )
 ////////////////////////////////////////////////////////////////////////////////
 int main( void )
 {
-	int e, ee, maxe = 10, maxlp = 100000; // Element, Element copy 1, MAXimum number of Elements, MAXimum number LooPs
+	int e, ee, maxe = 100, maxlp = 100000; // Element 1, Element 2, MAXimum number of Elements, MAXimum number LooPs
 	int v[ maxe ]; // ordered number Vector
-	clock_t timeA, timeB;
-	long double runtime;
+	clock_t start, stop; // stopwatch START time, stopwatch STOP time
+	long double runtime_knr = 0, runtime_nimi = 0, runtime_at = 0;
 
 	/* Populates vector */
 	for( e = 0; e < maxe; ++e )
 	{
-		v[ e ] = e + 10;
+		v[ e ] = e;
 	}
 
-	/* Gets average run time of KNR's binary search */
-	runtime = 0.0;
+	/* Gets average run time */
 	for( e = 0; e < maxlp; ++e )
 	{
-		timeA = clock();
-		for( ee = 10; ee < maxe; ++ee )
+		/* KNR's binary search */
+		start = clock();
+		for( ee = 0; ee < maxe; ++ee )
 		{
 			binsearch_knr( ee, v, maxe );
 		}
-		timeB = clock();
-		runtime += timeB - timeA;
-	}
-	printf( "Average run time for binsearch_knr = [%Lf]\n", runtime / maxlp );
+		stop = clock();
+		runtime_knr += stop - start;
 
-	/* Gets average run time of my binary search */
-	runtime = 0.0;
-	for( e = 0; e < maxlp; ++e )
-	{
-		timeA = clock();
-		for( ee = 10; ee < maxe; ++ee )
+		/* My binary search */
+		start = clock();
+		for( ee = 0; ee < maxe; ++ee )
 		{
 			binsearch_nimi( ee, v, maxe );
 		}
-		timeB = clock();
-		runtime += timeB - timeA;
-	}
-	printf( "Average run time for binsearch_nimi = [%Lf]\n", runtime / maxlp );
+		stop = clock();
+		runtime_nimi += stop - start;
 
-	/* Gets average run time of Andrew Tesker's binary search */
-	runtime = 0.0;
-	for( e = 0; e < maxlp; ++e )
-	{
-		timeA = clock();
-		for( ee = 10; ee < maxe; ++ee )
+		/* Andrew Tesker's binary search */
+		start = clock();
+		for( ee = 0; ee < maxe; ++ee )
 		{
-			binsearch_AT( ee, v, maxe );
+			binsearch_at( ee, v, maxe );
 		}
-		timeB = clock();
-		runtime += timeB - timeA;
+		stop = clock();
+		runtime_at += stop - start;
 	}
-	printf( "Average run time for binsearch_AT = [%Lf]\n", runtime / maxlp );
+	printf( "Average run time for binsearch_knr = [%Lf]\n", runtime_knr / maxlp );
+	printf( "Average run time for binsearch_nimi = [%Lf]\n", runtime_nimi / maxlp );
+	printf( "Average run time for binsearch_at = [%Lf]\n", runtime_at / maxlp );
 
 	return 0;
 }
