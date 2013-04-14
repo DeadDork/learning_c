@@ -10,8 +10,9 @@
 
 // 2) It measures and prints the run-time of both binary searches.
 
-// Conclusion: I'm consistently seeing a 2x cost in my version over K & R's,
-// and a 3x cost in Andrew Tesker's version.
+// Conclusion: The differences in run-time between the three versions is very,
+// very small. That said, it stacks accordingly:
+// K & R <= Nimi <= AT, +/-10 or 20 nanoseconds.
 
 // N.B. In order to measure the run time, I used <time.h>, which I'm not
 // supposed to "know" about yet. However, as it doesn't matter how I measure
@@ -39,9 +40,7 @@ int binsearch_knr( int x, int v[], int n );
    If `x` matches an element in v[], the function returns the first position
    of the match; if no match, returns -1.
    
-   N.B. This version uses two tests.
-   
-   N.B. This version is averaging on my implementation ~0.35 Msec's. */
+   N.B. This version uses three tests total in the loop, and two in the if-then. */
 
 int binsearch_nimi( int x, int v[], int n );
 /* Searches for the position in an ordered number set for the first instance of
@@ -56,11 +55,8 @@ int binsearch_nimi( int x, int v[], int n );
    If `x` matches an element in v[], the function returns the first position
    of the match; if no match, returns -1.
    
-   N.B. This version kind of uses one test, in that it uses a only a 
-   single if-then. However, it does use a compound logic test in the while loop,
-   so I'm not quite sure if it qualifies as a single logic test.
-   
-   N.B. This version is averaging on my implementation ~0.73 Msec's. */
+   N.B. This version uses three tests total in the loop, but only one in the
+   if-then. */
 
 int binsearch_AT( int x, int v[], int n );
 /* Searches for the position in an ordered number set for the first instance of
@@ -75,16 +71,14 @@ int binsearch_AT( int x, int v[], int n );
    If `x` matches an element in v[], the function returns the first position
    of the match; if no match, returns -1.
    
-   N.B. This verison *does* use only one logic test. However, it does so in a
-   complicated and wasteful way. But, hey, only one!
+   N.B. This verison uses two tests total in the loop, and only one in the
+   if-then.
 
    N.B. This version is not mine, but was created by Andrew Tesker 
    <http://users.powernet.co.uk/eton/kandr2/krx301.html>. I wish I
    were this clever, as it's the only solution to this exercise I could find
    (let alone discover on my own) that uses--between the while loop & the
-   if-then--just two logic tests. Every other one performs at least three tests.
-   
-   N.B. This version is averaging on my implementation ~1.09 Msec's. */
+   if-then--just two logic tests. Every other one performs at least three tests. */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
@@ -169,7 +163,7 @@ int main( void )
 	int e, ee, maxe = 10, maxlp = 100000; // Element, Element copy 1, MAXimum number of Elements, MAXimum number LooPs
 	int v[ maxe ]; // ordered number Vector
 	clock_t timeA, timeB;
-	long double runtime = 0;
+	long double runtime;
 
 	/* Populates vector */
 	for( e = 0; e < maxe; ++e )
@@ -178,6 +172,7 @@ int main( void )
 	}
 
 	/* Gets average run time of KNR's binary search */
+	runtime = 0.0;
 	for( e = 0; e < maxlp; ++e )
 	{
 		timeA = clock();
@@ -191,6 +186,7 @@ int main( void )
 	printf( "Average run time for binsearch_knr = [%Lf]\n", runtime / maxlp );
 
 	/* Gets average run time of my binary search */
+	runtime = 0.0;
 	for( e = 0; e < maxlp; ++e )
 	{
 		timeA = clock();
@@ -204,6 +200,7 @@ int main( void )
 	printf( "Average run time for binsearch_nimi = [%Lf]\n", runtime / maxlp );
 
 	/* Gets average run time of Andrew Tesker's binary search */
+	runtime = 0.0;
 	for( e = 0; e < maxlp; ++e )
 	{
 		timeA = clock();
