@@ -78,10 +78,11 @@ int binsearch_AT( int x, int v[], int n );
    N.B. This verison *does* use only one logic test. However, it does so in a
    complicated and wasteful way. But, hey, only one!
 
-   N.B. This version is not mine, but was created by Andrew Tesker. I wish I
+   N.B. This version is not mine, but was created by Andrew Tesker 
+   <http://users.powernet.co.uk/eton/kandr2/krx301.html>. I wish I
    were this clever, as it's the only solution to this exercise I could find
-   (let alone discover on my own) that uses between the while loop & the
-   if-then just two logic tests. Every other one performs at least three tests.
+   (let alone discover on my own) that uses--between the while loop & the
+   if-then--just two logic tests. Every other one performs at least three tests.
    
    N.B. This version is averaging on my implementation ~1.09 Msec's. */
 
