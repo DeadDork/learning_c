@@ -19,7 +19,7 @@
 // 2) It measures and prints the run time of all three binary searches.
 
 // Conclusion: K & R's < Nimi's, and Nimi's < AT's in terms of run time, but the
-// difference is 100 nanoseconds between each on my implementation. Trying to
+// difference is ~150 nanoseconds between each on my implementation. Trying to
 // optimize such a small difference is pointless in my opinion. Instead, the
 // question should be which is easier to reason about, debug, and maintain. Of
 // the three, I think K & R's version does this best--it also has the best run
