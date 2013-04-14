@@ -4,22 +4,31 @@
 // Solution to exercise 3-1.
 
 // This program does two things:
-
-// 1) It performs two different kinds of binary search, the first with two tests
-// and the second with only one.
-
-// 2) It measures and prints the run time of both binary searches.
+//
+// 1) It performs three different kinds of binary search:
+//
+//// (a) K & R's original version, which employs a loop with two tests in the
+//// if-then, and only one test in the loop head;
+////
+//// (b) my version, which employs a loop with only one test in the if-then,
+//// but two tests in the loop head;
+////
+//// (c) Andrew Tesker's version, which employs a loop with only one test in
+//// the if-then *and* only one test in the loop head.
+//
+// 2) It measures and prints the run time of all three binary searches.
 
 // Conclusion: K & R's < Nimi's, and Nimi's < AT's in terms of run time, but the
 // difference is 100 nanoseconds between each on my implementation. Trying to
 // optimize such a small difference is pointless in my opinion. Instead, the
-// question should be which is easier to reason through, debug, and maintain. Of
+// question should be which is easier to reason about, debug, and maintain. Of
 // the three, I think K & R's version does this best--it also has the best run
-// times!
+// times! (While I admire the simplicity of AT's function, holy crap was it
+// tricky to reason about. Also, its pretty wasteful.)
 
 // N.B. In order to measure the run time, I used <time.h>, which I'm not
 // supposed to "know" about yet. However, as it doesn't matter how I measure
-// run time, so long as I do, I used it regardless.
+// run time, just that I do, I used it regardless.
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -40,9 +49,7 @@ int binsearch_knr( int x, int v[], int n );
    `n` = The number of elements in the number set.
 
    If `x` matches an element in v[], the function returns the first position
-   of the match; if no match, returns -1.
-   
-   N.B. This version uses three tests total in the loop, and two in the if-then. */
+   of the match; if there is no match, it returns -1. */
 
 int binsearch_nimi( int x, int v[], int n );
 /* Retrieves from an ordered number set the position of the first match.
@@ -54,10 +61,7 @@ int binsearch_nimi( int x, int v[], int n );
    `n` = The number of elements in the number set.
 
    If `x` matches an element in v[], the function returns the first position
-   of the match; if no match, returns -1.
-   
-   N.B. This version uses three tests total in the loop, but only one in the
-   if-then. */
+   of the match; if there is no match, it returns -1. */
 
 int binsearch_at( int x, int v[], int n );
 /* Retrieves from an ordered number set the position of the first match.
@@ -69,12 +73,9 @@ int binsearch_at( int x, int v[], int n );
    `n` = The number of elements in the number set.
 
    If `x` matches an element in v[], the function returns the first position
-   of the match; if no match, returns -1.
+   of the match; if there is no match, it returns -1.
    
-   N.B. This verison uses two tests total in the loop, and only one in the
-   if-then.
-
-   N.B. This version is not mine, but was created by Andrew Tesker 
+   N.B. This version was created by Andrew Tesker 
    <http://users.powernet.co.uk/eton/kandr2/krx301.html>. I wish I
    were as clever, because this is the only solution to this exercise I could
    find--let alone come up with on my own--that uses a total of just two tests.
