@@ -82,7 +82,7 @@ int binsearchB( int x, int v[], int n )
 	mid = ( low + high ) / 2;
 
 	//printf( "x = [%d]\n", x );
-	while( x != v[ mid ] && low < high )
+	while( x != v[ mid ] && low <= high )
 	{
 		//printf( "\tlow = [%d]; mid = [%d][%d]; high = [%d]\n", low, mid, v[ mid ], high );
 
