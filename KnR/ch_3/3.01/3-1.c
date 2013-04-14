@@ -24,7 +24,7 @@
 // question should be which is easier to reason about, debug, and maintain. Of
 // the three, I think K & R's version does this best--it also has the best run
 // times! (While I admire the simplicity of AT's function, holy crap was it
-// tricky to reason about. Also, its pretty wasteful.)
+// tricky to reason about. Also, it's pretty wasteful.)
 
 // N.B. In order to measure the run time, I used <time.h>, which I'm not
 // supposed to "know" about yet. However, as it doesn't matter how I measure
@@ -172,7 +172,7 @@ int main( void )
 		v[ e ] = e;
 	}
 
-	/* Gets average run time */
+	/* Gets average run times */
 	for( e = 0; e < maxlp; ++e )
 	{
 		/* KNR's binary search */
