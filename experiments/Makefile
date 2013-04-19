@@ -1,6 +1,8 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra #-g
+CCFLAGS = -fnested-functions
 LDFLAGS =
+
 
 BIN_1 = regex-sub_1
 OBJ_1 = $(BIN_1).o sstring.o rematch.o
@@ -56,6 +58,11 @@ OBJ_9 = $(BIN_9).o sstring.o rematch.o
 $(BIN_9) : $(OBJ_9)
 	$(CC) $(CFLAGS) -o $@ $^ $($LDFLAGS)
 $(BIN_9).o : $(BIN_9).c
+
+BIN_10 = shell-sort_1
+OBJ_10 = $(BIN_10).o
+$(BIN_10) : $(OBJ_10)
+	$(CC) $(CFLAGS) $(CCFLAGS) -o $@ $^
 
 sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
