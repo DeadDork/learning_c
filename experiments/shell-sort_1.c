@@ -7,15 +7,15 @@
 // OK, I get it:
 //
 // 1) It compares two values separated by n/2; if the former is
-// larger than the latter, it switches their places; then it moves one space 
-// left and repeats this.
+// larger than the latter, it switches their values; then it moves one space 
+// right and repeats this.
 //
-// 2) When the position of the latter comparison is equal to the number of
-// positions, gap is set to 1/2 of it's value; this repeats until
-// gap = 1.
+// 2) When the position of the latter comparison passes the position extrema,
+// the gap is set to 1/2 of it's former value. Step (1) is then repeated; step
+// (2) is repeated everytime the latter comparison passes the position extrema.
 //
-// 3) When gap = 1 & the latter position = the number of positions, the array
-// is sorted.
+// 3) When the gap between comparisons is 1 and the right comparision position
+// passes the position extrema, then the vector is sorted!
 //
 // Pretty clever!
 
