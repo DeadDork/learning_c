@@ -120,7 +120,7 @@ int main( void )
 			printf( "%c", compacted[ 0 ] );
 			compacted[ 0 ] = compacted[ 1 ];
 			compacted[ 1 ] = compacted[ 2 ];
-			compacted[ 2 ] = ( c == '\n' ) ? NUL : c;
+			compacted[ 2 ] = c;
 		}
 
 		lastc = c;
