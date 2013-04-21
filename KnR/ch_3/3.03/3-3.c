@@ -3,9 +3,9 @@
 
 // Solution to ex. 3-3.
 
-// Print input to output. If the input is in the form of compact expansion set,
-// then expand the set appropriately (e.g. '-b-f-7-9-S-U-0-2F-Jh-l-' will expand
-// to '-bcdef-789-STU-012FGHIJhijkl-').
+// Print input to output. If the input is in the form of a compact expansion
+// set, then expand the set appropriately (e.g. '-b-f-7-9-S-U-0-2F-Jh-l-' will
+// expand to '-bcdef-789-STU-012FGHIJhijkl-').
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -30,8 +30,7 @@ void expand( char compacted[], char expanded[] );
  
    `compacted[]` = The compacted representation of a range in the expansion set.
 
-   `expanded[]` = The full range of the expansion set represented by
-   'compacted[]'. */
+   `expanded[]` = The expanded array of the compacted representation. */
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
@@ -40,7 +39,7 @@ void expand( char compacted[], char expanded[] )
 {
 	int e, ee; // Element (1st, 2nd)
 
-	/* The number expansion set range */
+	/* Number expansion */
 	if( ( compacted[ 0 ] >= '0' && compacted[ 0 ] <= '9' ) &&
 		( compacted[ 2 ] >= '0' && compacted[ 2 ] <= '9' ) &&
 		( compacted[ 0 ] <= compacted[ 2 ] ) )
@@ -51,7 +50,7 @@ void expand( char compacted[], char expanded[] )
 		}
 		expanded[ ee ] = NUL;
 	}
-	/* The upper case expansion set range */
+	/* Upper case expansion */
 	else if( ( compacted[ 0 ] >= 'A' && compacted[ 0 ] <= 'Z' ) &&
 			 ( compacted[ 2 ] >= 'A' && compacted[ 2 ] <= 'Z' ) &&
 			 ( compacted[ 0 ] <= compacted[ 2 ] ) )
@@ -62,7 +61,7 @@ void expand( char compacted[], char expanded[] )
 		}
 		expanded[ ee ] = NUL;
 	}
-	/* The lower case expansion set range */
+	/* Lower case expansion */
 	else if( ( compacted[ 0 ] >= 'a' && compacted[ 0 ] <= 'z' ) &&
 			 ( compacted[ 2 ] >= 'a' && compacted[ 2 ] <= 'z' ) &&
 			 ( compacted[ 0 ] <= compacted[ 2 ] ) )
@@ -79,60 +78,56 @@ void expand( char compacted[], char expanded[] )
 int main( void )
 {
 	int c, lastc; // Character, LAST Character
-	char triplec[ 4 ] = { NUL, NUL, NUL, NUL }; // triple Character string + a terminal null
-	char expanded[ ALPHA + 1 ]; // EXPANDED compacted string + a terminal null
+	char compacted[ 4 ] = { NUL, NUL, NUL, NUL }; // COMPACTED buffer
+	                                              // (3 chars + terminal null) 
+	char expanded[ ALPHA + 1 ]; // EXPANDED buffer
+	                            // (max expansion is a, b..., z + terminal null)
 
 	while( ( c = getchar() ) != EOF )
 	{
-		/* If triple is a compact expansion set */
-		if( ( triplec[ 0 ] >= '0' && triplec[ 0 ] <= triplec[ 2 ] && triplec[ 2 ] <= '9' && triplec[ 1 ] == '-' ) ||
-		    ( triplec[ 0 ] >= 'A' && triplec[ 0 ] <= triplec[ 2 ] && triplec[ 2 ] <= 'Z' && triplec[ 1 ] == '-' ) ||
-		    ( triplec[ 0 ] >= 'a' && triplec[ 0 ] <= triplec[ 2 ] && triplec[ 2 ] <= 'z' && triplec[ 1 ] == '-' ) )
+		/* Expand compaction buffer */
+		if( ( compacted[ 0 ] >= '0' && compacted[ 0 ] <= compacted[ 2 ] && compacted[ 2 ] <= '9' && compacted[ 1 ] == '-' ) ||
+		    ( compacted[ 0 ] >= 'A' && compacted[ 0 ] <= compacted[ 2 ] && compacted[ 2 ] <= 'Z' && compacted[ 1 ] == '-' ) ||
+		    ( compacted[ 0 ] >= 'a' && compacted[ 0 ] <= compacted[ 2 ] && compacted[ 2 ] <= 'z' && compacted[ 1 ] == '-' ) )
 		{
-			expand( triplec, expanded );
+			expand( compacted, expanded );
 			printf( "%s", expanded );
-			triplec[ 0 ] = triplec[ 1 ] = triplec[ 2 ] = NUL;
+			compacted[ 0 ] = compacted[ 1 ] = compacted[ 2 ] = NUL;
 		}
 
-		if( c != '\n' ) // Keeps '\n' from being assigned to the triple
+		/* Print & clear unexpanded compaction buffer every newline */
+		if( c == '\n' )
 		{
-			/* Populates triple */
-			if( triplec[ 0 ] == NUL || triplec[ 1 ] == NUL || triplec[ 2 ] == NUL )
-			{
-				if( triplec[ 0 ] == NUL )
-				{
-					triplec[ 0 ] = c;
-				}
-				else if( triplec[ 1 ] == NUL )
-				{
-					triplec[ 1 ] = c;
-				}
-				else if( triplec[ 2 ] == NUL )
-				{
-					triplec[ 2 ] = c;
-				}
-			}
-			/* Print the tail character if triple is full (by extension, also not expandable) */
-			else
-			{
-				printf( "%c", triplec[ 0 ] );
-				triplec[ 0 ] = triplec[ 1 ];
-				triplec[ 1 ] = triplec[ 2 ];
-				triplec[ 2 ] = c;
-			}
+			printf( "%s\n", compacted );
+			compacted[ 0 ] = compacted[ 1 ] = compacted[ 2 ] = NUL;
 		}
-		/* If c = '\n' */
+		/* Populate compaction buffer */
+		else if( compacted[ 0 ] == NUL )
+		{
+			compacted[ 0 ] = c;
+		}
+		else if( compacted[ 1 ] == NUL )
+		{
+			compacted[ 1 ] = c;
+		}
+		else if( compacted[ 2 ] == NUL )
+		{
+			compacted[ 2 ] = c;
+		}
+		/* Else print the buffer tail & shift it by one space to the left */
 		else
 		{
-			printf( "%s\n", triplec );
-			triplec[ 0 ] = triplec[ 1 ] = triplec[ 2 ] = NUL;
+			printf( "%c", compacted[ 0 ] );
+			compacted[ 0 ] = compacted[ 1 ];
+			compacted[ 1 ] = compacted[ 2 ];
+			compacted[ 2 ] = ( c == '\n' ) ? NUL : c;
 		}
 
-		lastc = c; // Assign c to lastc to know whether to print a terminal newline
+		lastc = c;
 	}
 	if( lastc != '\n' )
 	{
-		putchar( '\n' );
+		putchar( '\n' ); // Add a terminal newline if necessary
 	}
 
 	return 0;
