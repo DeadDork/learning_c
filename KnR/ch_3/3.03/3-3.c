@@ -81,7 +81,7 @@ int main( void )
 	char compacted[ 4 ] = { NUL, NUL, NUL, NUL }; // COMPACTED buffer
 	                                              // (3 chars + terminal null) 
 	char expanded[ ALPHA + 1 ]; // EXPANDED buffer
-	                            // (max expansion is a, b..., z + terminal null)
+	                            // (max expansion (a, b..., z) + terminal null)
 
 	while( ( c = getchar() ) != EOF )
 	{
