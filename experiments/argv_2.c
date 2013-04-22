@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// Purpose: if the number of program arguments is greater than 2 (the first one is the program call), then print all the arguments.
+// Print arguments
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -9,15 +9,14 @@
 #include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-int main( int argc, char* argv[] )
+int main( int argc, char * argv[] )
 {
-	int i;
+	int e;
 
-	if( argc > 1 )
+	printf( "argc = [%d]\n", argc );
+	for( e = 0; e < argc; ++e)
 	{
-		printf( "argc = [%d]\n", argc );
-		for( i = 0; i < argc; ++i)
-			printf( "argv[%d] = [%s]\n", i, argv[ i ] );
+		printf( "argv[%d] = [%s]\n", e, argv[ e ] );
 	}
 
 	return 0;
