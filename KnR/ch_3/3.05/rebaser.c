@@ -13,6 +13,10 @@
 // Because this program is useful, it gets a real name: rebaser (slicing up
 // eyeballs ha ha ha ho!)
 
+// Bug: This program doesn't handle empty entries correctly. For instance, if
+// there is a newline at the end of a file, it will be read as an error. At the
+// same time, setting this value to NOERR makes it repeat the last value.
+
 /* Proper input (1 < base < 37):
 	1) rebaser (base) (number to rebase), e.g.:
 		$./rebaser 16 40
