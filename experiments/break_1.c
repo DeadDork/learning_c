@@ -1,0 +1,32 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Tests multi-loop breaking to see how it escapes from loops.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main( void )
+{
+	int e, ee; // Element (1st, 2nd)
+
+	for( e = 0; e < 10; ++e )
+	{
+		for( ee = 0; ee < 10; ++ee )
+		{
+			if( ee == 6 )
+				break;
+		}
+
+		if( e == 8 )
+			break;
+	}
+
+	printf( "e = [%d]\n", e );
+	printf( "ee = [%d]\n", ee );
+
+	return 0;
+}
