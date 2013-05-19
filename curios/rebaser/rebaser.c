@@ -140,33 +140,26 @@ char * rebase_d (double num, unsigned base, char * dptr, char * fptr, char * ipt
 // Functions
 
 void usage (void) {
-	printf ("Rebases base-10 numbers to a new arbitrary base (where the base is an integer equal to at least 2).\n\n");
+	printf ("Rebases base-10 numbers to a new arbitrary base, where the base is an integer equal to at least 2.\n\n");
 
 	printf ("Data entry should take the form of one of the following:\n");
 
-	printf ("\t1) rebaser (base) (number to rebase), e.g.:\n");
-	printf ("\t\t$ ./rebaser 16 15 16 17\n");
+	printf ("1) rebaser (base) (number to rebase), e.g.:\n");
+	printf ("\t$ ./rebaser 16 15 16 17\n");
 
-	printf ("\t2) (stdin) | rebaser (base), e.g.:\n");
-	printf ("\t\t$ echo 7 8 9 | ./rebaser 8\n");
+	printf ("2) (stdin) | rebaser, e.g.:\n");
+	printf ("\t$ echo 8 7 8 9 | ./rebaser\n");
 
-	printf ("\t3) rebaser (file). N.B. The first value in (file) will be set as the base, e.g.\n");
-	printf ("\t\t$ ./rebaser <test_file\n");
-	printf ("\tWhere\n");
-	printf ("\t\t$ cat test_file\n");
-	printf ("\t\t31\n");
-	printf ("\t\t30\n");
-	printf ("\t\t31\n");
-	printf ("\t\t32\n");
+	printf ("3) rebaser (file). N.B. The first value in (file) will be set as the base, e.g.\n");
+	printf ("\t$ ./rebaser <test_file\n");
+	printf ("Where\n");
+	printf ("\t$ cat test_file\n");
+	printf ("\t31\n");
+	printf ("\t30\n");
+	printf ("\t31\n");
+	printf ("\t32\n");
 
-	printf ("\t4) rebaser (base) <(file), e.g.:\n");
-	printf ("\t\t./rebaser 31 <test_file\n");
-	printf ("\tWhere\n");
-	printf ("\t\t$ cat test_file\n");
-	printf ("\t\t31\n");
-	printf ("\t\t30\n");
-	printf ("\t\t31\n");
-	printf ("\t\t32\n");
+	printf ("Arguments are assigned a higher precedence than stdin, thus allowing for setting the base in the arguments, and piping in data.\n");
 }
 
 void chomp (void) {
