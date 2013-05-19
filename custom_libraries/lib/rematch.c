@@ -3,8 +3,6 @@
 
 // This library simplifies the use of regex.h
 
-// I researched regfree(). Indeed, ALWAYS free allocated memory.
-
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 #include <stdio.h>
@@ -13,39 +11,32 @@
 #include "rematch.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-// Function
+// Functions
 
-int rematch( char * string, char * re, size_t nmatch, regmatch_t * pmatch )
-{
+int rematch (char * string, char * re, size_t nmatch, regmatch_t * pmatch) {
 	int re_err;
-	char err_msg[ MAXBUF ];
+	char err_msg[MAXBUF];
 	regex_t regex;
 	int value;
 
-	/* Compile the regex */
-	if( ( re_err = regcomp( &regex, re, REG_EXTENDED ) ) )
-	{
-		fprintf( stderr, "Could not compile regex\n" );
-		exit( 1 );
+	// Compile the regex
+	if ((re_err = regcomp (&regex, re, REG_EXTENDED))) {
+		fprintf (stderr, "Could not compile regex: [%s]\n", re);
+		exit (1);
 	}
 
-	/* Match the regex to string */
-	if( !( re_err = regexec( &regex, string, nmatch, pmatch, 0 ) ) )
-	{
+	// Match the regex to string
+	if (!(re_err = regexec (&regex, string, nmatch, pmatch, 0)))
 		value = MATCH;
-	}
-	else if( re_err == REG_NOMATCH )
-	{
+	else if (re_err == REG_NOMATCH)
 		value = NOMATCH;
-	}
-	else
-	{
-		regerror( re_err, &regex, err_msg, sizeof( char ) * MAXBUF );
-		fprintf( stderr, "Regex match failed: %s\n", err_msg );
-		exit( 1 ); 
+	else {
+		regerror (re_err, &regex, err_msg, MAXBUF);
+		fprintf (stderr, "Regex match failed: %s\n", err_msg);
+		exit (1); 
 	}
 
-	regfree( &regex );
+	regfree (&regex);
 
 	return value;
 }
