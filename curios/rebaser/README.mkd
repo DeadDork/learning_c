@@ -1,0 +1,87 @@
+REBASER
+=======
+
+Rebases double floating point numbers to an arbitrary integer base >= 2.
+
+To Make
+-------
+
+Simply compile with GCC:
+
+	$ make
+
+To Use
+------
+
+Input takes a number of different forms:
+
+*	"rebaser argument1 argument2 argument3", e.g.:
+
+		$ ./rebaser 16 15 16 17
+
+*	"(piped input) | rebaser", e.g.:
+
+		$ printf '16 15 16 17' | ./rebaser
+
+*	"rebaser <file", e.g.
+
+		$ ./rebaser <test
+
+*	"rebaser" followed by direct user input, e.g.
+
+		$ ./rebaser
+		16
+		15
+		16 17
+
+	(End user entry with EOF, which usually results from the CTRL + D keypress.)
+
+Base
+----
+
+The base is the first number read. `Rebaser` reads input in the following order:
+
+1)	Arguments
+
+2)	STDIN
+
+Error Handling
+--------------
+
+All errors are logged in `.rebaser.log`:
+
+*	If the first entry is not a number that's an integer greater than or equal to 2, then the program prints out a usage message and exits.
+
+*	If the first entry is a rational number, the absolute value of which is greater than or equal to 2, the program rounds down the absolute value of this base to the closest integer, and uses the resulting integer as the base.
+
+*	If the base is set successfully, then input can be anything, but only rational numbers that aren't excessively long will be rebased. As such, bad entries will be logged, but not printed.
+
+Some examples of bad entries:
+
+	This will log the error, print a usage message, and exit because the base entry is bad.
+
+		$ ./rebaser hello 15
+
+	The base is good, but "tata" is a bad entry. Accordingly, it will be logged, and "14", "15", and "16" will be rebased and printed normally.
+
+		$ ./rebaser 15 tata 14 15 16
+
+Bases Larger Than 10
+--------------------
+
+Quickly: hexadecimals are in base-16, and the numbers greater than 9 are represented with alphabetical characters. For example, the sequence {8, 9, 10, 11, 12} is represented in hexadecimal notation as {8, 9, a, b, c}.
+
+I expanded this idea to represent all bases greater than 10:
+
+*	The first 26 numbers after '9' are represented in lower-case alphabetical characters; e.g. {8, 9, 10, 11, 12} would be represented as {8, 9, a, b, c} in a base greater than 12.
+
+*	For bases greater than 36, I represented them in upper-case alphabetical characters that can stack in base 26; e.g. {9999, 10000, 10001} would be represented as {NTf, 10, 11} in base 10000.
+
+(The conversion math is simple enough: (upperalnum_1 * 26 ** exp) + (upperalnum_2 * 26 ** (exp - 1)) + (upperalnum_2 * 26 ** (exp - 2)) + ... + (upperalnum_n-2 * 26 ** 2) + (upperalnum_n-1 * 26 ** 1) + [0 - z, where '0' - '9' = {0..9}, and 'a' - 'z' = {10..36}. Thus, NTf = (14 * 26 ** 2) + (20 * 26 ** 1) + 15 = 9999. N.B. upperalnum's ranges from {1..26}.)
+
+Limitations
+-----------
+
+This program has the implementation specific limitations for double floating point numbers. For example, if the max length of the mantissa is 4 in base-2, then M = (2 ** -1) + (2 ** -2) + (2 ** -3) + (2 ** -4) + (2 ** -5) = 0.96875 might be rounded down to 0.9687 or rounded up to 0.9688, both of which regress infinitely, whereas in mantissa of max lenth 5 would simply equal 0.1111.
+
+And speaking of floating point: remember, certain numbers that can be represented in one base cannot be represented in another. For instance, 0.1 in base-10 no problem, but in base-2 it is the limit of 0.00011001100110011...
