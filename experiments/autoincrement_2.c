@@ -27,5 +27,7 @@ int main (void) {
 	while (*s != '\0')
 		putchar (*(s++));
 
+	free (s);
+
 	return 0;
 }
