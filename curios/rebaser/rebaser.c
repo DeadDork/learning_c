@@ -388,6 +388,7 @@ int main (int argc, char * argv[]) {
 	free (dptr);
 	free (fptr);
 	free (iptr);
+	regfree (&renum);
 
 	return 0;
 }
