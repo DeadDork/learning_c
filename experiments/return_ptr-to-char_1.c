@@ -48,5 +48,7 @@ int main (void) {
 		printf ("Full string of pointer address = [%s]\n", sptr);
 	}
 
+	free (s);
+
 	return 0;
 }
