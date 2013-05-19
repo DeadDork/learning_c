@@ -1,3 +1,4 @@
 *~
 rebaser
 *.sw[op]
+.rebaser.log
