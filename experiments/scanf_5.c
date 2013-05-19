@@ -16,7 +16,7 @@
 int main (void) {
 	int i;
 	char * s = malloc (500);
-	float  f,  ff,  fff,  ffff,  fffff;
+	float f, ff, fff, ffff, fffff;
 
 	printf ("Suppressed match:\n");
 	for (i = 1; i <= 5 && (fgets (s, 500, stdin) != NULL); ++i)
