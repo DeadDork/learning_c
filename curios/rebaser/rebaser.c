@@ -281,10 +281,10 @@ char * rebase_f (double frac, unsigned base, char * fptr, char * iptr) {
 	unsigned e = 0;
 	double ntgr;
 
-	frac = modf (frac * base, &ntgr);
 	do {
+		frac = modf (frac * base, &ntgr);
 		fptr = strcat (fptr, rebase_i (ntgr, base, iptr));
-	} while (++e < MAXDBL && (frac = modf (frac * base, &ntgr)) > 0.0);
+	} while (++e < MAXDBL && frac > 0.0);
 
 	return fptr;
 }
