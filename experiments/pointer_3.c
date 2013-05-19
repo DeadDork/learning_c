@@ -35,5 +35,7 @@ int main (void) {
 	ptr_diddle (s);
 	printf ("After = [%s]\n", s);
 
+	free (s);
+
 	return 0;
 }
