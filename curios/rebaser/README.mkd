@@ -93,6 +93,6 @@ I expanded this idea to represent all bases greater than 10:
 Limitations
 -----------
 
-This program has the implementation specific limitations for double floating point numbers. For example, if the max length of the mantissa is 4 in base-2, then (2 ** -1) + (2 ** -2) + (2 ** -3) + (2 ** -4) + (2 ** -5) = 0.96875 * 2 ** 0  might be rounded down to 0.9687 or rounded up to 0.9688, both of which regress infinitely, whereas in mantissa of max lenth 5, the base-10 0.1  would simply be rebased to 0.1111.
+This program has the implementation specific limitations for double floating point numbers. For example, if the max length of the mantissa is 4 in base-2, then (2 ** -1) + (2 ** -2) + (2 ** -3) + (2 ** -4) + (2 ** -5) = 0.96875 * 2 ** 0  might be rounded down to 0.9687 or rounded up to 0.9688, both of which have infinite decimal expansions, whereas in a mantissa of max lenth 5 or more, the base-10 0.1  would simply be rebased to 0.1111.
 
-And speaking of floating point: certain numbers that can be represented in one base cannot be represented in another. For instance, the base-10 0.1 can be rebased in base-20 no problem as 0.2, but in base-2 it repeats 0.00011001100110011...
+And speaking of floating point: certain numbers that can be represented in one base cannot be represented represented exactly in another. For instance, the base-10 0.1 can be rebased in base-20 no problem as 0.2, but in base-2 it has an infinite decimal expansion, which a computer cannot physically represent.
