@@ -371,10 +371,12 @@ int main (int argc, char * argv[]) {
 
 	// Rebase input {{{
 	// Rebase any number arguments
-	if (argc > 2)
+	if (argc > 2) {
 		for (e = 2; e < argc; ++e )
 			if (match (argv[e], &renum, errlog))
 				printf ("%s\n", rebase_d (strtod (argv[e], NULL), base, dptr, fptr, iptr));
+		goto end;
+	}
 
 	// Rebase any numbers from stdin
 	while ((c = getchar()) != EOF) {
@@ -384,6 +386,7 @@ int main (int argc, char * argv[]) {
 	}
 	// }}}
 
+end:
 	fclose (errlog);
 	free (dptr);
 	free (fptr);
