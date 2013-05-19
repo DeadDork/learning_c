@@ -1,0 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Explores using the absolute value function fabs ().
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <math.h>
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main (void) {
+	double d = 7.0, dd = 7.5, ddd = -7.5; // Generic double values
+
+	printf ("\tabs(%.1f) = %.1f\n", d, fabs (d));
+	printf ("\tabs(%.1f) = %.1f\n", dd, fabs (dd));
+	printf ("\tabs(%.1f) = %.1f\n", ddd, fabs (ddd));
+
+	return 0;
+}
