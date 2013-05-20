@@ -1,0 +1,25 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Explores fputs into stdin.
+
+// Nope. Doesn't work. Looks like ungetc is the only (obvious?) way to push
+// data back into the stdin buffer.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main (void) {
+	char c;
+	char s[] = "hello my darling wife!";
+
+	fputs (s, stdin);
+
+	while ((c = getchar ()) != EOF)
+		printf ("%c\n", c);
+
+	return 0;
+}
