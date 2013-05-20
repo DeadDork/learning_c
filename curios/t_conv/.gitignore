@@ -4,3 +4,4 @@ t_conv
 *.o
 sstring.[hc]
 rematch.[hc]
+test
