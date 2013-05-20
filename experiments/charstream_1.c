@@ -1,0 +1,42 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Explores walking down a charstream in separate functions.
+
+// Indeed, the charstream is shared, such that walking down it in one
+// function results in it being walked down universally.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// Function Prototypes
+
+void getter(void);
+/* Prints out 5 chars from stdin */
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
+
+void getter(void) {
+	int i;
+
+	printf ("Getter:\n");
+	for (i = 0; i < 5; ++i)
+		printf ("\t%c\n", getchar ());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int main (void) {
+	int i;
+
+	printf ("Main:\n");
+	for (i = 0; i < 5; ++i)
+		printf ("\t%c\n", getchar ());
+
+	getter ();
+
+	return 0;
+}
