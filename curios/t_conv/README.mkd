@@ -3,14 +3,29 @@ Temperature Conversion
 
 Converts temperature unit from Fahrenheit to Celsius, and vice versa.
 
+Versions
+--------
+
+I wrote (what is now) `tconv_1` in January. It is now May, and I thought to take what I've learned and do a quick rewrite.
+
+The rewrite is functionally identical but in one respect: I couldn't figure out a way to write pretty code to read argument data, so I cut that feature off.
+
 To Make
 -------
 
-You need to link to my custom *sstring* and *rematch* libraries (this is necessary to keep up to date with those verkakte libraries). From inside *t_conv* directory:
+For `tconv_1`:
+
+1)	You need to link to my custom `sstring` and `rematch` libraries (this is necessary to keep up to date with those verkakte libraries). From inside "t_conv" directory:
 
 		$ ln /PATH/TO/custom_libraries/lib/sstring.[hc] /PATH/TO/custom_libraries/lib/rematch.[hc] ./
 
-Then just compile:
+2)	Then just compile:
+
+		$ make
+
+For `tconv_2`:
+
+*	Just compile
 
 		$ make
 
@@ -32,6 +47,8 @@ Some **bad** examples:
 *	.5 c
 *	10 Fahrenheit
 
+(N.B. `tconv_2` is not case sensitive, so ".5 c" is totally kosher.)
+
 I designed *t_conv* such that input is highly flexible:
 
 *	It can be piped in:
@@ -50,9 +67,13 @@ I designed *t_conv* such that input is highly flexible:
 		$ ./t_conv "98.6 F"
 		37
 
+(Again, `tconv_2` doesn't have this last feature.)
+
 Output is also designed for flexiblity: STDOUT outputs the converted unit value and STDERR outputs the unit type as an ASCII decimal (i.e. 'C' = 67 and 'F' = 70). E.G.:
 
 		$ ./t_conv "98.6 F"
 		37
 		$ awk 'BEGIN { printf "%c\n", '$?' }'
 		C
+
+(`tconv_2` prints the temperature unit type to stdout, e.g. "37 F". This makes it workable to convert large data sets easily, whereas the former presented a major PITA.)
