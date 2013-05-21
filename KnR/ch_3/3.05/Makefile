@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g
 LDFLAGS = 
 
-BIN = rebaser
+BIN = 3-5
 OBJ = $(BIN).o
 $(BIN) : $(OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) 
@@ -10,4 +10,4 @@ $(BIN).o : $(BIN).c
 
 .PHONY : clean
 clean :
-	rm *.o rebaser
+	rm *.o *-[0-9]
