@@ -1,0 +1,30 @@
+Frequently Asked Questions
+==========================
+
+__Q: Do you *ever* get asked questions?__
+
+No.
+
+__Q: Why do you call this a FAQ then?__
+
+\*sigh\*
+
+__Q: Why does the coding style keep changing?__
+
+Because I was actively developing my C coding style while working on these exercises. To see the latest and greatest, go to [my C style guide](https://github.com/DeadDork/style_guides/blob/master/C/C_style-guide.mkd).
+
+__Q: Some of these exercises are real shit, especially at the beginning.__
+
+Yes, yes they are. After all, I was learning C by working through K & R. Now, did you have a question?
+
+__Q: Yes, actually: how can I help to improve these solutions?__
+
+Oh! Simply submit a pull request or make an issue report on the [GitHub repository](https://github.com/DeadDork/learning_c), and I will do my best to address the matter promptyly.
+
+One caveat, though: please do not try to sneak in a solution from [The C Answer Book](http://www.amazon.com/The-Answer-Book-Solutions-Programming/dp/0131096532/ref=sr_1_1?ie=UTF8&qid=1369126314&sr=8-1&keywords=c+programming+answer+book). Bad form, that, and I'm pretty sure it's illegal.
+
+__Q: Speaking of illegal, how is all of this code licensed?__
+
+With the ISC license. That means you can pretty much do whatever you want with my code, so long as you retain [the copyright notice in the main folder of this repo](https://github.com/DeadDork/learning_c/blob/master/OpenBSD.license).
+
+Happy hacking!
