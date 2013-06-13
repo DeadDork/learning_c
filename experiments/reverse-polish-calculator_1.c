@@ -35,10 +35,10 @@ int getop(char []);
 // Push a float onto value stack
 void push(double);
 
-// Pop and return top value from stack 
+// Pop and return top value from stack
 double pop(void);
 
-// Get a (possibly pushed-back) character 
+// Get a (possibly pushed-back) character
 int getch(void);
 
 // Push character back on input
@@ -48,35 +48,35 @@ void ungetch(int);
 // Functions
 
 void push(double f) {
-    if (sp < MAXVAL) 
-        val[sp++] = f; 
-    else 
-        printf("error: stack full, can't push %g\n", f); 
-} 
+    if (sp < MAXVAL)
+        val[sp++] = f;
+    else
+        printf("error: stack full, can't push %g\n", f);
+}
 
 double pop(void) {
-    if (sp > 0) 
-        return val[--sp]; 
-    else { 
-        printf("error: stack empty\n"); 
-        return 0.0; 
-    } 
+    if (sp > 0)
+        return val[--sp];
+    else {
+        printf("error: stack empty\n");
+        return 0.0;
+    }
 }
 
 int getop(char s[]) {
-    int i, c; 
+    int i, c;
 
     while ((s[0] = c = getch()) == ' ' || c == '\t');
-    s[1] = '\0'; 
+    s[1] = '\0';
 
     // Get number {{{
 
     // Check if input is a number
-    if (!isdigit(c) && c != '.') 
+    if (!isdigit(c) && c != '.')
         return c; // Not a number
 
     // Integral part
-    i = 0; 
+    i = 0;
     if (isdigit(c))
         while (isdigit(s[++i] = c = getch()));
 
@@ -88,22 +88,22 @@ int getop(char s[]) {
     s[i] = '\0';
 
     // }}}
-    
-    if (c != EOF) 
-        ungetch(c); 
 
-    return NUMBER; 
-} 
+    if (c != EOF)
+        ungetch(c);
+
+    return NUMBER;
+}
 
 int getch(void) {
-    return (bufp > 0) ? buf[--bufp] : getchar(); 
+    return (bufp > 0) ? buf[--bufp] : getchar();
 }
 
 void ungetch(int c) {
-    if (bufp >= BUFSIZE) 
-        printf ("ungetch: too many characters\n"); 
-    else 
-        buf[bufp++] = c; 
+    if (bufp >= BUFSIZE)
+        printf ("ungetch: too many characters\n");
+    else
+        buf[bufp++] = c;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
