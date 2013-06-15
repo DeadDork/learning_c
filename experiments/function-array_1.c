@@ -14,8 +14,8 @@
 
 // Vertically prints a string
 //void testeef(char); // Compile error
-//void testeef(char[]); // Works
-void testeef(char *); // Works
+void testeef(char []); // Works
+//void testeef(char *); // Works
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
