@@ -13,14 +13,14 @@
 // Function Prototypes
 
 // Vertically prints a string
-//void testeef(char); // Compile error
-void testeef(char []); // Works
-//void testeef(char *); // Works
+//void vprintf(char); // Compile error
+void vprintf(char []); // Works
+//void vprintf(char *); // Works
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-void testeef(char s[]) {
+void vprintf(char s[]) {
 	int i;
 
 	for (i = 0; s[i] != '\0'; ++i)
@@ -31,7 +31,7 @@ void testeef(char s[]) {
 int main(void) {
 	char s[] = "Hello, my darling wife!";
 
-	testeef(s);
+	vprintf(s);
 
 	return 0;
 }
