@@ -25,6 +25,14 @@ One caveat, though: please do not try to sneak in a solution from [The C Answer 
 
 __Q: Speaking of illegal, how is all of this code licensed?__
 
-With the ISC license. That means you can pretty much do whatever you want with my code, so long as you retain [the copyright notice in the main folder of this repo](https://github.com/DeadDork/learning_c/blob/master/OpenBSD.license).
+With the MIT license. That means you can pretty much do whatever you want with my code, so long as you retain [the copyright notice in the main folder of this repo](https://github.com/DeadDork/learning_c/blob/master/MIT.license).
 
-Happy hacking!
+Any last questions?
+
+__Q: Yes: you seem to have stopped half-way through the book--why? Also, will you finish what you started?__
+
+__TL;DR__ Because I fucking hate working through books, and realized that I could learn C (or anything CS related for that matter) by simply hacking on projects.
+
+__TL__ Harry Frankfurt pointed out that we are capable of two kinds of desires: what we want (*first order desires*), and what we want to want (*second order desires*). For instance, a man may want another man--his sexual attraction being a first order desire--but due to an unfortunate religio-sociological belief may not want to want the other man--his homophobia being a second order desire. I have always wanted to be one of the cool scholar-types who pursues apotheosis through academic learning; however, by nature I can only be engaged by the praxis of cool projects, not their theoria. In June, I finally came out of the closet as a proud hacker.
+
+So, no, I will not be finishing *K & R*. I will be finishing plenty of cool projects instead, though!
