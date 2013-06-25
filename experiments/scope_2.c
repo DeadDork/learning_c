@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Explores the scope of external variables.
+
+// N.G. Given the nature of the program, the usual program architecture will
+// not be observed.
+
+// Conclusion: Compile error if the external variable is declared after main().
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+
+int x = 5;
+
+int main(void) {
+	printf("x = [%d]\n", x);
+
+	return 0;
+}
+
+//int x = 5;
