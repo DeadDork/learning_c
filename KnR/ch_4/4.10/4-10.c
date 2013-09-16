@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Comments
 
-// Solution to ex. 4-6.
+// Solution to ex. 4-10.
 
-// Replace getch() & ungetch() with getline().
+// Replace getch() & ungetch() with getln().
 
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
@@ -16,438 +16,244 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Symbolic Constants
 
-#define BUFSIZE 100 // Max buffer of "getching" stack
-#define MAXOP 100 // Max size of operand or operator
-#define MAXVAL 100 // Maximum depth of val stack
-#define NOMATCH 0 // False return value for match()
-#define MATCH 1 // True return value  for match()
+#define MAXLEN 100
 
-// Operators
-enum ops_t {
-    NUMBER,
-    VAR,
-    LAST,
-    ASSIGN,
-    SIN,
-    COS,
-    TAN,
-    ASIN,
-    ACOS,
-    ATAN,
-    ATAN2,
-    SINH,
-    COSH,
-    TANH,
-    EXP,
-    LOG,
-    LOG10,
-    POW,
-    SQRT,
-    CEIL,
-    FLOOR,
-    FABS,
-    LDEXP,
-    FMOD,
-    PLUS,
-    MINUS,
-    MULT,
-    DIV,
-    MOD,
-    PRINT,
-    DUP,
-    CLR,
-    SWAP,
-    NL,
-    FILEEND,
-    ERROR
-};
+#define NOMATCH 0
+#define MATCH 1
 
-////////////////////////////////////////////////////////////////////////////////
-// External Variables
-
-char buf[BUFSIZE]; // Buffer for ungetch
-int bufp = 0; // Next free position in buf
-int sp = 0; // Next free stack position
-double val[MAXVAL]; // Value stack
-int varname; // Variable name
-double var[27];  // Array of variable values for variables 'a' - 'z' & 'last'
+#define STRING 0
+#define NUMBER 1
+#define VARIABLE 2
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function Prototypes
 
-// Push a float onto value stack
-void push(double);
+// Read a line from STDIN into a character array
+int getln(char []);
 
-// Pop and return top value from stack
-double pop(void);
+// Determines whether a string matches against the pseudo-regex
+// '/-?([1-9][0-9]+|[0-9]?)\.?[0-9]+/'
+int num_match(char []);
 
-// Determines whether two strings are identical
-int strcomp(char s[], char ss[]);
+// Determines whether two strings match
+int str_match(char [], char []);
 
-// Match operators to an ops type
-enum ops_t match(char s[]);
+// Get next word in a character array
+void next_word(char [], char [], int []);
 
-// Get next character or numeric operand
-enum ops_t getop(char []);
+// Get previous word in a character array
+void prev_word(char [], char [], int []);
 
-// Get a (possibly pushed-back) character
-int getch(void);
+// Pop the value from the top of the number stack
+double pop(double [], int []);
 
-// Push character back on input
-void ungetch(int);
+// Push a value to the top of the number stack
+void push(double [], int [], double);
 
-// Read a line, return length
-int getline(char line[], int maxline);
-
-// Executes calc commands
-void exec(char s[], enum ops_t op);
+// Evaluates a math expression.
+double evaluate(char [], double [], double [], int [], double);
 
 ////////////////////////////////////////////////////////////////////////////////
 // Functions
 
-void push(double f) {
-    if (sp < MAXVAL)
-        val[sp++] = f;
-    else
-        printf("error: stack full, can't push %g\n", f);
-}
-
-double pop(void) {
-    if (sp > 0)
-        return val[--sp];
-    else {
-        printf("error: stack empty\n");
-        return 0.0;
-    }
-}
-
-int strcomp(char s[], char ss[]) {
-    int i;
-
-    for (i = 0; s[i] != '\0' && ss[i] != '\0' && s[i] == ss[i]; ++i);
-
-    if (s[i] == ss[i])
-        return MATCH;
-    else
-        return NOMATCH;
-}
-
-enum ops_t match(char s[]) {
-    if (strcomp(s, "sin"))
-        return SIN;
-    else if (strcomp(s, "cos"))
-        return COS;
-    else if (strcomp(s, "tan"))
-        return TAN;
-    else if (strcomp(s, "asin"))
-        return ASIN;
-    else if (strcomp(s, "acos"))
-        return ACOS;
-    else if (strcomp(s, "atan"))
-        return ATAN;
-    else if (strcomp(s, "atan2"))
-        return ATAN2;
-    else if (strcomp(s, "sinh"))
-        return SINH;
-    else if (strcomp(s, "cosh"))
-        return COSH;
-    else if (strcomp(s, "tanh"))
-        return TANH;
-    else if (strcomp(s, "exp"))
-        return EXP;
-    else if (strcomp(s, "log"))
-        return LOG;
-    else if (strcomp(s, "log10"))
-        return LOG10;
-    else if (strcomp(s, "pow"))
-        return POW;
-    else if (strcomp(s, "sqrt"))
-        return SQRT;
-    else if (strcomp(s, "ceil"))
-        return CEIL;
-    else if (strcomp(s, "floor"))
-        return FLOOR;
-    else if (strcomp(s, "fabs"))
-        return FABS;
-    else if (strcomp(s, "ldexp"))
-        return LDEXP;
-    else if (strcomp(s, "fmod"))
-        return FMOD;
-    else if (strcomp(s, "+"))
-        return PLUS;
-    else if (strcomp(s, "*"))
-        return MULT;
-    else if (strcomp(s, "/"))
-        return DIV;
-    else if (strcomp(s, "%"))
-        return MOD;
-    else if (strcomp(s, "="))
-        return ASSIGN;
-    else if (strcomp(s, "prnt"))
-        return PRINT;
-    else if (strcomp(s, "dup"))
-        return DUP;
-    else if (strcomp(s, "clr"))
-        return CLR;
-    else if (strcomp(s, "swp"))
-        return SWAP;
-    else if (strcomp(s, "\n"))
-        return NL;
-    else if (s[0] == EOF)
-        return FILEEND;
-    else if (s[0] >= 'a' && s[0] <= 'z' && s[1] == '\0') {
-        varname = s[0] - 'a';
-        return VAR;
-    } else if (strcomp(s, "_"))
-        return LAST;
-    else
-        return ERROR;
-}
-
-enum ops_t getop(char s[]) {
-    int i, c;
-
-    // Clear whitespace & get number/operation
-    while ((s[0] = c = getch()) == ' ' || c == '\t');
-    s[1] = '\0';
-
-    // Get operator (if any) {{{
-
-    // Match operator to return value
-    if (!isdigit(c) && c != '-' && c != '.') {
-        if (c != '\n' && c != EOF) {
-            for (i = 1; i < BUFSIZE - 1 && islower(s[i] = c = getch()); ++i);
-            ungetch(c);
-            s[i] = '\0';
-        }
-        return match(s);
-    }
-
-    // Determine whether a '-' is a negative sign or a subtraction
-    if (c == '-') {
-       if (!isdigit(c = getch()))
-           return MINUS; // A subtraction
-       else {
-           s[1] = c;
-           i = 1;
-       }
-    } else
-        i = 0;
-
-    // }}}
-
-    // Get number {{{
-
-    // Integral part
-    if (isdigit(c))
-        while (isdigit(s[++i] = c = getch()));
-
-    // Fractional part
-    if (c == '.')
-        while (isdigit(s[++i] = c = getch()));
-
-    // End string
-    s[i] = '\0';
-
-    // }}}
-
-    if (c != EOF)
-        ungetch(c);
-    else
-        return FILEEND;
-
-    return NUMBER;
-}
-
-int getch(void) {
-    return (bufp > 0) ? buf[--bufp] : getchar();
-}
-
-void ungetch(int c) {
-    if (bufp >= BUFSIZE)
-        printf ("ungetch: too many characters\n");
-    else
-        buf[bufp++] = c;
-}
-
-int getline(char s[], int lim) {
+int getln(char s[]) {
 	int c, i;
 
-	for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+	for (i = 0; i < MAXLEN - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
 		s[i] = c;
-	if (c == '\n') {
-		s[i] = c;
-		++i;
-	}
 	s[i] = '\0';
 
-	return i;
+	return (c == '\n') ? ++i : i;
 }
 
-void eat(void) {
-    int c;
+int num_match(char s[]) {
+	int i = 0;
 
-    // Eats '\n'
-    c = getch();
-    if (c != '\n')
-        ungetch(c);
+	if (s[i] == '-')
+		++i;
+
+	if (s[i] >= '1' && s[i] <= '9' && isdigit(s[i + 1]))
+		for (i += 2; isdigit(s[i]); ++i);
+	else if (isdigit(s[i]) && s[i + 1] == '.')
+		++i;
+
+	if (s[i] == '.')
+		for (++i; isdigit(s[i]); ++i);
+
+	return (i > 0 && isdigit(s[i - 1]) && s[i] == '\0') ? MATCH : NOMATCH;
 }
 
-void exec(char s[], enum ops_t op) {
-    double op2;
-    int i;
+int str_match(char s[], char ss[]) {
+	int i;
 
-    switch (op) {
-        case NUMBER:
-            push(atof(s));
-            break;
-        case VAR:
-            push(var[varname]);
-            break;
-        case LAST:
-            push(var[26]);
-            break;
-        case SIN:
-            push(sin(pop()));
-            break;
-        case COS:
-            push(cos(pop()));
-            break;
-        case TAN:
-            push(tan(pop()));
-            break;
-        case ASIN:
-            push(asin(pop()));
-            break;
-        case ACOS:
-            push(acos(pop()));
-            break;
-        case ATAN:
-            push(atan(pop()));
-            break;
-        case ATAN2:
-            push(atan2(pop(), pop()));
-            break;
-        case SINH:
-            push(sinh(pop()));
-            break;
-        case COSH:
-            push(cosh(pop()));
-            break;
-        case TANH:
-            push(tanh(pop()));
-            break;
-        case EXP:
-            push(exp(pop()));
-            break;
-        case LOG:
-            push(log(pop()));
-            break;
-        case LOG10:
-            push(log10(pop()));
-            break;
-        case POW:
-            push(pow(pop(), pop()));
-            break;
-        case SQRT:
-            push(sqrt(pop()));
-            break;
-        case CEIL:
-            push(ceil(pop()));
-            break;
-        case FLOOR:
-            push(floor(pop()));
-            break;
-        case FABS:
-            push(fabs(pop()));
-            break;
-        case LDEXP:
-            push(ldexp(pop(), (int)pop()));
-            break;
-        case FMOD:
-            push(fmod(pop(), pop()));
-            break;
-        case PLUS:
-            push(pop() + pop());
-            break;
-        case MINUS:
-            op2 = pop();
-            push(pop() - op2);
-            break;
-        case MULT:
-            push(pop() * pop());
-            break;
-        case DIV:
-            op2 = pop();
-            if (op2 != 0.0)
-                push(pop() / op2);
-            else
-                printf("error: zero divisor\n");
-            break;
-        case MOD:
-            op2 = pop();
-            if (op2 != 0.0)
-                push((int)pop() % (int)op2);
-            else
-                printf("error: zero divisor\n");
-            break;
-        case ASSIGN:
-            if (sp > 1) {
-                eat();
-                op2 = pop();
-                pop();
-                var[varname] = op2;
-            } else
-                printf("error: no value to assign\n");
-            break;
-        case PRINT:
-            eat();
-            if (sp > 0)
-                for (i = 0; i < sp; ++i)
-                    printf("\tvalue_stack[%d] = %f\n", i, val[i]);
-            else
-                printf("error: stack empty\n");
-            break;
-        case DUP:
-            eat();
-            if (sp > 1) {
-                op2 = pop();
-                pop();
-                push(op2);
-                push(op2);
-            } else
-                printf("error: not enough values in stack\n");
-            break;
-        case CLR:
-            eat();
-            sp = 0;
-            break;
-        case SWAP:
-            eat();
-            if (sp > 1) {
-                op2 = val[sp - 1];
-                val[sp - 1] = val[sp - 2];
-                val[sp - 2] = op2;
-            } else
-                printf("error: not enough values in stack\n");
-            break;
-        case NL:
-            printf("\t%.8g\n", var[26] = pop());
-            break;
-        default:
-            printf("error: unknown command %s\n", s);
-            break;
-    }
+	for (i = 0; s[i] != '\0' && ss[i] != '\0' && s[i] == ss[i]; ++i);
+
+	return (i > 0 && s[i] == ss[i]) ? MATCH : NOMATCH;
+}
+
+void next_word(char s[], char w[], int index[]) {
+	int i;
+
+	// Skip ws
+	for (; isspace(s[index[STRING]]) && s[index[STRING]] != '\0'; ++index[STRING]);
+
+	// Assign next word string
+	for (i = 0; !isspace(s[index[STRING]]) && s[index[STRING]] != '\0'; ++index[STRING], ++i)
+		w[i] = s[index[STRING]];
+	w[i] = '\0';
+}
+
+void prev_word(char s[], char w[], int index[]) {
+	int i;
+
+	// Go to start of current word
+	for (; index[STRING] >= 0 && !isspace(s[index[STRING]]); --index[STRING]);
+
+	// Skip ws
+	for (; index[STRING] >= 0 && isspace(s[index[STRING]]); --index[STRING]);
+
+	// Go to start of previous word
+	for (; index[STRING] >= 0 && !isspace(s[index[STRING]]); --index[STRING]);
+
+	// Sanity
+	if (index[STRING] < 0)
+		index[STRING] = 0;
+
+	// Assign next word string
+	for (i = 0; !isspace(s[index[STRING]]) && s[index[STRING]] != '\0'; ++index[STRING], ++i)
+		w[i] = s[index[STRING]];
+	w[i] = '\0';
+}
+
+double pop(double nb[], int i[]) {
+	if (i[NUMBER] <= 0) {
+		printf("pop(): Index out of bounds.\n");
+		return 0.0;
+	} else
+		return nb[--i[NUMBER]];
+}
+
+void push(double nb[], int i[], double d) {
+	if (i[NUMBER] >= MAXLEN - 1)
+		printf("push(): Index out of bounds.\n");
+	else
+		nb[i[NUMBER]++] = d;
+}
+
+double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
+	char word[MAXLEN]; 
+	double dd;
+
+	while (sb[i[STRING]] == '\0') {
+		next_word(sb, word, i);
+		if (num_match(word))
+			push(nb, i, atof(word));
+		else if (islower(word[0]) && word[1] == '\0') // If a variable
+			push(nb, i, vb[word[0] - 'a']);
+		else if (str_match(word, "last"))
+			push(nb, i, l);
+		else if (str_match(word, "sin"))
+			push(nb, i, sin(pop(nb, i)));
+		else if (str_match(word, "cos"))
+			push(nb, i, cos(pop(nb, i)));
+		else if (str_match(word, "tan"))
+			push(nb, i, tan(pop(nb, i)));
+		else if (str_match(word, "asin"))
+			push(nb, i, asin(pop(nb, i)));
+		else if (str_match(word, "acos"))
+			push(nb, i, acos(pop(nb, i)));
+		else if (str_match(word, "atan"))
+			push(nb, i, atan(pop(nb, i)));
+		else if (str_match(word, "atan2"))
+			push(nb, i, atan2(pop(nb, i), pop(nb, i)));
+		else if (str_match(word, "sinh"))
+			push(nb, i, sinh(pop(nb, i)));
+		else if (str_match(word, "cosh"))
+			push(nb, i, cosh(pop(nb, i)));
+		else if (str_match(word, "tanh"))
+			push(nb, i, tanh(pop(nb, i)));
+		else if (str_match(word, "exp"))
+			push(nb, i, exp(pop(nb, i)));
+		else if (str_match(word, "log"))
+			push(nb, i, log(pop(nb, i)));
+		else if (str_match(word, "log10"))
+			push(nb, i, log10(pop(nb, i)));
+		else if (str_match(word, "pow"))
+			push(nb, i, pow(pop(nb, i), pop(nb, i)));
+		else if (str_match(word, "sqrt"))
+			push(nb, i, sqrt(pop(nb, i)));
+		else if (str_match(word, "ceil"))
+			push(nb, i, ceil(pop(nb, i)));
+		else if (str_match(word, "floor"))
+			push(nb, i, floor(pop(nb, i)));
+		else if (str_match(word, "fabs"))
+			push(nb, i, fabs(pop(nb, i)));
+		else if (str_match(word, "ldexp"))
+			push(nb, i, ldexp(pop(nb, i), pop(nb, i)));
+		else if (str_match(word, "fmod"))
+			push(nb, i, fmod(pop(nb, i), pop(nb, i)));
+		else if (str_match(word, "+"))
+			push(nb, i, pop(nb, i) + pop(nb, i));
+		else if (str_match(word, "-")) {
+			dd = pop(nb, i);
+			push(nb, i, pop(nb, i) - dd);
+		} else if (str_match(word, "*"))
+			push(nb, i, pop(nb, i) * pop(nb, i));
+		else if (str_match(word, "/")) {
+			dd = pop(nb, i);
+			if (dd != 0.0)
+				push(nb, i, pop(nb, i) / dd);
+			else
+				printf("evaluate(): Zero divisor.\n");
+		} else if (str_match(word, "%")) {
+			dd = pop(nb, i);
+			if (dd != 0.0)
+				push(nb, i, (int)pop(nb, i) % (int)dd);
+			else
+				printf("evaluate(): Zero divisor.\n");
+		} else if (str_match(word, "=")) {
+			dd = pop(nb, i);
+			prev_word(sb, word, i);
+			prev_word(sb, word, i);
+			if (islower(word[0]) && word[1] == '\0')
+				vb[word[0] - 'a'] = dd;
+			else
+				printf("evaluate(): Bad variable assignment.\n");
+			next_word(sb, word, i);
+			next_word(sb, word, i);
+		} else if (str_match(word, "top")) {
+			dd = pop(nb, i);
+			printf("Top of number stack = %f\n", dd);
+			push(nb, i, dd);
+		} else if (str_match(word, "dup")) {
+			dd = pop(nb, i);
+			push(nb, i, dd);
+			push(nb, i, dd);
+		} else if (str_match(word, "clear")) {
+			i[NUMBER] = 0;
+			sb[i[STRING]] = '\0';
+		} else if (str_match(word, "swap")) {
+			dd = pop(nb, i);
+			nb[i[NUMBER]] = nb[i[NUMBER] - 1];
+			nb[i[NUMBER] - 1] = dd;
+		} else
+			printf("evaluate(): Unknown command %s\n", word);
+	}
+
+	return (i[NUMBER] == 1) ? pop(nb, i) : 0.0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int main(void) {
-    enum ops_t type;
-    char s[MAXOP];
+	char str_buf[MAXLEN];
+	double num_buf[MAXLEN - 1]; // MAXLEN - 1 numbers, 1 function to bring them
+	                            // all and in the darkness bind them.
+	double var_buf[26] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+	int index[3] = {0, 0, 0}; // STRING, NUMBER, VARIABLE
+	double last = 0.0;
 
-    while ((type = getop(s)) != FILEEND) {
-        exec(s, type);
-    }
+	while (getln(str_buf) != 0)
+		printf("%f\n", last = evaluate(str_buf, num_buf, var_buf, index, last));
 
-    return 0;
+	return 0;
 }
