@@ -5,8 +5,6 @@
 
 // Replace getch() & ungetch() with getln().
 
-// Variable assignment is ugly.
-
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
@@ -42,9 +40,6 @@ int str_match(char [], char []);
 
 // Get next word in a character array
 void next_word(char [], char [], int []);
-
-// Get previous word in a character array
-void prev_word(char [], char [], int []);
 
 // Pop the value from the top of the number stack
 double pop(double [], int []);
@@ -107,28 +102,6 @@ void next_word(char s[], char w[], int index[]) {
 	w[i] = '\0';
 }
 
-void prev_word(char s[], char w[], int index[]) {
-	int i;
-
-	// Go to start of current word
-	for (; index[STRING] >= 0 && !isspace(s[index[STRING]]); --index[STRING]);
-
-	// Skip ws
-	for (; index[STRING] >= 0 && isspace(s[index[STRING]]); --index[STRING]);
-
-	// Go to start of previous word
-	for (; index[STRING] >= 0 && !isspace(s[index[STRING]]); --index[STRING]);
-
-	// Sanity
-	if (index[STRING] < 0)
-		index[STRING] = 0;
-
-	// Assign next word string
-	for (i = 0; !isspace(s[index[STRING]]) && s[index[STRING]] != '\0'; ++index[STRING], ++i)
-		w[i] = s[index[STRING]];
-	w[i] = '\0';
-}
-
 double pop(double nb[], int i[]) {
 	if (i[NUMBER] <= 0) {
 		printf("pop(): Index out of bounds.\n");
@@ -152,9 +125,10 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 		next_word(sb, word, i);
 		if (num_match(word))
 			push(nb, i, atof(word));
-		else if (islower(word[0]) && word[1] == '\0') // If a variable
+		else if (islower(word[0]) && word[1] == '\0') { // If a variable
+			i[VARIABLE] = word[0] - 'a';
 			push(nb, i, vb[word[0] - 'a']);
-		else if (str_match(word, "last"))
+		} else if (str_match(word, "last"))
 			push(nb, i, l);
 		else if (str_match(word, "sin"))
 			push(nb, i, sin(pop(nb, i)));
@@ -215,16 +189,9 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 				push(nb, i, (int)pop(nb, i) % (int)dd);
 			else
 				printf("evaluate(): Zero divisor.\n");
-		} else if (str_match(word, "=")) {
-			dd = pop(nb, i);
-			prev_word(sb, word, i);
-			prev_word(sb, word, i);
-			if (islower(word[0]) && word[1] == '\0')
-				vb[word[0] - 'a'] = dd;
-			else
-				printf("evaluate(): Bad variable assignment.\n");
-			next_word(sb, word, i);
-			next_word(sb, word, i);
+		} else if (str_match(word, "=")) { // Variable assignment is done backwards (e.g. '4 x =')
+			pop(nb, i);
+			vb[i[VARIABLE]] = pop(nb, i);
 		} else if (str_match(word, "top"))
 			printf("Top of number stack = %f\n", nb[i[NUMBER] - 1]);
 		else if (str_match(word, "dup"))
