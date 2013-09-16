@@ -5,6 +5,8 @@
 
 // Replace getch() & ungetch() with getln().
 
+// Variable assignment is ugly.
+
 ////////////////////////////////////////////////////////////////////////////////
 // Libraries
 
@@ -225,11 +227,9 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 			next_word(sb, word, i);
 		} else if (str_match(word, "top"))
 			printf("Top of number stack = %f\n", nb[i[NUMBER] - 1]);
-		else if (str_match(word, "dup")) {
-			dd = pop(nb, i);
-			push(nb, i, dd);
-			push(nb, i, dd);
-		} else if (str_match(word, "clear")) {
+		else if (str_match(word, "dup"))
+			push(nb, i, nb[i[NUMBER] - 1]);
+		else if (str_match(word, "clear")) {
 			i[NUMBER] = 0;
 			sb[i[STRING]] = '\0';
 		} else if (str_match(word, "swap")) {
