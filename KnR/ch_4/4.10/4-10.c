@@ -223,11 +223,9 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 				printf("evaluate(): Bad variable assignment.\n");
 			next_word(sb, word, i);
 			next_word(sb, word, i);
-		} else if (str_match(word, "top")) {
-			dd = pop(nb, i);
-			printf("Top of number stack = %f\n", dd);
-			push(nb, i, dd);
-		} else if (str_match(word, "dup")) {
+		} else if (str_match(word, "top"))
+			printf("Top of number stack = %f\n", nb[i[NUMBER] - 1]);
+		else if (str_match(word, "dup")) {
 			dd = pop(nb, i);
 			push(nb, i, dd);
 			push(nb, i, dd);
