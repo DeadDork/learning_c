@@ -74,11 +74,13 @@ int num_match(char s[]) {
 
 	if (s[i] >= '1' && s[i] <= '9' && isdigit(s[i + 1]))
 		for (i += 2; isdigit(s[i]); ++i);
-	else if (isdigit(s[i]) && s[i + 1] == '.')
+	else if (isdigit(s[i]))
 		++i;
 
 	if (s[i] == '.')
-		for (++i; isdigit(s[i]); ++i);
+		++i;
+
+	for (; isdigit(s[i]); ++i);
 
 	return (i > 0 && isdigit(s[i - 1]) && s[i] == '\0') ? MATCH : NOMATCH;
 }
@@ -144,7 +146,7 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 	char word[MAXLEN]; 
 	double dd;
 
-	while (sb[i[STRING]] == '\0') {
+	while (sb[i[STRING]] != '\0') {
 		next_word(sb, word, i);
 		if (num_match(word))
 			push(nb, i, atof(word));
@@ -237,10 +239,12 @@ double evaluate(char sb[], double nb[], double vb[], int i[], double l) {
 			nb[i[NUMBER]] = nb[i[NUMBER] - 1];
 			nb[i[NUMBER] - 1] = dd;
 		} else
-			printf("evaluate(): Unknown command %s\n", word);
+			printf("evaluate(): Unknown command [%s]\n", word);
 	}
 
-	return (i[NUMBER] == 1) ? pop(nb, i) : 0.0;
+	dd = (i[NUMBER] == 1) ? pop(nb, i) : 0.0;
+	i[STRING] = i[NUMBER] = 0;
+	return dd;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +256,7 @@ int main(void) {
 	int index[3] = {0, 0, 0}; // STRING, NUMBER, VARIABLE
 	double last = 0.0;
 
-	while (getln(str_buf) != 0)
+	while (getln(str_buf))
 		printf("%f\n", last = evaluate(str_buf, num_buf, var_buf, index, last));
 
 	return 0;
