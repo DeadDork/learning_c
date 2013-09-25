@@ -1,0 +1,10 @@
+Why the multi file?
+-------------------
+
+I initially didn't understand how the `static` keyword could be used, and I certainly didn't understand the question. I figured that if I split my version of the calculator across a number of files, both questions would be resolved, and that I could then tackle 4-11.
+
+I refactored my calculator code across multiple files, then worked out how the `static` keyword worked--only to find that 4-11 pretty much only referred to getop() as written in the text (bugs and all).
+
+I'd put in so much work by that point, that I didn't want to throw away my revamped calculator. As such, there is a multi\_file directory that's got nothing to do with the problem.
+
+(The solution is just the function file, as K & R baked it, with the change.)
