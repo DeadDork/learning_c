@@ -1,0 +1,15 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -g # For debugging
+LDFLAGS =
+
+BIN = itoa_1
+OBJ = $(BIN).o is_number.o
+
+$(BIN) : $(OBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJ)
+
+is_number.o : is_number.c
+
+.PHONY : clean
+clean :
+	rm $(BIN) $(OBJ)
