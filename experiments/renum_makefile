@@ -1,0 +1,11 @@
+CC = gcc
+CFLAGS = -Wall -Wextra #-g # For debugging
+LDFLAGS =
+
+OBJ = is_number
+
+$(OBJ).o : $(OBJ).c
+
+.PHONY : clean
+clean :
+	rm *.o
