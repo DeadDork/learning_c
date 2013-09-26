@@ -49,11 +49,14 @@ void print_left_right(int left, int right) {
 	int element;
 
 	printf("       ");
-	for (element = 0; element < VECTOR_LENGTH; ++element)
-		if (element == left || element == right)
-			putchar('^');
+	for (element = 0; element < VECTOR_LENGTH; ++element) {
+		if (element == left)
+			putchar('L');
+		else if (element == right)
+			putchar('R');
 		else
 			putchar(' ');
+	}
 	putchar('\n');
 }
 
@@ -68,12 +71,13 @@ void swap(int vector[], int element_a, int element_b) {
 void quick_sort(int vector[], int left, int right) {
 	int element, last;
 
-	print_vector(vector);
-	print_left_right(left, right);
-
 	// Do nothing if array contains fewer than two elements
 	if (left >= right)
 		return;
+
+	// Prints the vector and the element comparisons
+	print_vector(vector);
+	print_left_right(left, right);
 
 	swap(vector, left, (left + right)/2); // Move partition element
 
