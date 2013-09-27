@@ -1,0 +1,37 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Solution to exercise 4-14.
+
+// Swaps the values of two variables of the same type.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// Macros
+
+#define PrintXY(x, y) printf("\t" #x " = [%c]; " #y " = [%c]\n", x, y)
+
+#define Swap(t, x, y) {\
+	t temporary;\
+	temporary = x;\
+	x = y;\
+	y = temporary;\
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int main(void) {
+	int x = 'x', y = 'y';
+
+	printf("Before Swap():\n");
+	PrintXY(x, y);
+
+	Swap(int, x, y);
+	printf("Post Swap():\n");
+	PrintXY(x, y);
+
+	return 0;
+}
