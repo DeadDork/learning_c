@@ -67,10 +67,11 @@ char *strncat(char *source, char *target, unsigned int length) {
 }
 
 int strncmp(char *source, char *target, unsigned int length) {
-	if (length > 0)
+	if (length > 0) {
 		while (--length && *source++ == *target++);
-
-	return (!length && *source == *target) ? TRUE : FALSE;
+		return (!length && *source == *target) ? TRUE : FALSE;
+	} else
+		return FALSE;
 }
 
 int get_string(char *string) {
