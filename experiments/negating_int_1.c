@@ -1,0 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+// Comments
+
+// Prints the return values of various negated numbers.
+
+// Conclusion: negating anything but 0 results in 0; negating 0 results in 1.
+
+// N.B. Fucking scanf() loses it's shit if you ^D.
+
+////////////////////////////////////////////////////////////////////////////////
+// Libraries
+
+#include <stdio.h>
+
+////////////////////////////////////////////////////////////////////////////////
+int main(void) {
+	int number;
+
+	while (scanf("%d", &number))
+		printf("Negation: [%d]\n", !number);
+
+	return 0;
+}
