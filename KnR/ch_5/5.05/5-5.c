@@ -67,7 +67,8 @@ char *strncat(char *source, char *target, unsigned int length) {
 }
 
 int strncmp(char *source, char *target, unsigned int length) {
-	while (--length && *source++ == *target++);
+	if (length > 0)
+		while (--length && *source++ == *target++);
 
 	return (!length && *source == *target) ? TRUE : FALSE;
 }
