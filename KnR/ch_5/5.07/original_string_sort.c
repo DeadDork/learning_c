@@ -1,10 +1,10 @@
 // Refactored 'original' version.
 
-#include <stdio.h>
-#include <string.h>
-
 // main() {{{
+#include <stdio.h>
+
 #define LINE_COUNT_MAX 5000
+
 int read_lines(char *[]);
 void string_sort(char *[], int, int);
 void write_lines(char *[], int);
@@ -26,7 +26,10 @@ int main(void) {
 
 // Read lines from input {{{
 // read_lines() {{{
+#include <string.h>
+
 #define LINE_LENGTH_MAX 1000
+
 int get_line(char *, int);
 char *alloc(int);
 
@@ -62,6 +65,7 @@ int get_line(char line[], int line_length_max) {
 
 // alloc() {{{
 #define ALLOC_MAX LINE_COUNT_MAX * LINE_LENGTH_MAX
+
 static char alloc_buffer[ALLOC_MAX];
 static char *alloc_next_free = alloc_buffer;
 
