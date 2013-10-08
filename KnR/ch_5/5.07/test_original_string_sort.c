@@ -64,17 +64,17 @@ int main(void) {
 int read_lines(char *[], FILE *);
 
 double average_time(FILE *test, char *line_pointer_array[]) {
-	clock_t time_start, time_stop, time_total = 0.0;
+	double time_start, time_stop, time_total = 0.0;
 
 	int element;
 	for (element = 0; element < ITERATIONS_MAX; ++element) {
-		time_start = clock();
+		time_start = (double)clock();
 		read_lines(line_pointer_array, test);
-		time_stop = clock();
+		time_stop = (double)clock();
 		time_total += time_stop - time_start;
 	}
 
-	return (double)time_total / element;
+	return time_total;
 }
 // }}}
 
