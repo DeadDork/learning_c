@@ -43,7 +43,8 @@ int read_lines(char *line_pointer_array[], char *lines_buffer) {
 	while (line_length = get_line(line, LINE_LENGTH_MAX)) {
 		if (lines_count < LINES_COUNT_MAX && lines_buffer_start + LINES_BUFFER_MAX > lines_buffer + line_length) {
 			line_pointer_array[lines_count++] = lines_buffer;
-			lines_buffer++ = stpcpy(lines_buffer, line);
+			lines_buffer = stpcpy(lines_buffer, line);
+			++lines_buffer; // Otherwise error: lvalue required as left operand of assignment
 		} else
 			return -1; // Input too big
 	}
