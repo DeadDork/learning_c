@@ -20,6 +20,12 @@ $(BIN_3) : $(OBJ_3)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 $(OBJ_3).o : $(OBJ_3).c
 
+BIN_4 = test_new_string_sort
+OBJ_4 = $(BIN_4).o
+$(BIN_4) : $(OBJ_4)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+$(OBJ_4).o : $(OBJ_4).c
+
 .PHONY : clean
 clean :
-	rm *.o $(BIN_1) $(BIN_2) $(BIN_3)
+	rm *.o $(BIN_1) $(BIN_2) $(BIN_3) $(BIN_4)
