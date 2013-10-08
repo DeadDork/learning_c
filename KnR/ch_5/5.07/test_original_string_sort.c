@@ -74,7 +74,7 @@ double average_time(FILE *test, char *line_pointer_array[]) {
 		time_total += time_stop - time_start;
 	}
 
-	return time_total / (double)element;
+	return (double)time_total / element;
 }
 // }}}
 
