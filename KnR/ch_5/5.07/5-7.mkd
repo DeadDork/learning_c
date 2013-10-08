@@ -1,0 +1,8 @@
+Solution to K & R exercise 5-7
+==============================
+
+To be honest: I have no idea which is faster.
+
+Unless my speed test is fallacious (perhaps dividing by the element number is making the difference too small for floating point notation?), it appears as though the two versions are approximately as fast as the other.
+
+That said, the new version is cleaner and simpler, and superior for that alone.
