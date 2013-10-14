@@ -1,16 +1,67 @@
-// Replaces a string of tabs with the spaces needed to achieve the same length,
-// with the tab_stop width being set via arguments.
+// Replaces tabs with spaces.
 
-// Additionally, the user can set where detabment begins, as well as the tab
-// stop, such that `detab -m +n` will begin detabment at column `m` and tab stop
-// is `n`.
+// Solves the problem of a detab start column not aligning well with tabstop by
+// "rounding" up tabstops.
 
-// There is a bit of trickiness: what if the tab stop & detabbing column don't
-// align? I solved this problem by "rounding down" tabs.
+// N.B. Demonstrates the design idea of begining with a broad-level main()
+// makes for a much clearer program.
 
-#include <ctype.h>
+// main() {{{
 #include <stdio.h>
+
+void detab(int, int, int);
+int set_detab_start_column(int, char *[]);
+int set_tabstop(int, char *[]);
+
+int main(int argc, char *argv[]) {
+	int place_holder;
+	int column_start = ((place_holder = set_detab_start_column(argc, argv)) > 0) ? place_holder : 0;
+	int tabstop = ((place_holder = set_tabstop(argc, argv)) > 0) ? place_holder : 8;
+
+	int character;
+	while ((character = getchar()) != EOF)
+		detab(column_start, tabstop, character);
+
+	return 0;
+}
+// }}}
+
+// detab() {{{
+void print_spaces(int);
+
+void detab(int column_start, int tabstop, int character) {
+	static int column_count;
+	int tab_space;
+
+	if (character == '\t') {
+		tab_space = tabstop - column_count % tabstop;
+		column_count += tab_space;
+		if (column_count < column_start)
+			putchar(character);
+		else if (column_count - tab_space < column_start)
+			print_spaces(tab_space);
+		else
+			print_spaces(tab_space);
+	} else {
+		putchar(character);
+		++column_count;
+	}
+
+	if (character == '\n')
+		column_count = 0;
+}
+// detab() }}}
+
+// set_detab_start_column() {{{
 #include <stdlib.h>
+
+#define ArgsAssign(argc_count, argv_element, arg_sign) {\
+	if (argc == argc_count && argv[argv_element][0] == arg_sign) {\
+		argv[argv_element][0] = '0';\
+		if (is_number(argv[argv_element]))\
+			return atoi(argv[argv_element]);\
+	}\
+}
 
 enum match {
 	NO_MATCH,
@@ -18,50 +69,26 @@ enum match {
 };
 
 enum match is_number(char *);
-void print_spaces(int);
-void print_tabs(int);
 
-int main(int argc, char *argv[]) {
-	int character, column_count = 0, column_start = 0, tab_stop = 8;
-
-	if (argc == 2 && argv[1][0] == '+') {
-		// Set tab stop
-		argv[1][0] = '0';
-		if (is_number(argv[1]))
-			tab_stop = (atoi(argv[1]) > 1) ? atoi(argv[1]) : tab_stop;
-	} else if (argc == 3 && argv[1][0] == '-' && argv[2][0] == '+') {
-		// Set detabbing start column
-		argv[1][0] = '0';
-		if (is_number(argv[1]))
-			column_start = (atoi(argv[1]) > 0) ? atoi(argv[1]) : column_start;
-		// Set tab stop
-		argv[2][0] = '0';
-		if (is_number(argv[2]))
-			tab_stop = (atoi(argv[2]) > 1) ? atoi(argv[2]) : tab_stop;
-	}
-
-	while ((character = getchar()) != EOF) {
-		if (column_count < column_start) {
-			if (character == '\t')
-				column_count += tab_stop;
-			else
-				++column_count;
-
-			if (column_count <= column_start)
-				putchar(character);
-		} else {
-			if (character == '\t')
-				print_spaces(tab_stop);
-			else
-				putchar(character);
-
-			if (character == '\n')
-				column_count = 0;
-		}
-	}
+int set_detab_start_column(int argc, char *argv[]) {
+	ArgsAssign(2, 1, '-');
+	ArgsAssign(3, 1, '-');
+	ArgsAssign(3, 2, '-');
 
 	return 0;
 }
+// set_detab_start_column() }}}
+
+int set_tabstop(int argc, char *argv[]) {
+	ArgsAssign(2, 1, '+');
+	ArgsAssign(3, 1, '+');
+	ArgsAssign(3, 2, '+');
+
+	return 0;
+}
+
+// is_number() {{{
+#include <ctype.h>
 
 enum match is_number(char *character) {
 	char *start_character = character;
@@ -75,9 +102,4 @@ enum match is_number(char *character) {
 void print_spaces(int space_number) {
 	while (space_number-- > 0)
 		putchar(' ');
-}
-
-void print_tabs(int tab_number) {
-	while (tab_number-- > 0)
-		putchar('\t');
 }
