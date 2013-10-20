@@ -14,7 +14,7 @@
 #define FALSE 0
 #define TRUE 1
 
-// More modular {{{
+// Makes it easier to add flags {{{
 enum Flag {
 	REVERSE,
 	SORT
@@ -22,12 +22,13 @@ enum Flag {
 
 enum Sort {
 	LEXICOGRAPHIC,
-	NUMERICAL
+	NUMERIC
 };
 // }}}
 
 void get_args(int, char *[], int []);
 int get_line(char *);
+void *get_line_comparison(enum Sort);
 int numcmp(char *, char *);
 int read_lines(char *[]);
 void print_lines(char *[], int, int []);
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
 
 	get_args(argc, argv, flags);
 	if ((line_number = read_lines(line_pointer_array)) >= 0) {
-		sort_lines(line_pointer_array, 0, line_number - 1, (int (*)(void *, void *))((flags[SORT] == NUMERICAL) ? numcmp : strcmp));
+		sort_lines(line_pointer_array, 0, line_number - 1, get_line_comparison(flags[SORT]));
 		print_lines(line_pointer_array, line_number, flags);
 	} else
 		printf("error: too many lines.\n");
@@ -55,11 +56,18 @@ void get_args(int argc, char *argv[], int flags[]) {
 	if (argc > 1) {
 		while (--argc) {
 			if (!strcmp(argv[argc], "-n"))
-				flags[SORT] = NUMERICAL;
+				flags[SORT] = NUMERIC;
 			else if (!strcmp(argv[argc], "-r"))
 				flags[REVERSE] = TRUE;
 		}
 	}
+}
+
+void *get_line_comparison(enum Sort comparison) {
+	if (comparison == LEXICOGRAPHIC)
+		return strcmp;
+	else if (comparison == NUMERIC)
+		return numcmp;
 }
 
 int read_lines(char *line_pointer_array[]) {
