@@ -172,7 +172,8 @@ int read_lines(void) {
 		field_pointers_array[line_number + 1][ENTIRE_LINE] = stpcpy(field_pointers_array[line_number][ENTIRE_LINE], line) + 1;
 		field_pointers_array[line_number][FIRST_FIELD] = field_pointers_array[line_number][ENTIRE_LINE];
 		for (field = SECOND_FIELD; field < FIELDS_MAX; ++field)
-			field_pointers_array[line_number][field] = (line_end = get_field_end(line_number, field - 1)) + (line_end != '\0');
+			line_end = get_field_end(line_number, field - 1);
+			field_pointers_array[line_number][field] = line_end + (*line_end != '\0');
 	}
 
 	return (line_number == LINE_NUMBER_MAX) ? -1 : line_number;
