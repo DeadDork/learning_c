@@ -247,9 +247,11 @@ void get_field_arguments(int argc, char *argv[]) {
 				temporary_field[FIELD_NUMBER] = field_number;
 			else if (field_number < ENTIRE_LINE || field_number >= FIELDS_MAX || ++field_argument_count[FIELD_NUMBER] > 1 || field >= FIELDS_MAX)
 				bad_argument();
-			temporary_field[FIELD_STATE] = TRUE;
+			temporary_field[FIELD_STATE] = (argument > 1) ? TRUE : FALSE; // sort $n should not activate $0
 			sync_field_arguments(field_arguments[field], temporary_field);
 			initialize_field_arguments(temporary_field);
+			for (int field = FIELD_STATE; field < FIELD_ARGUMENTS_MAX; ++field)
+				field_argument_count[field] = 0;
 		}
 	}
 	temporary_field[FIELD_STATE] = TRUE;
