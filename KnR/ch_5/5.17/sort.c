@@ -196,7 +196,7 @@ void get_program_arguments(int argc, char *argv[]) {
 	program_arguments[SEPARATOR] = DEFAULT_SEPARATOR;
 
 	int program_argument_count[PROGRAM_ARGUMENTS_MAX];
-	for (argument = 0; argument < FIELD_ARGUMENTS_MAX; ++argument)
+	for (argument = 0; argument < PROGRAM_ARGUMENTS_MAX; ++argument)
 		program_argument_count[argument] = 0;
 
 	for (argument = 1, --argc; argument < argc; ++argument) {
@@ -282,9 +282,10 @@ int read_lines(void) {
 	for (line_number = 0; (line_length = get_line(line)) > 0 && line_number < LINE_NUMBER_MAX; ++line_number) {
 		field_pointers_array[line_number + 1][ENTIRE_LINE] = stpcpy(field_pointers_array[line_number][ENTIRE_LINE], line) + 1;
 		field_pointers_array[line_number][FIRST_FIELD] = field_pointers_array[line_number][ENTIRE_LINE];
-		for (field = SECOND_FIELD; field < FIELDS_MAX; ++field)
+		for (field = SECOND_FIELD; field < FIELDS_MAX; ++field) {
 			line_end = get_field_end(line_number, field - 1);
 			field_pointers_array[line_number][field] = line_end + (*line_end != '\0');
+		}
 	}
 
 	return (line_number == LINE_NUMBER_MAX) ? -1 : line_number;
