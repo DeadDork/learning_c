@@ -1,0 +1,50 @@
+Sort
+====
+
+Sorts lines of input
+
+Synopsis
+--------
+
+sort ['blank' or '$1..10'] [-d] [-fn] [-r] [-s 'separator'] ... [input stream]
+
+Optional arguments
+------------------
+
+-d = directory order (default false)
+
+-f = fold cases (i.e. case insensitive; default case sensitive)
+
+-n = numerical comparison of strings (default false)
+
+-r = reverse order (default fault)
+
+-s = separator (defaults to ' ')
+
+$n = sort fields (up to 10; defaults to $0, i.e. the whole line; quote correcty)
+
+How-to
+------
+
+To sort lines, select the field and comparison method, and do so again for any sub-sorting of the previous sort, e.g.
+
+sort '$7' -f '$6' -n
+
+would sort input according to case-insensitive comparisons in the first designated field (in this case, the seventh field), and sort internally the subgroupings numerically by the second designated field (in this case, the sixth field), e.g.
+
+b a b c d 9 x
+a z y x w 8 g
+a a b c d 7 g
+b z y x w 4 a
+
+would sort to
+
+b z y x w 4 a
+a a b c d 7 g
+a z y x w 8 g
+b a b c d 9 x
+
+FYI
+---
+
+I've put in some rudimentary checks to make this program run sanely, e.g. there can only be one '-s' argument.
