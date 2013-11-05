@@ -53,6 +53,7 @@ int field_arguments[FIELDS_MAX][FIELD_ARGUMENTS_MAX];
 int program_arguments[PROGRAM_ARGUMENTS_MAX];
 
 int compare(int, int, int);
+void error(char *, char *);
 char *get_field_end(int, int);
 
 // Compare fields {{{
@@ -60,7 +61,6 @@ int lexicographical_comparison(int, int, int);
 int numerical_comparison(int, int, int);
 
 int compare(int source, int target, int field) {
-	field = field_arguments[field][FIELD_NUMBER];
 	if (field_arguments[field][SORT] == NUMERICAL)
 		return numerical_comparison(source, target, field);
 	else 
@@ -68,12 +68,13 @@ int compare(int source, int target, int field) {
 }
 
 int numerical_comparison(int source, int target, int field) {
-	char *psource = field_pointers_array[source][field];
-	char *ptarget = field_pointers_array[target][field];
+	int field_number = field_arguments[field][FIELD_NUMBER];
+	char *psource = field_pointers_array[source][field_number];
+	char *ptarget = field_pointers_array[target][field_number];
 	int source_integer, target_integer;
 
 	if (field > ENTIRE_LINE) {
-		char *source_end = get_field_end(source, field), *target_end = get_field_end(target, field);
+		char *source_end = get_field_end(source, field_number), *target_end = get_field_end(target, field_number);
 		char temporary_source_end = *source_end, temporary_target_end = *target_end;
 		*source_end = *target_end = '\0'; 
 		source_integer = atoi(psource), target_integer = atoi(ptarget);
@@ -96,8 +97,8 @@ int numerical_comparison(int source, int target, int field) {
 #define IsDirectoryOrder(x) ((isalnum(x) || isspace(x)) ? TRUE : FALSE)
 
 int lexicographical_comparison(int source, int target, int field) {
-	char *psource = field_pointers_array[source][field];
-	char *ptarget = field_pointers_array[target][field];
+	char *psource = field_pointers_array[source][field_arguments[field][FIELD_NUMBER]];
+	char *ptarget = field_pointers_array[target][field_arguments[field][FIELD_NUMBER]];
 	int separator;
 	if (field > ENTIRE_LINE)
 		separator = program_arguments[SEPARATOR];
@@ -142,6 +143,11 @@ int lexicographical_comparison(int source, int target, int field) {
 // Makes lexicographical comparisons }}}
 // Compare fields }}}
 
+void error(char *function, char *error_message) {
+	printf("%s(): %s\n", function, error_message);
+	exit(1);
+}
+
 char *get_field_end(int line_number, int field) {
 	char *line;
 	for (line = field_pointers_array[line_number][field]; *line != program_arguments[SEPARATOR] && *line != '\0'; ++line);
@@ -165,7 +171,7 @@ int main(int argc, char *argv[]) {
 		sort_lines(0, line_number - 1, (field_arguments[ENTIRE_LINE][FIELD_STATE] == TRUE) ? ENTIRE_LINE : FIRST_FIELD);
 		write_lines(line_number);
 	} else
-		printf("main(): too many lines in input.\n");
+		error("main", "too many lines of input.\n");
 
 	return 0;
 }
@@ -174,17 +180,11 @@ int main(int argc, char *argv[]) {
 // Get settings {{{
 void get_program_arguments(int, char *[]);
 void get_field_arguments(int, char *[]);
-void bad_argument(void);
 
 void get_arguments(int argc, char *argv[]) {
 	get_program_arguments(argc, argv);
 
 	get_field_arguments(argc, argv);
-}
-
-void bad_argument(void) {
-	printf("Usage:\n\tsort [-s DELIMITER] [-f] [-r] [-n] [-d] [$FIELD_NUMBER] [-frnd] ... [FILE_STREAM]\n");
-	exit(1); // Yes, yes, I don't "know" this function yet
 }
 
 // Get non-field program arguments {{{
@@ -202,7 +202,7 @@ void get_program_arguments(int argc, char *argv[]) {
 	for (argument = 1, --argc; argument < argc; ++argument) {
 		if (!strcmp(argv[argument], "-s")) {
 			if (++program_argument_count[SEPARATOR] > 1)
-				bad_argument();
+				error("get_program_arguments", "Too many separators.");
 			else
 				program_arguments[SEPARATOR] = (isprint(*argv[argument + 1]) || *argv[argument + 1] == '\t') ? *argv[argument + 1] : DEFAULT_SEPARATOR;
 		}
@@ -219,39 +219,44 @@ void get_field_arguments(int argc, char *argv[]) {
 	int field_argument_count[FIELD_ARGUMENTS_MAX];
 	for (argument = 0; argument < FIELD_ARGUMENTS_MAX; ++argument)
 		field_argument_count[argument] = 0;
-	int temporary_field[FIELD_ARGUMENTS_MAX];
-	initialize_field_arguments(temporary_field);
-
 	for (field = ENTIRE_LINE; field < FIELDS_MAX; ++field)
 		initialize_field_arguments(field_arguments[field]);
+	int temporary_field[FIELD_ARGUMENTS_MAX];
+	initialize_field_arguments(temporary_field);
 
 	for (field = ENTIRE_LINE, argument = 1; argument < argc; ++argument) {
 		if (!strcmp(argv[argument], "-d")) {
 			if (++field_argument_count[DIRECTORY_ORDER] > 1)
-				bad_argument();
+				error("get_field_arguments", "too many directory order arguments.");
 			temporary_field[DIRECTORY_ORDER] = TRUE;
 		} else if (!strcmp(argv[argument], "-r")) {
 			if (++field_argument_count[REVERSE] > 1)
-				bad_argument();
+				error("get_field_arguments", "too many reverse arguments.");
 			temporary_field[REVERSE] = TRUE;
 		} else if (!strcmp(argv[argument], "-f")) {
 			if (++field_argument_count[SORT] > 1)
-				bad_argument();
+				error("get_field_arguments", "too many sort arguments.");
 			temporary_field[SORT] = LEXICOGRAPHICAL_CASE_INSENSITIVE;
 		} else if (!strcmp(argv[argument], "-n")) {
 			if (++field_argument_count[SORT] > 1)
-				bad_argument();
+				error("get_field_arguments", "too many sort arguments.");
 			temporary_field[SORT] = NUMERICAL;
 		} else if (*argv[argument] == '$') {
-			if ((field_number = atoi(argv[argument] + 1)) >= ENTIRE_LINE && field_number < FIELDS_MAX)
-				temporary_field[FIELD_NUMBER] = field_number;
-			else if (field_number < ENTIRE_LINE || field_number >= FIELDS_MAX || ++field_argument_count[FIELD_NUMBER] > 1 || field >= FIELDS_MAX)
-				bad_argument();
-			temporary_field[FIELD_STATE] = (argument > 1) ? TRUE : FALSE; // sort $n should not activate $0
-			sync_field_arguments(field_arguments[field], temporary_field);
+			if ((field_number = atoi(argv[argument] + 1)) < ENTIRE_LINE || field_number >= FIELDS_MAX || field >= FIELDS_MAX)
+				error("get_field_arguments", "bad field argument.");
+			temporary_field[FIELD_STATE] = FALSE;
+			for (int argument = FIELD_STATE; argument < FIELD_ARGUMENTS_MAX; ++argument) {
+				if (field_argument_count[argument]) {
+					temporary_field[FIELD_STATE] = TRUE;
+					break;
+				}
+			}
+			sync_field_arguments(field_arguments[field++], temporary_field);
+			for (int field_argument = FIELD_STATE; field_argument < FIELD_ARGUMENTS_MAX; ++field_argument)
+				field_argument_count[field_argument] = 0;
 			initialize_field_arguments(temporary_field);
-			for (int field = FIELD_STATE; field < FIELD_ARGUMENTS_MAX; ++field)
-				field_argument_count[field] = 0;
+			temporary_field[FIELD_STATE] = TRUE;
+			temporary_field[FIELD_NUMBER] = field_number;
 		}
 	}
 	temporary_field[FIELD_STATE] = TRUE;
@@ -323,11 +328,10 @@ void sort_lines(int left, int right, int field) {
 }
 
 int get_next_right(int left, int right, int field) {
-	int current_right;
+	int current_right = left;
+	for (; current_right < right && !compare(current_right, left, field); ++current_right);
 
-	for (current_right = left; current_right < right && !compare(current_right, left, field); ++current_right);
-
-	return current_right;
+	return (current_right == right && !compare(current_right, left, field)) ? current_right : current_right - 1;
 }
 
 // Sort by fields {{{
