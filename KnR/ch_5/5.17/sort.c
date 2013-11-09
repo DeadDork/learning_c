@@ -6,6 +6,7 @@
 
 #define LINE_LENGTH_MAX 1000
 #define LINE_NUMBER_MAX 5000
+#define FIRST_ARGUMENT 1
 
 enum FIELDS {
 	ENTIRE_LINE,
@@ -19,12 +20,12 @@ enum FIELDS {
 	EIGHTH_FIELD,
 	NINTH_FIELD,
 	TENTH_FIELD,
-	FIELDS_MAX
+	END_FIELDS
 };
 
 enum PROGRAM_ARGUMENTS {
 	SEPARATOR,
-	PROGRAM_ARGUMENTS_MAX
+	END_PROGRAM_ARGUMENTS
 };
 
 enum FIELD_ARGUMENTS {
@@ -33,28 +34,28 @@ enum FIELD_ARGUMENTS {
 	DIRECTORY_ORDER,
 	REVERSE,
 	SORT,
-	FIELD_ARGUMENTS_MAX
+	END_FIELD_ARGUMENTS
 };
 
 enum SORT_ARGUMENTS {
 	LEXICOGRAPHICAL_CASE_SENSITIVE,
 	LEXICOGRAPHICAL_CASE_INSENSITIVE,
 	NUMERICAL,
-	SORT_ARGUMENTS_MAX
+	END_SORT_ARGUMENTS
 };
-
+ 
 enum BOOLEAN {
 	FALSE,
 	TRUE
 };
 
-char *field_pointers_array[LINE_NUMBER_MAX][FIELDS_MAX];
-int field_arguments[FIELDS_MAX][FIELD_ARGUMENTS_MAX];
-int program_arguments[PROGRAM_ARGUMENTS_MAX];
+char *field_pointers_array[LINE_NUMBER_MAX][END_FIELDS];
+int field_arguments[END_FIELDS][END_FIELD_ARGUMENTS];
+int program_arguments[END_PROGRAM_ARGUMENTS];
 
 int compare(int, int, int);
 void error(char *, char *);
-char *get_field_end(int, int);
+void initialize_count_array(int [], int);
 
 // Compare fields {{{
 int lexicographical_comparison(int, int, int);
@@ -67,14 +68,16 @@ int compare(int source, int target, int field) {
 		return lexicographical_comparison(source, target, field);
 }
 
+// Compare two strings numerically {{{
+char *get_field_end(int, int);
+
 int numerical_comparison(int source, int target, int field) {
-	int field_number = field_arguments[field][FIELD_NUMBER];
-	char *psource = field_pointers_array[source][field_number];
-	char *ptarget = field_pointers_array[target][field_number];
+	char *psource = field_pointers_array[source][field];
+	char *ptarget = field_pointers_array[target][field];
 	int source_integer, target_integer;
 
 	if (field > ENTIRE_LINE) {
-		char *source_end = get_field_end(source, field_number), *target_end = get_field_end(target, field_number);
+		char *source_end = get_field_end(source, field), *target_end = get_field_end(target, field);
 		char temporary_source_end = *source_end, temporary_target_end = *target_end;
 		*source_end = *target_end = '\0'; 
 		source_integer = atoi(psource), target_integer = atoi(ptarget);
@@ -92,13 +95,21 @@ int numerical_comparison(int source, int target, int field) {
 		return 0;
 }
 
+char *get_field_end(int line_number, int field) {
+	char *line = field_pointers_array[line_number][field];
+	for (; *line != program_arguments[SEPARATOR] && *line != '\0'; ++line);
+
+	return line;
+}
+// Compare two strings numerically }}}
+
 // Makes lexicographical comparisons {{{
 #define Case(x) ((islower((x))) ? toupper((x)) : (x))
 #define IsDirectoryOrder(x) ((isalnum(x) || isspace(x)) ? TRUE : FALSE)
 
 int lexicographical_comparison(int source, int target, int field) {
-	char *psource = field_pointers_array[source][field_arguments[field][FIELD_NUMBER]];
-	char *ptarget = field_pointers_array[target][field_arguments[field][FIELD_NUMBER]];
+	char *psource = field_pointers_array[source][field];
+	char *ptarget = field_pointers_array[target][field];
 	int separator;
 	if (field > ENTIRE_LINE)
 		separator = program_arguments[SEPARATOR];
@@ -148,10 +159,9 @@ void error(char *function, char *error_message) {
 	exit(1);
 }
 
-char *get_field_end(int line_number, int field) {
-	char *line;
-	for (line = field_pointers_array[line_number][field]; *line != program_arguments[SEPARATOR] && *line != '\0'; ++line);
-	return line;
+void initialize_count_array(int count_array[], int max_count) {
+	for (int count = 0; count < max_count; ++count)
+		count_array[count] = 0;
 }
 // Universal }}}
 
@@ -171,99 +181,116 @@ int main(int argc, char *argv[]) {
 		sort_lines(0, line_number - 1, (field_arguments[ENTIRE_LINE][FIELD_STATE] == TRUE) ? ENTIRE_LINE : FIRST_FIELD);
 		write_lines(line_number);
 	} else
-		error("main", "too many lines of input.\n");
+		error("main", "too many lines of input.");
 
 	return 0;
 }
 // Main }}}
 
 // Get settings {{{
-void get_program_arguments(int, char *[]);
-void get_field_arguments(int, char *[]);
+void parse_arguments(int, char *[]);
+void compile_arguments(int, char *[]);
 
 void get_arguments(int argc, char *argv[]) {
-	get_program_arguments(argc, argv);
-
-	get_field_arguments(argc, argv);
+	parse_arguments(argc, argv);
+	compile_arguments(argc, argv);
 }
 
-// Get non-field program arguments {{{
-#define DEFAULT_SEPARATOR ' '
+// Parse the arg's {{{
+void parse_program_arguments(int, char *[]);
+void parse_field_arguments(int, char *[]);
 
-void get_program_arguments(int argc, char *argv[]) {
-	int argument;
+void parse_arguments(int argc, char *argv[]) {
+	parse_program_arguments(argc, argv);
+	parse_field_arguments(argc, argv);
+}
 
-	program_arguments[SEPARATOR] = DEFAULT_SEPARATOR;
+void parse_program_arguments(int argc, char *argv[]) {
+	int program_argument_count[END_PROGRAM_ARGUMENTS - SEPARATOR] = {/*-s*/ 0};
 
-	int program_argument_count[PROGRAM_ARGUMENTS_MAX];
-	for (argument = 0; argument < PROGRAM_ARGUMENTS_MAX; ++argument)
-		program_argument_count[argument] = 0;
-
-	for (argument = 1, --argc; argument < argc; ++argument) {
+	int argument = argc;
+	while (--argument > 0) {
 		if (!strcmp(argv[argument], "-s")) {
-			if (++program_argument_count[SEPARATOR] > 1)
-				error("get_program_arguments", "Too many separators.");
-			else
-				program_arguments[SEPARATOR] = (isprint(*argv[argument + 1]) || *argv[argument + 1] == '\t') ? *argv[argument + 1] : DEFAULT_SEPARATOR;
+			if (++program_argument_count[0] > 1)
+				error("parse_program_argument_counts", "too many [-s]'s.");
+			if (argument == argc - 1 || strlen(argv[argument]) > 1 || !isprint(*argv[argument]) || *argv[argument] != '\t')
+				error("parse_program_argument_counts", "bad [-s] assignment.");
 		}
 	}
 }
-// Get non-field program arguments }}}
 
-// Get field program arguments {{{
-void initialize_field_arguments(int []);
-void sync_field_arguments(int [], int []);
+void parse_field_arguments(int argc, char *argv[]) {
+	int field_arguments_count[4] = { /*-d*/ 0, /*-[fn]*/ 0, /*-r*/ 0, /*$x*/ 0};
 
-void get_field_arguments(int argc, char *argv[]) {
-	int argument, field, field_number;
-	int field_argument_count[FIELD_ARGUMENTS_MAX];
-	for (argument = 0; argument < FIELD_ARGUMENTS_MAX; ++argument)
-		field_argument_count[argument] = 0;
-	for (field = ENTIRE_LINE; field < FIELDS_MAX; ++field)
-		initialize_field_arguments(field_arguments[field]);
-	int temporary_field[FIELD_ARGUMENTS_MAX];
-	initialize_field_arguments(temporary_field);
+	for (int argument = 1; argument < argc; ++argument) {
+		field_arguments_count[0] = 0;
+		field_arguments_count[1] = 0;
+		field_arguments_count[2] = 0;
 
-	for (field = ENTIRE_LINE, argument = 1; argument < argc; ++argument) {
-		if (!strcmp(argv[argument], "-d")) {
-			if (++field_argument_count[DIRECTORY_ORDER] > 1)
-				error("get_field_arguments", "too many directory order arguments.");
-			temporary_field[DIRECTORY_ORDER] = TRUE;
-		} else if (!strcmp(argv[argument], "-r")) {
-			if (++field_argument_count[REVERSE] > 1)
-				error("get_field_arguments", "too many reverse arguments.");
-			temporary_field[REVERSE] = TRUE;
-		} else if (!strcmp(argv[argument], "-f")) {
-			if (++field_argument_count[SORT] > 1)
-				error("get_field_arguments", "too many sort arguments.");
-			temporary_field[SORT] = LEXICOGRAPHICAL_CASE_INSENSITIVE;
-		} else if (!strcmp(argv[argument], "-n")) {
-			if (++field_argument_count[SORT] > 1)
-				error("get_field_arguments", "too many sort arguments.");
-			temporary_field[SORT] = NUMERICAL;
-		} else if (*argv[argument] == '$') {
-			if ((field_number = atoi(argv[argument] + 1)) < ENTIRE_LINE || field_number >= FIELDS_MAX || field >= FIELDS_MAX)
-				error("get_field_arguments", "bad field argument.");
-			temporary_field[FIELD_STATE] = FALSE;
-			for (int argument = FIELD_STATE; argument < FIELD_ARGUMENTS_MAX; ++argument) {
-				if (field_argument_count[argument]) {
-					temporary_field[FIELD_STATE] = TRUE;
-					break;
-				}
+		for (; argument < argc && argv[argument][0] != '$'; ++argument) {
+			if (!strcmp(argv[argument], "-d")) {
+				if (++field_arguments_count[0] > 1)
+					error("parse_field_sentences", "Too many -d's");
+			} else if (!strcmp(argv[argument], "-f") || !strcmp(argv[argument], "-n")) {
+				if (++field_arguments_count[1] > 1)
+					error("parse_field_sentences", "Too many sort arguments (-f or -n)");
+			} else if (!strcmp(argv[argument], "-r")) {
+				if (++field_arguments_count[2] > 1)
+					error("parse_field_sentences", "Too many -r's");
 			}
-			sync_field_arguments(field_arguments[field++], temporary_field);
-			for (int field_argument = FIELD_STATE; field_argument < FIELD_ARGUMENTS_MAX; ++field_argument)
-				field_argument_count[field_argument] = 0;
-			initialize_field_arguments(temporary_field);
-			temporary_field[FIELD_STATE] = TRUE;
-			temporary_field[FIELD_NUMBER] = field_number;
+		}
+		if (argv[argument -= (argument == argc) ? 1 : 0][0] == '$') {
+			if (++field_arguments_count[3] > END_FIELDS)
+				error("parse_field_sentences", "Too many search fields.");
+
+			int field_number = atoi(argv[argument] + 1);
+			if (argv[argument][1] != '0' && field_number <= 0)
+				error("parse_field_sentences", "Bad field number.");
 		}
 	}
-	temporary_field[FIELD_STATE] = TRUE;
-	sync_field_arguments(field_arguments[field], temporary_field);
+}
+// Parse the arg's }}}
+
+// Assign to program_arguments & field_arguments {{{
+void initialize_field(int []);
+void sync_fields(int [], int []);
+
+void compile_arguments(int argc, char *argv[]) {
+	program_arguments[SEPARATOR] = ' ';
+
+	int field_number_max = 0;
+	for (int argument = 1; argument < argc; ++argument) 
+		if (argv[argument][0] == '$')
+			++field_number_max;
+
+	int temporary_field_arguments[END_FIELD_ARGUMENTS];
+	initialize_field(temporary_field_arguments);
+
+	int argument = argc;
+	while (--argument > 0) {
+		if (!strcmp(argv[argument], "-d"))
+			temporary_field_arguments[DIRECTORY_ORDER] = TRUE;
+		else if (!strcmp(argv[argument], "-f"))
+			temporary_field_arguments[SORT] = LEXICOGRAPHICAL_CASE_INSENSITIVE;
+		else if (!strcmp(argv[argument], "-n"))
+			temporary_field_arguments[SORT] = NUMERICAL;
+		else if (!strcmp(argv[argument], "-r"))
+			temporary_field_arguments[REVERSE] = TRUE;
+		else if (!strcmp(argv[argument], "-s"))
+			program_arguments[SEPARATOR] = *argv[argument + 1];
+		else if (*argv[argument] == '$') {
+			temporary_field_arguments[FIELD_STATE] = TRUE;
+			temporary_field_arguments[FIELD_NUMBER] = atoi(argv[argument] + 1);
+			sync_fields(field_arguments[field_number_max--], temporary_field_arguments);
+			initialize_field(temporary_field_arguments);
+		}
+	}
+	temporary_field_arguments[FIELD_STATE] = (argc == 1 || (argc > 1 && argv[1][0] != '$')) ? TRUE : FALSE; // e.g. "./sort -f $5 <file" or "./sort <file"
+	temporary_field_arguments[FIELD_NUMBER] = ENTIRE_LINE;
+	sync_fields(field_arguments[field_number_max], temporary_field_arguments);
 }
 
-void initialize_field_arguments(int field[]) {
+void initialize_field(int field[]) {
 	field[FIELD_STATE] = FALSE;
 	field[FIELD_NUMBER] = ENTIRE_LINE;
 	field[DIRECTORY_ORDER] = FALSE;
@@ -271,28 +298,29 @@ void initialize_field_arguments(int field[]) {
 	field[SORT] = LEXICOGRAPHICAL_CASE_SENSITIVE;
 }
 
-void sync_field_arguments(int source_field_arguments[], int target_field_arguments[]) {
-	int argument;
-	for (argument = FIELD_STATE; argument < FIELD_ARGUMENTS_MAX; ++argument)
-		source_field_arguments[argument] = target_field_arguments[argument];
+void sync_fields(int source[], int target[]) {
+	for (int argument = FIELD_STATE; argument < END_FIELD_ARGUMENTS; ++argument)
+		source[argument] = target[argument];
 }
-// Get field program arguments }}}
-// Get the sort settings }}}
+// Assign to program_arguments & field_arguments }}}
+// Get the settings }}}
 
 // Read input {{{
 int get_line(char *);
+char *get_field(int, int);
 
 int read_lines(void) {
-	char line[LINE_LENGTH_MAX], *line_end;
+	char line[LINE_LENGTH_MAX];
 	int line_length, line_number;
-	int field;
+
+	int field = (field_arguments[ENTIRE_LINE][FIELD_STATE] == TRUE) ? ENTIRE_LINE : FIRST_FIELD;
+	for (; field < END_FIELD_ARGUMENTS && field_arguments[field][FIELD_STATE] != FALSE; ++field);
+	int last_field = field - 1;
+
 	for (line_number = 0; (line_length = get_line(line)) > 0 && line_number < LINE_NUMBER_MAX; ++line_number) {
 		field_pointers_array[line_number + 1][ENTIRE_LINE] = stpcpy(field_pointers_array[line_number][ENTIRE_LINE], line) + 1;
-		field_pointers_array[line_number][FIRST_FIELD] = field_pointers_array[line_number][ENTIRE_LINE];
-		for (field = SECOND_FIELD; field < FIELDS_MAX; ++field) {
-			line_end = get_field_end(line_number, field - 1);
-			field_pointers_array[line_number][field] = line_end + (*line_end != '\0');
-		}
+		for (field = FIRST_FIELD; field <= last_field; ++field)
+			field_pointers_array[line_number][field] = get_field(line_number, field);
 	}
 
 	return (line_number == LINE_NUMBER_MAX) ? -1 : line_number;
@@ -306,6 +334,18 @@ int get_line(char *string) {
 
 	return line_length + (character == '\n');
 }
+
+char *get_field(int line_number, int field) {
+	char *line = field_pointers_array[line_number][ENTIRE_LINE];
+	int separator = program_arguments[SEPARATOR];
+
+	for (int field_number_current = 1; field_number_current < field_arguments[field][FIELD_NUMBER]; ++field_number_current) {
+		for (; *line != separator && *line != '\0'; ++line);
+		line += (*line != '\0');
+	}
+
+	return line;
+}
 // Read input }}}
 
 // Sort input {{{
@@ -315,7 +355,7 @@ int get_next_right(int, int, int);
 void reverse(int, int);
 
 void sort_lines(int left, int right, int field) {
-	if (field_arguments[field][FIELD_STATE] == FALSE || left >= right || field >= FIELDS_MAX)
+	if (field_arguments[field][FIELD_STATE] == FALSE || left >= right || field >= END_FIELDS)
 		return;
 
 	field_sort(left, right, field);
@@ -360,7 +400,7 @@ void field_sort(int left, int right, int field) {
 void field_swap(int left, int right) {
 	char *field_pointer;
 	int field_element;
-	for (field_element = ENTIRE_LINE; field_element < FIELDS_MAX; ++field_element) {
+	for (field_element = ENTIRE_LINE; field_element < END_FIELDS; ++field_element) {
 		field_pointer = field_pointers_array[left][field_element];
 		field_pointers_array[left][field_element] = field_pointers_array[right][field_element];
 		field_pointers_array[right][field_element] = field_pointer;
