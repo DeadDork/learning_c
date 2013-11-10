@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 }
-// Main {{{
+// Main }}}
 
 // Get the number from arguments {{{
 #include <stdlib.h>
