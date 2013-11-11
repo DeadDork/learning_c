@@ -13,67 +13,14 @@ enum {
 	BRACKETS
 };
 
-void dcl(void);
-
 int tokentype;
 char token[MAXTOKEN];
 char name[MAXTOKEN];
 char datatype[MAXTOKEN];
 char out[1000];
-// Universal }}}
 
-// Main {{{
+void dcl(void);
 int gettoken(void);
-
-int main(void) {
-	while (gettoken() != EOF) {
-		strcpy(datatype, token);
-		out[0] = '\0';
-		dcl();
-		if (tokentype != '\n')
-			printf("syntax error\n");
-		printf("%s: %s %s\n", name, out, datatype);
-	}
-
-	return 0;
-}
-// Main }}}
-
-// Declarator recursive-descent parser {{{
-void dirdcl(void);
- 
-void dcl(void) {
-	int ns;
-	for (ns = 0; gettoken() == '*'; ++ns);
-
-	dirdcl();
-
-	while (ns-- > 0)
-		strcat(out, " pointer to");
-}
-
-void dirdcl(void) {
-	int type;
-
-	if (tokentype == '(') {
-		dcl();
-		if (tokentype != ')')
-			printf("error: missing )\n");
-	} else if (tokentype == NAME)
-		strcpy(name, token);
-	else
-		printf("error: expected name or (dcl)\n");
-
-	while ((type=gettoken()) == PARENS || type == BRACKETS) // Doesn't need braces?!
-		if (type == PARENS)
-			strcat(out, " function returning");
-		else {
-			strcat(out, " array");
-			strcat(out, token);
-			strcat(out, " of");
-		}
-}
-// Declarator recursive-descent parser }}}
 
 // Return next token {{{
 #include <ctype.h>
@@ -127,3 +74,55 @@ void ungetch(int c) {
 }
 // Character buffer }}}
 // Return next token }}}
+// Universal }}}
+
+// Main {{{
+int main(void) {
+	while (gettoken() != EOF) {
+		strcpy(datatype, token);
+		out[0] = '\0';
+		dcl();
+		if (tokentype != '\n')
+			printf("syntax error\n");
+		printf("%s: %s %s\n", name, out, datatype);
+	}
+
+	return 0;
+}
+// Main }}}
+
+// Declarator recursive-descent parser {{{
+void dirdcl(void);
+ 
+void dcl(void) {
+	int ns;
+	for (ns = 0; gettoken() == '*'; ++ns);
+
+	dirdcl();
+
+	while (ns-- > 0)
+		strcat(out, " pointer to");
+}
+
+void dirdcl(void) {
+	int type;
+
+	if (tokentype == '(') {
+		dcl();
+		if (tokentype != ')')
+			printf("error: missing )\n");
+	} else if (tokentype == NAME)
+		strcpy(name, token);
+	else
+		printf("error: expected name or (dcl)\n");
+
+	while ((type=gettoken()) == PARENS || type == BRACKETS) // Doesn't need braces?!
+		if (type == PARENS)
+			strcat(out, " function returning");
+		else {
+			strcat(out, " array");
+			strcat(out, token);
+			strcat(out, " of");
+		}
+}
+// Declarator recursive-descent parser }}}
