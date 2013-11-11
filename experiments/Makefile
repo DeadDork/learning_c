@@ -3,7 +3,6 @@ CFLAGS = -Wall -Wextra #-g
 CCFLAGS = -fnested-functions
 LDFLAGS =
 
-
 BIN_1 = regex-sub_1
 OBJ_1 = $(BIN_1).o sstring.o rematch.o
 $(BIN_1) : $(OBJ_1)
@@ -64,6 +63,12 @@ OBJ_10 = $(BIN_10).o
 $(BIN_10) : $(OBJ_10)
 	$(CC) $(CFLAGS) $(CCFLAGS) -o $@ $^
 
+BIN_11 = cdcl_1
+OBJ_11 = $(BIN_11).o getch_1.o
+$(BIN_11) : $(OBJ_11)
+	$(CC) $(CFLAGS) $(CCFLAGS) -o $@ $^
+
+getch_1.o : getch_1.c
 sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
 

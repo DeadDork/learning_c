@@ -24,9 +24,7 @@ int gettoken(void);
 
 // Return next token {{{
 #include <ctype.h>
-
-void ungetch(int);
-int getch(void);
+#include "getch_1.h"
 
 int gettoken(void) {
 	int c;
@@ -55,24 +53,6 @@ int gettoken(void) {
 	} else
 		return tokentype = c;
 }
-
-// Character buffer {{{
-#define BUFSIZE 100
-
-char buf[BUFSIZE];
-int bufp = 0;
-
-int getch(void) {
-	return (bufp > 0) ? buf[--bufp] : getchar();
-}
-
-void ungetch(int c) {
-	if (bufp >= BUFSIZE)
-		printf("ungetch: too many characters\n");
-	else
-		buf[bufp++] = c;
-}
-// Character buffer }}}
 // Return next token }}}
 // Universal }}}
 
