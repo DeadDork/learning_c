@@ -19,7 +19,6 @@ char name[MAXTOKEN];
 char datatype[MAXTOKEN];
 char out[1000];
 
-void dcl(void);
 int gettoken(void);
 
 // Return next token {{{
@@ -57,6 +56,8 @@ int gettoken(void) {
 // Universal }}}
 
 // Main {{{
+void dcl(void);
+
 int main(void) {
 	while (gettoken() != EOF) {
 		strcpy(datatype, token);
