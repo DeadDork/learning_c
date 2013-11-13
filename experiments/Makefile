@@ -68,6 +68,11 @@ OBJ_11 = $(BIN_11).o getch_1.o
 $(BIN_11) : $(OBJ_11)
 	$(CC) $(CFLAGS) $(CCFLAGS) -o $@ $^
 
+BIN_12 = uncdcl_1
+OBJ_12 = $(BIN_12).o getch_1.o
+$(BIN_12) : $(OBJ_12)
+	$(CC) $(CFLAGS) $(CCFLAGS) -o $@ $^
+
 getch_1.o : getch_1.c
 sstring.o : sstring.c sstring.h rematch.h
 rematch.o : rematch.c rematch.h
