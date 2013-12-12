@@ -11,7 +11,7 @@ __Q: Why do you call this a FAQ then?__
 
 __Q: Why does the coding style keep changing?__
 
-Because I was actively developing my C coding style while working on these exercises. To see the latest and greatest, go to [my C style guide](https://github.com/DeadDork/style_guides/blob/master/C/C_style-guide.mkd).
+Because I am actively developing my own C coding style as I work on these exercises. To see the latest and greatest, go to [my C style guide](https://github.com/DeadDork/style_guides/blob/master/C/C_style-guide.mkd).
 
 __Q: Some of these exercises are real shit, especially at the beginning.__
 
@@ -19,7 +19,7 @@ Yes, yes they are. After all, I was learning C by working through K & R. Now, di
 
 __Q: Yes, actually: how can I help to improve these solutions?__
 
-Oh! Simply submit a pull request or make an issue report on the [GitHub repository](https://github.com/DeadDork/learning_c), and I will do my best to address the matter promptyly.
+Oh! Simply submit a pull request or make an issue report on the [GitHub repository](https://github.com/DeadDork/learning_c), and I will do my best to address the matter promptly.
 
 One caveat, though: please do not try to sneak in a solution from [The C Answer Book](http://www.amazon.com/The-Answer-Book-Solutions-Programming/dp/0131096532/ref=sr_1_1?ie=UTF8&qid=1369126314&sr=8-1&keywords=c+programming+answer+book). Bad form, that, and I'm pretty sure it's illegal.
 
@@ -29,10 +29,6 @@ With the MIT license. That means you can pretty much do whatever you want with m
 
 Any last questions?
 
-__Q: Yes: you seem to have stopped half-way through the book--why? Also, will you finish what you started?__
+__Q: Not really, no.__
 
-__TL;DR__ Because I fucking hate working through books, and realized that I could learn C (or anything CS related for that matter) by simply hacking on projects.
-
-__TL__ Harry Frankfurt pointed out that we are capable of two kinds of desires: what we want (i.e. *first order desires*), and what we want to want (i.e. *second order desires*). For instance, a man may want another man--his sexual attraction being a first order desire--but due to an unfortunate religio-sociological belief may not want to want the other man--his homophobia being a second order desire. I have always wanted to be one of the cool scholar-types who pursues apotheosis through academic learning; however, by nature I can only be engaged by the praxis of cool projects, not their theoria. In June, I finally came out of the closet as a proud hacker.
-
-So, no, I will not be finishing *K & R*. I will be finishing plenty of cool projects instead, though!
+Good then!
