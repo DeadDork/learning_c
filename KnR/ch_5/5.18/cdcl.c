@@ -6,16 +6,22 @@
 #include <string.h>
 #include "getch.h"
 
-#define MAX_SUBSTRING 100 // Large enough for large variables, though not large enough for absurdly large variables.
-#define MAX_STRING MAX_SUBSTRING + MAX_SUBSTRING + MAX_SUBSTRING + MAX_SUBSTRING // type + declarator (+ enum name) + variable
+#define MAX_SUBSTRING 100
+#define MAX_STRING 10 * MAX_SUBSTRING
 
 enum boolean {
 	FALSE,
 	TRUE
 };
 
+enum token_actions {
+	GET_TYPE,
+	GET_DECLARATOR,
+	UNGET
+};
+
 void error(char *, char *);
-enum boolean manage_tokens(char *, char *, char *);
+enum boolean manage_tokens(enum token_actions, char *, char *);
 
 void error(char *function, char *message) {
 	printf("%s(): %s\n", function, message);
@@ -26,19 +32,24 @@ void error(char *function, char *message) {
 	*/
 }
 
-// Manage reading from string {{{
-int get_type_token(char *, char *, int);
-int unget_type_token(char *, int);
+// Manage reading tokens from string {{{
+int get_type_token(char *, char [], int);
+int unget_token(char [], int);
+int get_declarator_token(char *, char *, int);
+enum boolean is_declarator(char);
+enum boolean is_name(char);
 
-enum boolean manage_tokens(char *action, char *token, char *string_buffer) {
+enum boolean manage_tokens(enum token_actions action, char *token, char *string_buffer) {
 	static position;
 
-	if (!strcmp(action, "get_type_token"))
+	if (action == GET_TYPE)
 		position = get_type_token(token, string_buffer, position);
-	else if (!strcmp(action, "unget_type_token"))
-		position = unget_type_token(string_buffer, position);
+	else if (action == GET_DECLARATOR)
+		position = get_declarator_token(token, string_buffer, position);
+	else if (action == UNGET)
+		position = unget_token(string_buffer, position);
 	else
-		exit("manage_token", "bad action.");
+		exit("manage_tokens", "bad action.");
 
 	if (string_buffer[position] == '\0')
 		position = 0;
@@ -46,33 +57,58 @@ enum boolean manage_tokens(char *action, char *token, char *string_buffer) {
 	return (position > 0) ? TRUE : FALSE;
 }
 
-int get_type_token(char *token, char *string_buffer, int position) {
-	string_buffer += position;
-	char *start_buffer = string_buffer;
+int get_type_token(char *token, char string_buffer[], int position) {
+	for (; isspace(string_buffer[position]); ++position);
 
-	for (; isspace(*string_buffer); ++string_buffer, ++position);
-
-	for (; !isspace(*token = *string_buffer) && *token != '\0'; ++token, ++string_buffer, ++position);
-	if (*token != '\0')
-		token = '\0';
+	for (; !isspace(*token = string_buffer[position]) && *token != '\0'; ++token, ++position);
+	*token = '\0';
 
 	return position;
 }
 
-int unget_type_token(char *string_buffer, int position) {
-	if (positin > 0)
-		--position;
-	for (; !isspace(string_buffer[position]) && position > 0; --position);
+int get_declarator_token(char *token, char *string_buffer, int position) {
+	for (; isspace(string_buffer[position]); ++position);
+
+	if (is_declarator(*token = string_buffer[position]))
+		*++token = '\0';
+	else if (is_name(*token)) {
+		for (++token, ++position; is_name(*token = string_buffer[position]); ++token, ++position);
+		*token = '\0';
+	}
 
 	return position;
 }
-// Manage reading from string }}}
+
+int unget_token(char string_buffer, int position) {
+	for (position -= (position > 0); position > 0 && is_name(string_buffer[position]); --position)
+
+	return position;
+}
+
+enum boolean is_declarator(char token) {
+	if (token == '(' || token == ')' || token == '[' || token == ']' || token == '*')
+		TRUE;
+	else
+		FALSE;
+}
+
+enum boolean is_name(char token) {
+	if (
+			isalnum(token) ||
+			token == '_'
+	   )
+		TRUE;
+	else
+		FALSE;
+}
+// Manage declarator tokens (e.g. '(', '[', etc.) }}}
 // Universal }}}
 
 // Main {{{
 enum boolean get_string(char []);
 void parse_type(char *, char *);
 void parse_identifier(char *, char *, char *);
+void parse_declarator(char *, char *, char *);
 
 int main(void) {
 	char input_buffer[MAX_STRING];
@@ -81,10 +117,10 @@ int main(void) {
 	char identifier[MAX_SUBSTRING];
 
 	while (get_string(input_buffer)) {
-		type[0] = '\0', identifier[0] = '\0', declarator[0] = '\0';
+		type[0] = identifier[0] = declarator[0] = '\0';
 		parse_type(type, input_buffer);
 		parse_declarator(identifier, declarator, input_buffer);
-		printf("Declare %s as %s to %s\n", identifier, declarator, type);
+		printf("Declare %s as %s %s\n", identifier, declarator, type);
 	}
 
 	return 0;
@@ -115,7 +151,7 @@ void parse_type(char *type, char *string_buffer) {
 		type_specifier;
 	char token[MAX_SUBSTRING], enum_name[MAX_SUBSTRING];
 
-	if (!manage_tokens("get_type_token", token, string_buffer))
+	if (!manage_tokens(GET_TYPE, token, string_buffer))
 		exit("parse_type", "no input.");
 
 	if (!strcmp(token, "float") || !strcmp(token, "void")) {
@@ -125,7 +161,7 @@ void parse_type(char *type, char *string_buffer) {
 	} else if (!strcmp(token, "enum")) {
 		if (++type_specifier > 1)
 			exit("parse_type", "too many type specifiers.");
-		if (!manage_tokens("get_type_token", enum_name, string_buffer))
+		if (!manage_tokens(GET_TYPE, enum_name, string_buffer))
 			exit("parse_type", "no enum name.");
 		if (is_keyword(enum_name))
 			exit("parse_type", "bad enum name.");
@@ -174,7 +210,7 @@ void parse_type(char *type, char *string_buffer) {
 			exit("parse_type", "too many storage class specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else {
-		manage_tokens("unget_type_token", token, string_buffer);
+		manage_tokens(UNGET, token, string_buffer);
 		char_specifier = 0;
 		double_specifier = 0;
 		integer_specifier = 0;
@@ -190,3 +226,42 @@ void parse_type(char *type, char *string_buffer) {
 	parse_type(type, string_buffer);
 }
 // Parse the declaration's type }}}
+
+// Parse the declarator {{{
+enum declarator_actions {
+	DECL,
+	DIR_DECL
+};
+
+void manage_declarators(enum declarator_actions, char *, char *, char *);
+
+void parse_declarator(char *identifier, char *declarator, char *input_buffer) {
+	manage_declarators(DECL, identifier, declarator, input_buffer);
+}
+
+// Manage reading declarators {{{
+enum declarator_types {
+	NONE,
+	IDENTIFIER,
+	POINTER,
+	ARRAY,
+	OTHER
+};
+
+enum declarator_types decl(char *, char *, char *, enum declarator_types);
+enum declarator_types dir_decl(char *, char *, char *, enum declarator_types);
+
+void manage_declarators(enum declarator_actions action, char *identifier, char *declarator, char *input_buffer) {
+	static last_declarator_type = NONE;
+
+	if (action == DECL)
+		last_declarator_type = decl(identifer, declaractor, input_buffer, last_declarator_type);
+	else if (action == DIR_DECL)
+		last_declarator_type = dir_decl(identifer, declaractor, input_buffer, last_declarator_type);
+	else
+		exit("manage_declarators", "bad action.");
+}
+
+enum declarator_types decl(char *identifier, char *declarator, char *input_buffer, enum declarator_types last_declarator_type) {
+	manage_tokens(
+// Parse the declarator {{{
