@@ -12,7 +12,7 @@
 #define AutoIncrementPrinter(x) printf(#x " = [%c]\n", (x))
 
 int main(void) {
-	char string1[] = "ab", *string2;
+	char string1[] = "a1", *string2;
 
 	string2 = string1;
 	AutoIncrementPrinter(*string2++); // "[a]"
