@@ -24,9 +24,11 @@ void error(char *, char *);
 enum boolean manage_tokens(enum token_actions, char *, char *);
 
 void error(char *function, char *message) {
+	// Correct way
 	printf("%s(): %s\n", function, message);
 	exit(1);
-	/* Let's user manually exit (exit() not "known" yet, so makes code correct)
+
+	/* Pedagogically appropriate way, given that I don't "know" exit() yet
 	printf("Interrupt program to exit (usually ^d or ^c).\n");
 	while (TRUE);
 	*/
@@ -36,8 +38,8 @@ void error(char *function, char *message) {
 int get_type_token(char *, char [], int);
 int unget_token(char [], int);
 int get_declarator_token(char *, char *, int);
-enum boolean is_declarator(char);
-enum boolean is_name(char);
+enum boolean is_declarator_char(char);
+enum boolean is_name_char(char);
 
 enum boolean manage_tokens(enum token_actions action, char *token, char *string_buffer) {
 	static position;
@@ -49,7 +51,7 @@ enum boolean manage_tokens(enum token_actions action, char *token, char *string_
 	else if (action == UNGET)
 		position = unget_token(string_buffer, position);
 	else
-		exit("manage_tokens", "bad action.");
+		error("manage_tokens", "bad action.");
 
 	if (string_buffer[position] == '\0')
 		position = 0;
@@ -69,10 +71,10 @@ int get_type_token(char *token, char string_buffer[], int position) {
 int get_declarator_token(char *token, char *string_buffer, int position) {
 	for (; isspace(string_buffer[position]); ++position);
 
-	if (is_declarator(*token = string_buffer[position]))
+	if (is_declarator_char(*token = string_buffer[position]))
 		*++token = '\0';
-	else if (is_name(*token)) {
-		for (++token, ++position; is_name(*token = string_buffer[position]); ++token, ++position);
+	else if (is_name_char(*token)) {
+		while (is_name_char(*++token = string_buffer[++position]));
 		*token = '\0';
 	}
 
@@ -80,29 +82,26 @@ int get_declarator_token(char *token, char *string_buffer, int position) {
 }
 
 int unget_token(char string_buffer, int position) {
-	for (position -= (position > 0); position > 0 && is_name(string_buffer[position]); --position)
+	for (position -= (position > 0); position > 0 && is_name_char(string_buffer[position]); --position)
 
 	return position;
 }
 
-enum boolean is_declarator(char token) {
+enum boolean is_declarator_char(char token) {
 	if (token == '(' || token == ')' || token == '[' || token == ']' || token == '*')
 		TRUE;
 	else
 		FALSE;
 }
 
-enum boolean is_name(char token) {
-	if (
-			isalnum(token) ||
-			token == '_'
-	   )
+enum boolean is_name_char(char token) {
+	if (isalnum(token) || token == '_')
 		TRUE;
 	else
 		FALSE;
 }
-// Manage declarator tokens (e.g. '(', '[', etc.) }}}
-// Universal }}}
+// }}}
+// }}}
 
 // Main {{{
 enum boolean get_string(char []);
@@ -125,7 +124,7 @@ int main(void) {
 
 	return 0;
 }
-// Main }}}
+// }}}
 
 enum boolean get_string(char string[]) {
 	int element, character;
@@ -134,7 +133,7 @@ enum boolean get_string(char string[]) {
 		string[element] = character;
 	string[element] = '\0';
 
-	return (element == 0 && character == EOF) ? FALSE : TRUE;
+	return ((element == 0 && character == EOF) || (element == MAX_STRING && (character != '\n' || character != EOF))) ? FALSE : TRUE;
 }
 
 // Parse the declaration's type {{{
@@ -152,62 +151,62 @@ void parse_type(char *type, char *string_buffer) {
 	char token[MAX_SUBSTRING], enum_name[MAX_SUBSTRING];
 
 	if (!manage_tokens(GET_TYPE, token, string_buffer))
-		exit("parse_type", "no input.");
+		error("parse_type", "no input.");
 
 	if (!strcmp(token, "float") || !strcmp(token, "void")) {
 		if (++type_specifier > 1)
-			exit("parse_type", "too many type specifiers.");
+			error("parse_type", "too many type specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "enum")) {
 		if (++type_specifier > 1)
-			exit("parse_type", "too many type specifiers.");
+			error("parse_type", "too many type specifiers.");
 		if (!manage_tokens(GET_TYPE, enum_name, string_buffer))
-			exit("parse_type", "no enum name.");
+			error("parse_type", "no enum name.");
 		if (is_keyword(enum_name))
-			exit("parse_type", "bad enum name.");
+			error("parse_type", "bad enum name.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 		strcat(strcat(type, " "), enum_name);
 	} else if (!strcmp(token, "double")) {
 		if (type_specifier > 0)
-			exit("parse_type", "conflicting type specifiers.");
+			error("parse_type", "conflicting type specifiers.");
 		if (++double_specifier > 1)
-			exit("parse_type", "too many `double` specifiers.");
+			error("parse_type", "too many `double` specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "char")) {
 		if (type_specifier > 0)
-			exit("parse_type", "conflicting type specifiers.");
+			error("parse_type", "conflicting type specifiers.");
 		if (++char_specifier > 1)
-			exit("parse_type", "too many `char` specifiers.");
+			error("parse_type", "too many `char` specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "int")) {
 		if (type_specifier > 0)
-			exit("parse_type", "conflicting type specifiers.");
+			error("parse_type", "conflicting type specifiers.");
 		if (++int_specifier > 1)
-			exit("parse_type", "too many `int` specifiers.");
+			error("parse_type", "too many `int` specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "short")) {
 		if (type_specifier > 0 || double_specifier > 0 || char_specifier > 0)
-			exit("parse_type", "conflicting type specifiers.");
+			error("parse_type", "conflicting type specifiers.");
 		if (++short_specifier > 1)
-			exit("parse_type", "too many `short` specifiers.");
+			error("parse_type", "too many `short` specifiers.");
 		if (long_specifier > 0)
-			exit("parse_type", "can't declare `long` and `short`.");
+			error("parse_type", "can't declare `long` and `short`.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "long")) {
 		if (type_specifier > 0 || char_specifier > 0)
-			exit("parse_type", "conflicting type specifiers.");
-		if (++long_specifier > 2) // Not ANSI, but I've seen lots of long longs
-			exit("parse_type", "too many `long` specifiers.");
+			error("parse_type", "conflicting type specifiers.");
+		if (++long_specifier > 1) // C89
+			error("parse_type", "too many `long` specifiers.");
 		if (short_specifier > 0)
-			exit("parse_type", "can't declare `long` and `short`.");
+			error("parse_type", "can't declare `long` and `short`.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "const") || !strcmp(token, "volatile")) {
 		if (++type_qualifier > 1)
-			exit("parse_type", "too many type qualifiers.");
+			error("parse_type", "too many type qualifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else if (!strcmp(token, "auto") || !strcmp(token, "register") || !strcmp(token, "static") || !strcmp(token, "extern")) {
 		if (++storage_class_specifier > 1)
-			exit("parse_type", "too many storage class specifiers.");
+			error("parse_type", "too many storage class specifiers.");
 		(!strlen(type)) ? strcat(type, token) : strcat(strcat(type, " "), token);
 	} else {
 		manage_tokens(UNGET, token, string_buffer);
@@ -225,7 +224,7 @@ void parse_type(char *type, char *string_buffer) {
 
 	parse_type(type, string_buffer);
 }
-// Parse the declaration's type }}}
+// }}
 
 // Parse the declarator {{{
 enum declarator_actions {
@@ -244,24 +243,29 @@ enum declarator_types {
 	NONE,
 	IDENTIFIER,
 	POINTER,
-	ARRAY,
-	OTHER
+	ARRAY
 };
 
-enum declarator_types decl(char *, char *, char *, enum declarator_types);
-enum declarator_types dir_decl(char *, char *, char *, enum declarator_types);
+enum declarator_types decl(char *, char *, char *);
+enum declarator_types dir_decl(char *, char *, char *);
+enum boolean type_check_declarators(enum declarator_types, enum declarator_types);
 
 void manage_declarators(enum declarator_actions action, char *identifier, char *declarator, char *input_buffer) {
-	static last_declarator_type = NONE;
+	static declarator_types last, current;
 
 	if (action == DECL)
-		last_declarator_type = decl(identifer, declaractor, input_buffer, last_declarator_type);
+		current = decl(identifer, declaractor, input_buffer);
 	else if (action == DIR_DECL)
-		last_declarator_type = dir_decl(identifer, declaractor, input_buffer, last_declarator_type);
+		current = dir_decl(identifer, declaractor, input_buffer);
 	else
-		exit("manage_declarators", "bad action.");
-}
+		error("manage_declarators", "bad action.");
 
-enum declarator_types decl(char *identifier, char *declarator, char *input_buffer, enum declarator_types last_declarator_type) {
-	manage_tokens(
-// Parse the declarator {{{
+	if (type_check_declarators(current, last))
+		last = current;
+	else
+		error("manage_declarators", "attempting to declare an illegal type.");
+}
+// }}}
+
+// Declarator actions {{{
+enum declarator_types decl(char *identifier, char *declarator, char *input_buffer) {
