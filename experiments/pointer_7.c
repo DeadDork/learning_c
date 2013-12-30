@@ -34,6 +34,10 @@ void test_const_1(void) {
 	// Doesn't fail, not as expected
 	p_a = &c;
 	PrintExpression(*p_a);
+
+	// But this does! Not all hope is lost!
+	//*p_a = 'd';
+	PrintExpression(*p_a);
 }
 
 void test_const_2(void) {
